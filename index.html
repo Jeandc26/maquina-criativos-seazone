@@ -287,9 +287,9 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.85);backdrop
       </div>
       <div class="sb-sec">
         <div class="sb-sec-title">Configuração</div>
-        <select class="sel" id="sel-est"><option value="1">Estrutura 1 — L | F | RO | RE</option><option value="2">Estrutura 2 — L | RO | RE | F</option><option value="3">Estrutura 3 — F | RO | RE | L</option></select>
-        <select class="sel" id="sel-fmt"><option value="feed">Feed — 4:5 · 1080×1350px</option><option value="reels">Reels/Stories — 9:16 · 1080×1920px</option></select>
-        <select class="sel" id="sel-dur" style="display:none"><option value="30-40s">30–40 segundos</option><option value="10-20s">10–20 segundos</option></select>
+        <select class="sel" id="sel-est" onchange="onConfigChange()"><option value="1">Estrutura 1 — L | F | RO | RE</option><option value="2">Estrutura 2 — L | RO | RE | F</option><option value="3">Estrutura 3 — F | RO | RE | L</option></select>
+        <select class="sel" id="sel-fmt" onchange="onConfigChange()"><option value="feed">Feed — 4:5 · 1080×1350px</option><option value="reels">Reels/Stories — 9:16 · 1080×1920px</option></select>
+        <select class="sel" id="sel-dur" style="display:none" onchange="onConfigChange()"><option value="30-40s">30–40 segundos</option><option value="10-20s">10–20 segundos</option></select>
       </div>
       <div class="sb-sec">
         <div class="sb-sec-title">Hipóteses A/B</div>
@@ -386,7 +386,38 @@ function setTipo(t,btn) {
   document.getElementById('sel-dur').style.display=t!=='estatico'?'block':'none';
 }
 function toggleH(btn){btn.classList.toggle('on');}
-function setVar(n,btn){varN=n;document.querySelectorAll('.vtab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');}
+
+function setVar(n,btn) {
+  varN=n;
+  document.querySelectorAll('.vtab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  if(document.getElementById('st-result').classList.contains('show')) {
+    atualizarConteudo(document.getElementById('sel-est').value, document.getElementById('sel-fmt').value, tipo!=='estatico'?document.getElementById('sel-dur').value:null);
+  }
+}
+
+function onConfigChange() {
+  if(document.getElementById('st-result').classList.contains('show')) {
+    atualizarConteudo(document.getElementById('sel-est').value, document.getElementById('sel-fmt').value, tipo!=='estatico'?document.getElementById('sel-dur').value:null);
+  }
+}
+
+function atualizarConteudo(est,fmt,dur) {
+  document.getElementById('rb-fmt').textContent=fmt==='feed'?'Feed · 4:5 · 1080×1350px':'Reels · 9:16 · 1080×1920px';
+  document.getElementById('rb-title').textContent=`Estrutura ${est} — V${varN}`;
+  const tb=document.getElementById('rb-type');
+  tb.textContent={estatico:'Estático',narrado:'Vídeo narrado',apresentadora:'Com apresentadora'}[tipo];
+  tb.className='res-badge '+{estatico:'rb-est',narrado:'rb-nar',apresentadora:'rb-apr'}[tipo];
+  document.getElementById('cenas-out').innerHTML=buildCenas(est,fmt,dur).map((c,i)=>renderC(c,i+1)).join('');
+  const grid=document.getElementById('gen-grid');
+  if(tipo==='estatico'){
+    grid.innerHTML=['fachada','aerea','rooftop'].map(k=>`<div class="gen-card" id="gc-${k}"><div class="gen-placeholder"><div style="font-size:24px">🖼</div><div class="gen-placeholder-label">${k}</div></div><div class="gen-card-label">Flux Pro · ${fmt==='feed'?'4:5':'9:16'}</div></div>`).join('');
+  } else {
+    grid.innerHTML=['broll-praia','broll-fachada','broll-rooftop'].map(k=>`<div class="gen-card" id="gc-${k}"><div class="gen-placeholder"><div style="font-size:24px">🎬</div><div class="gen-placeholder-label">${k}</div></div><div class="gen-card-label">Kling v1.6 · 5s · ${fmt==='feed'?'4:5':'9:16'}</div></div>`).join('');
+  }
+  document.getElementById('btn-assets').disabled=false;
+  document.getElementById('btn-assets').textContent='✦ Gerar imagens e vídeos agora';
+}
 
 // ── Gerar script ─────────────────────────────────────────────────────────
 function gerar() {
@@ -502,24 +533,74 @@ async function pollFal(requestId, model) {
 // ── Cenas ─────────────────────────────────────────────────────────────────
 function buildCenas(est,fmt,dur) {
   const dims=fmt==='feed'?'1080×1350px':'1080×1920px';
+
+  // Hipótese destaque por variação
+  const hipV={
+    1:{ta:'~R$ 5.500 LÍQUIDOS POR MÊS*\nCampeche • Florianópolis • SC', hip:'RE mensal'},
+    2:{ta:'R$ 66.424 LÍQUIDOS POR ANO*\nCampeche • Florianópolis • SC', hip:'RE anual'},
+    3:{ta:'ROI 16,40% A.A.* — A PRAIA QUE MAIS FATURAEM FLN', hip:'ROI'},
+    4:{ta:'CDI LÍQUIDO: ~9,8% | SPOT II: 16,40% A.A.*\nNovo Campeche', hip:'Gancho CDB'},
+    5:{ta:'APENAS 49 COTAS — ~R$ 5.500 LÍQUIDOS POR MÊS*', hip:'Escassez'},
+  }[varN] || {ta:'~R$ 5.500 LÍQUIDOS POR MÊS*', hip:'RE mensal'};
+
   if(tipo==='estatico') return [
-    {n:1,tit:'Imagem base',tag:'Fachada',visual:`Render fachada Novo Campeche SPOT II. ${dims}`,ta:'~R$ 5.500 LÍQUIDOS POR MÊS*\nCampeche • Florianópolis • SC',extra:'A partir de R$ 335 mil | Gestão completa Seazone'},
+    {n:1,tit:'Imagem base',tag:'Fachada',visual:`Render fachada Novo Campeche SPOT II — moderna, luminosa. Tamanho: ${dims}`,ta:hipV.ta,extra:`Hipótese ${varN}: ${hipV.hip} | A partir de R$ 335 mil | Gestão Seazone`},
     {n:2,tit:'Overlay e tipografia',tag:'Design',visual:'Gradiente sutil na parte inferior. Frase principal em destaque máximo.',ta:'A PARTIR DE R$ 335 MIL',extra:'Logo Seazone | Disclaimer no rodapé'}
   ];
-  if(tipo==='narrado') return [
-    {n:1,tit:'Abertura — Localização',tag:'L',tempo:'0:00–0:07',visual:`Drone Praia Novo Campeche. PIN animado. ${dims}`,ta:'NOVO CAMPECHE • FLORIANÓPOLIS',narracao:'"Novo Campeche. Um dos bairros com maior faturamento de Airbnb em Santa Catarina."'},
-    {n:2,tit:'Motivo 1 — Produto',tag:'F',tempo:'0:07–0:15',visual:'Render fachada + áreas comuns.',ta:'MOTIVO 1: O PRODUTO | SHORT STAY NATIVO',narracao:'"Primeiro motivo: produto desenhado do zero para Airbnb."'},
-    {n:3,tit:'Motivo 2 — Retorno',tag:'RO+RE',tempo:'0:15–0:23',visual:'Infográfico ROI 16,40% + R$5.500/mês.',ta:'MOTIVO 2: ROI 16,40% A.A.* | ~R$ 5.500/MÊS*',narracao:'"Segundo motivo: ROI de 16,40% ao ano, acima da Selic."'},
-    {n:4,tit:'Motivo 3 — Localização',tag:'L',tempo:'0:23–0:32',visual:'Drone praia + rooftop.',ta:'MOTIVO 3: LOCALIZAÇÃO | ROOFTOP COM VISTA MAR',narracao:'"Terceiro motivo: bairro com maior faturamento de Florianópolis."'},
-    {n:5,tit:'CTA Final',tag:'CTA',tempo:'0:32–0:40',visual:'Tela final com logo.',ta:'A PARTIR DE R$ 335 MIL | SAIBA MAIS',narracao:'"A partir de R$ 335 mil. Clique em Saiba Mais."'}
+
+  // Estrutura 1: L → F → RO+RE → L → CTA
+  if(tipo==='narrado' && est==='1') return [
+    {n:1,tit:'Abertura — Localização',tag:'L',tempo:'0:00–0:07',visual:`Drone Praia Novo Campeche. PIN animado. ${dims}`,ta:'NOVO CAMPECHE • FLORIANÓPOLIS\nA PRAIA QUE MAIS FATURAEM FLN',narracao:'"Novo Campeche, em Florianópolis. Um dos bairros com maior faturamento bruto de Airbnb em Santa Catarina."'},
+    {n:2,tit:'Motivo 1 — Produto',tag:'F',tempo:'0:07–0:15',visual:'Render fachada + áreas comuns.',ta:'MOTIVO 1: O PRODUTO\nSHORT STAY NATIVO',narracao:'"Primeiro motivo: produto desenhado do zero para Airbnb."'},
+    {n:3,tit:'Motivo 2 — Retorno',tag:'RO+RE',tempo:'0:15–0:23',visual:'Infográfico animado.',ta:`MOTIVO 2: ${hipV.ta}`,narracao:`"Segundo motivo: ${hipV.hip==='ROI'?'ROI de 16,40% ao ano':'rendimento estimado de R$ 5.500 por mês'}, acima da Selic."`},
+    {n:4,tit:'Motivo 3 — Localização',tag:'L',tempo:'0:23–0:32',visual:'Drone praia + rooftop.',ta:'MOTIVO 3: LOCALIZAÇÃO\nROOFTOP COM VISTA MAR',narracao:'"Bairro com maior faturamento de Florianópolis, rooftop com vista mar."'},
+    {n:5,tit:'CTA Final',tag:'CTA',tempo:'0:32–0:40',visual:'Tela final com logo.',ta:'A PARTIR DE R$ 335 MIL\nCLIQUE EM SAIBA MAIS',narracao:'"A partir de R$ 335 mil. Clique em Saiba Mais."'}
   ];
-  return [
-    {n:1,tit:'Abertura — Vista aérea praia',tag:'L',tempo:'0:00–0:07',visual:`Drone Praia Novo Campeche. ${dims}`,ta:'NOVO CAMPECHE • FLORIANÓPOLIS',monica:null,extra:'Monica ainda não aparece. Narração em off.'},
-    {n:2,tit:'Fachada',tag:'F',tempo:'0:07–0:14',visual:'Render fachada moderna.',ta:'NOVO CAMPECHE SPOT II | SHORT STAY',monica:null,extra:'"Esse é o Novo Campeche SPOT II."'},
-    {n:3,tit:'Monica — Dados financeiros',tag:'RO+RE',tempo:'0:14–0:22',visual:'Monica em estúdio neutro.',ta:'ROI 16,40% A.A.* | ~R$ 5.500/MÊS*',monica:'Eu sou a Monica, sócia da Seazone. Nosso projeto projeta ROI de 16,40% ao ano — acima da Selic. Cerca de R$ 5.500 por mês estimados.',extra:'Tom: autoridade.'},
-    {n:4,tit:'Localização + Rooftop',tag:'L+RO',tempo:'0:22–0:32',visual:'B-roll rooftop + drone bairro.',ta:'ROOFTOP COM VISTA MAR | GESTÃO SEAZONE',monica:'Localização entre as mais desejadas de Florianópolis, rooftop com vista para o mar.',extra:'Monica continua em quadro.'},
-    {n:5,tit:'CTA Final',tag:'CTA',tempo:'0:32–0:40',visual:'Tela final + logo.',ta:'A PARTIR DE R$ 335 MIL | SAIBA MAIS',monica:'Se faz sentido, fale com o nosso time.',extra:'Disclaimer no rodapé.'}
+
+  // Estrutura 2: L → RO+RE → F → CTA
+  if(tipo==='narrado' && est==='2') return [
+    {n:1,tit:'Abertura — Localização',tag:'L',tempo:'0:00–0:07',visual:`Drone Praia Novo Campeche. ${dims}`,ta:'NOVO CAMPECHE • FLORIANÓPOLIS',narracao:'"Novo Campeche — bairro com maior faturamento bruto de Florianópolis."'},
+    {n:2,tit:'Retorno financeiro',tag:'RO+RE',tempo:'0:07–0:17',visual:'Infográfico ROI + rendimento.',ta:hipV.ta,narracao:`"ROI de 16,40% ao ano — ${hipV.hip==='Gancho CDB'?'acima do CDI líquido de imposto de renda':'acima da Selic e dos concorrentes da região'}."`},
+    {n:3,tit:'O produto',tag:'F',tempo:'0:17–0:27',visual:'Render fachada + áreas comuns.',ta:'SHORT STAY NATIVO\nMESMO PADRÃO NOVO CAMPECHE SPOT',narracao:'"Projeto desenhado do zero para Airbnb — fachada valorizada, rooftop com vista mar."'},
+    {n:4,tit:'CTA Final',tag:'CTA',tempo:'0:27–0:35',visual:'Tela final com logo.',ta:'A PARTIR DE R$ 335 MIL\nCLIQUE EM SAIBA MAIS',narracao:'"A partir de R$ 335 mil. Gestão completa Seazone."'}
   ];
+
+  // Estrutura 3: F → RO+RE → L → CTA
+  if(tipo==='narrado' && est==='3') return [
+    {n:1,tit:'Abertura — Fachada',tag:'F',tempo:'0:00–0:07',visual:`Render fachada Novo Campeche SPOT II. ${dims}`,ta:'NOVO CAMPECHE SPOT II\nSHORT STAY NATIVO',narracao:'"Esse é o Novo Campeche SPOT II — projeto desenhado do zero para Airbnb."'},
+    {n:2,tit:'Retorno financeiro',tag:'RO+RE',tempo:'0:07–0:17',visual:'Infográfico animado.',ta:hipV.ta,narracao:'"ROI de 16,40% ao ano, acima da Selic. Gestão completa da Seazone."'},
+    {n:3,tit:'Localização',tag:'L',tempo:'0:17–0:27',visual:'Drone praia + rooftop com vista mar.',ta:'CAMPECHE • FLORIANÓPOLIS\nROOFTOP COM VISTA MAR',narracao:'"Localizado em um dos bairros com maior faturamento de Florianópolis, baixa sazonalidade."'},
+    {n:4,tit:'CTA Final',tag:'CTA',tempo:'0:27–0:35',visual:'Tela final com logo.',ta:'A PARTIR DE R$ 335 MIL\nCLIQUE EM SAIBA MAIS',narracao:'"A partir de R$ 335 mil. Clique em Saiba Mais."'}
+  ];
+
+  // APRESENTADORA
+  const ceBaseMonica = [
+    {n:1,tit:'Abertura — Vista aérea praia',tag:'L',tempo:'0:00–0:07',visual:`Drone Praia Novo Campeche. ${dims}`,ta:'NOVO CAMPECHE • FLORIANÓPOLIS\nA PRAIA MAIS DESEJADA DA ILHA',monica:null,extra:'Monica ainda não aparece. Narração em off.'},
+    {n:2,tit:'Fachada',tag:'F',tempo:'0:07–0:14',visual:'Render fachada moderna.',ta:'NOVO CAMPECHE SPOT II\nSHORT STAY NATIVO',monica:null,extra:'"Esse é o Novo Campeche SPOT II — projeto desenhado do zero para Airbnb."'},
+    {n:3,tit:'Monica — Dados financeiros',tag:'RO+RE',tempo:'0:14–0:22',visual:'Monica em estúdio neutro.',ta:hipV.ta,monica:`Eu sou a Monica, sócia da Seazone. ${hipV.hip==='Gancho CDB'?'O CDI líquido de imposto de renda está em torno de 9,8% ao ano. Nosso projeto projeta 16,40% — e ainda tem o imóvel no seu nome.':'Nosso projeto projeta ROI de 16,40% ao ano — acima da Selic e acima dos concorrentes. Cerca de R$ 5.500 por mês estimados.'}`,extra:'Tom: autoridade.'},
+    {n:4,tit:'Localização + Rooftop',tag:'L+RO',tempo:'0:22–0:32',visual:'B-roll rooftop + drone bairro.',ta:'ROOFTOP COM VISTA MAR | GESTÃO SEAZONE',monica:'Localização entre as mais desejadas de Florianópolis, rooftop com vista para o mar e gestão completa da Seazone.',extra:'Monica continua em quadro.'},
+    {n:5,tit:'CTA Final',tag:'CTA',tempo:'0:32–0:40',visual:'Tela final + logo.',ta:'A PARTIR DE R$ 335 MIL\nCLIQUE EM SAIBA MAIS',monica:'Se faz sentido, fale com o nosso time.',extra:'Disclaimer no rodapé.'}
+  ];
+
+  // Estrutura 2 para apresentadora: L → Monica+RO → F → CTA
+  if(est==='2') return [
+    ceBaseMonica[0],
+    {...ceBaseMonica[2], n:2, tempo:'0:07–0:17'},
+    {...ceBaseMonica[1], n:3, tempo:'0:17–0:25'},
+    {...ceBaseMonica[3], n:4, tempo:'0:25–0:33'},
+    {...ceBaseMonica[4], n:5, tempo:'0:33–0:40'},
+  ];
+
+  // Estrutura 3: F → Monica+RO → L → CTA
+  if(est==='3') return [
+    {...ceBaseMonica[1], n:1, tempo:'0:00–0:07'},
+    {...ceBaseMonica[2], n:2, tempo:'0:07–0:17'},
+    {...ceBaseMonica[3], n:3, tempo:'0:17–0:27'},
+    {...ceBaseMonica[0], n:4, tempo:'0:27–0:33', ta:'CAMPECHE • FLORIANÓPOLIS\nBAIXA SAZONALIDADE'},
+    {...ceBaseMonica[4], n:5, tempo:'0:33–0:40'},
+  ];
+
+  return ceBaseMonica; // Estrutura 1 padrão
 }
 
 function renderC(c,i) {
