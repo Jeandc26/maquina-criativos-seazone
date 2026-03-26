@@ -1,0 +1,25 @@
+{
+  "name": "maquina-criativos-seazone",
+  "version": "1.0.0",
+  "description": "Máquina autônoma de criação de criativos para a Seazone Investimentos",
+  "main": "tools/gerar-imagem.js",
+  "scripts": {
+    "criativo": "node tools/gerar-criativo.js",
+    "imagem": "node tools/gerar-criativo.js imagem",
+    "video": "node tools/gerar-criativo.js video",
+    "narracao": "node tools/gerar-narracao.js",
+    "tudo": "node tools/gerar-criativo.js --todos && node tools/gerar-narracao.js --todos"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1"
+  },
+  "keywords": [
+    "seazone",
+    "marketing",
+    "ia",
+    "criativos",
+    "hackathon"
+  ],
+  "author": "Marketing Seazone",
+  "license": "UNLICENSED"
+}
