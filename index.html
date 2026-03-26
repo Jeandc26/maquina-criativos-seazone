@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Máquina de Criativos — Seazone</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sz-blue: #0055FF;
+    --sz-navy: #00143D;
+    --sz-coral: #FC6058;
+    --sz-coral-light: #FF8A84;
+    --sz-white: #FFFFFF;
+    --sz-off: #F4F6FB;
+    --sz-gray: #8A96A8;
+    --sz-border: #E2E8F4;
+    --sz-text: #0A1628;
+    --sz-muted: #5A6A82;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 4px 24px rgba(0,20,61,0.08);
+    --shadow-lg: 0 12px 48px rgba(0,20,61,0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--sz-off);
+    color: var(--sz-text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BLOBS DE FUNDO ── */
+  .bg-blobs {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .blob {
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.07;
+  }
+  .blob-1 { width: 600px; height: 600px; background: var(--sz-blue); top: -200px; right: -100px; }
+  .blob-2 { width: 400px; height: 400px; background: var(--sz-coral); bottom: -100px; left: -100px; }
+  .blob-3 { width: 300px; height: 300px; background: var(--sz-blue); bottom: 200px; right: 200px; }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--sz-border);
+    padding: 0 32px; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 18px; color: var(--sz-navy); text-decoration: none;
+  }
+  .logo-icon {
+    width: 32px; height: 32px; background: var(--sz-navy); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-icon svg { width: 18px; height: 18px; }
+  .logo span { color: var(--sz-coral); }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .badge-hackathon {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.04em;
+    padding: 4px 10px; border-radius: 99px;
+    background: var(--sz-navy); color: var(--sz-white);
+  }
+
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    display: flex; gap: 4px; background: var(--sz-white);
+    border: 1px solid var(--sz-border); border-radius: 99px;
+    padding: 4px;
+  }
+  .nav-tab {
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    padding: 6px 16px; border-radius: 99px; border: none;
+    background: transparent; color: var(--sz-muted);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .nav-tab.active {
+    background: var(--sz-navy); color: var(--sz-white);
+  }
+
+  /* ── LAYOUT PRINCIPAL ── */
+  .app { position: relative; z-index: 1; }
+
+  /* ── TELAS ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ═══════════════════════════════════
+     TELA 1 — EMPREENDIMENTOS
+  ═══════════════════════════════════ */
+  .empreendimentos-page { padding: 40px 32px; max-width: 1100px; margin: 0 auto; }
+
+  .page-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 32px;
+  }
+  .page-title { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 700; color: var(--sz-navy); }
+  .page-sub { font-size: 14px; color: var(--sz-muted); margin-top: 4px; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--sz-coral); color: var(--sz-white);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    padding: 10px 20px; border-radius: 99px; border: none;
+    cursor: pointer; transition: all 0.2s; text-decoration: none;
+  }
+  .btn-primary:hover { background: #e54e46; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(252,96,88,0.3); }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--sz-white); color: var(--sz-navy);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    padding: 10px 20px; border-radius: 99px;
+    border: 1.5px solid var(--sz-border);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--sz-navy); transform: translateY(-1px); }
+
+  .emp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+
+  .emp-card {
+    background: var(--sz-white); border-radius: var(--radius);
+    border: 1.5px solid var(--sz-border);
+    overflow: hidden; cursor: pointer;
+    transition: all 0.25s; position: relative;
+  }
+  .emp-card:hover { border-color: var(--sz-blue); box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+  .emp-card-top {
+    height: 120px; background: var(--sz-navy);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .emp-card-top-blob {
+    position: absolute; width: 200px; height: 200px;
+    background: var(--sz-blue); border-radius: 50%;
+    filter: blur(40px); opacity: 0.3; top: -60px; right: -60px;
+  }
+  .emp-card-top-blob2 {
+    position: absolute; width: 120px; height: 120px;
+    background: var(--sz-coral); border-radius: 50%;
+    filter: blur(30px); opacity: 0.25; bottom: -40px; left: -20px;
+  }
+  .emp-card-top-label {
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+    color: rgba(255,255,255,0.5); letter-spacing: 0.1em; text-transform: uppercase;
+    position: relative; z-index: 1;
+  }
+  .emp-card-body { padding: 20px; }
+  .emp-card-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--sz-navy); margin-bottom: 4px; }
+  .emp-card-city { font-size: 13px; color: var(--sz-muted); margin-bottom: 16px; }
+  .emp-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .emp-metric {
+    background: var(--sz-off); border-radius: var(--radius-sm);
+    padding: 10px 12px;
+  }
+  .emp-metric-val { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--sz-blue); }
+  .emp-metric-label { font-size: 11px; color: var(--sz-muted); margin-top: 2px; }
+  .emp-card-footer {
+    padding: 12px 20px; border-top: 1px solid var(--sz-border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .emp-status {
+    font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 99px;
+    background: #E8F5E9; color: #2E7D32;
+  }
+  .emp-arrow { color: var(--sz-blue); font-size: 18px; }
+
+  /* ═══════════════════════════════════
+     TELA 2 — NOVO EMPREENDIMENTO
+  ═══════════════════════════════════ */
+  .novo-page { padding: 40px 32px; max-width: 760px; margin: 0 auto; }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--sz-muted); cursor: pointer;
+    border: none; background: none; margin-bottom: 24px;
+    transition: color 0.2s;
+  }
+  .back-btn:hover { color: var(--sz-navy); }
+
+  .card {
+    background: var(--sz-white); border-radius: var(--radius);
+    border: 1.5px solid var(--sz-border);
+    overflow: hidden; margin-bottom: 20px;
+  }
+  .card-header {
+    padding: 20px 24px; border-bottom: 1px solid var(--sz-border);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .card-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .card-icon-blue { background: #EEF4FF; }
+  .card-icon-coral { background: #FFF0EF; }
+  .card-icon-green { background: #EEFBF3; }
+  .card-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--sz-navy); }
+  .card-sub { font-size: 12px; color: var(--sz-muted); margin-top: 2px; }
+  .card-body { padding: 24px; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label { font-size: 12px; font-weight: 500; color: var(--sz-muted); letter-spacing: 0.04em; }
+  .form-input {
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    padding: 10px 14px; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--sz-border); background: var(--sz-off);
+    color: var(--sz-text); transition: border-color 0.2s; outline: none;
+  }
+  .form-input:focus { border-color: var(--sz-blue); background: var(--sz-white); }
+
+  .upload-area {
+    border: 2px dashed var(--sz-border); border-radius: var(--radius);
+    padding: 40px; text-align: center; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .upload-area:hover { border-color: var(--sz-blue); background: #EEF4FF20; }
+  .upload-icon { font-size: 32px; margin-bottom: 12px; }
+  .upload-label { font-size: 14px; font-weight: 500; color: var(--sz-navy); margin-bottom: 4px; }
+  .upload-sub { font-size: 12px; color: var(--sz-muted); }
+
+  .result-briefing {
+    background: var(--sz-navy); border-radius: var(--radius);
+    padding: 24px; color: var(--sz-white); display: none;
+  }
+  .result-briefing.visible { display: block; }
+  .result-briefing-title {
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+    color: var(--sz-coral); margin-bottom: 16px; letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .result-metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+  .result-metric { background: rgba(255,255,255,0.07); border-radius: 10px; padding: 12px 14px; }
+  .result-metric-val { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--sz-white); }
+  .result-metric-label { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+  .result-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .result-tag {
+    font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 99px;
+    background: rgba(252,96,88,0.2); color: var(--sz-coral-light);
+  }
+  .result-flags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .result-flag {
+    font-size: 11px; padding: 4px 10px; border-radius: 99px;
+    background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .result-flag.active { background: rgba(0,85,255,0.25); color: #80AAFF; }
+
+  /* ═══════════════════════════════════
+     TELA 3 — MÁQUINA
+  ═══════════════════════════════════ */
+  .maquina-layout {
+    display: grid; grid-template-columns: 300px 1fr;
+    height: calc(100vh - 64px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: var(--sz-white); border-right: 1px solid var(--sz-border);
+    overflow-y: auto; display: flex; flex-direction: column;
+  }
+  .sidebar-header {
+    padding: 20px; border-bottom: 1px solid var(--sz-border);
+  }
+  .sidebar-emp-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--sz-navy); }
+  .sidebar-emp-city { font-size: 12px; color: var(--sz-muted); margin-top: 2px; }
+  .sidebar-metrics { padding: 16px 20px; border-bottom: 1px solid var(--sz-border); display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .s-metric { background: var(--sz-off); border-radius: var(--radius-sm); padding: 10px; }
+  .s-metric-val { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--sz-blue); }
+  .s-metric-label { font-size: 10px; color: var(--sz-muted); margin-top: 1px; }
+
+  .sidebar-section { padding: 16px 20px; border-bottom: 1px solid var(--sz-border); }
+  .sidebar-section-title {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--sz-muted); margin-bottom: 10px;
+  }
+
+  .type-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
+  .type-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--sz-border); background: transparent;
+    cursor: pointer; transition: all 0.2s; text-align: left;
+  }
+  .type-btn:hover { border-color: var(--sz-blue); background: #EEF4FF; }
+  .type-btn.active { border-color: var(--sz-blue); background: #EEF4FF; }
+  .type-btn-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; background: var(--sz-off); flex-shrink: 0;
+  }
+  .type-btn.active .type-btn-icon { background: var(--sz-blue); }
+  .type-btn-text { font-size: 12px; font-weight: 500; color: var(--sz-navy); }
+  .type-btn-sub { font-size: 10px; color: var(--sz-muted); }
+
+  .select-field {
+    width: 100%; font-family: 'DM Sans', sans-serif; font-size: 13px;
+    padding: 9px 12px; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--sz-border); background: var(--sz-off);
+    color: var(--sz-text); margin-bottom: 8px; outline: none;
+    transition: border-color 0.2s; cursor: pointer;
+  }
+  .select-field:focus { border-color: var(--sz-blue); }
+
+  .hipotese-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .hip-btn {
+    font-size: 11px; padding: 6px 8px; border-radius: 8px; text-align: center;
+    border: 1.5px solid var(--sz-border); background: transparent;
+    cursor: pointer; transition: all 0.15s; color: var(--sz-muted); font-weight: 500;
+  }
+  .hip-btn:hover { border-color: var(--sz-blue); color: var(--sz-blue); }
+  .hip-btn.active { border-color: var(--sz-blue); background: var(--sz-blue); color: var(--sz-white); }
+
+  .sidebar-footer { padding: 16px 20px; margin-top: auto; }
+  .btn-gerar {
+    width: 100%; padding: 14px; border-radius: 99px;
+    background: var(--sz-coral); color: var(--sz-white);
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+    border: none; cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-gerar:hover { background: #e54e46; box-shadow: 0 4px 20px rgba(252,96,88,0.35); transform: translateY(-1px); }
+  .btn-gerar:active { transform: translateY(0); }
+
+  /* CANVAS */
+  .canvas-area {
+    background: var(--sz-off); overflow-y: auto;
+    display: flex; flex-direction: column;
+  }
+  .canvas-topbar {
+    background: var(--sz-white); border-bottom: 1px solid var(--sz-border);
+    padding: 12px 24px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .variacao-tabs { display: flex; gap: 4px; }
+  .var-tab {
+    font-size: 12px; font-weight: 500; padding: 5px 12px;
+    border-radius: 99px; border: 1.5px solid var(--sz-border);
+    background: transparent; color: var(--sz-muted); cursor: pointer; transition: all 0.15s;
+  }
+  .var-tab.active { background: var(--sz-navy); color: var(--sz-white); border-color: var(--sz-navy); }
+  .canvas-actions { display: flex; gap: 8px; }
+  .canvas-action-btn {
+    font-size: 12px; font-weight: 500; padding: 6px 14px;
+    border-radius: 99px; border: 1.5px solid var(--sz-border);
+    background: var(--sz-white); color: var(--sz-navy); cursor: pointer; transition: all 0.15s;
+  }
+  .canvas-action-btn:hover { border-color: var(--sz-navy); }
+
+  .canvas-content { padding: 24px; flex: 1; }
+
+  /* Empty state */
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    height: 100%; min-height: 400px; text-align: center;
+  }
+  .empty-icon {
+    width: 80px; height: 80px; background: var(--sz-white);
+    border-radius: 20px; border: 1.5px solid var(--sz-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px; margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .empty-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--sz-navy); margin-bottom: 8px; }
+  .empty-sub { font-size: 14px; color: var(--sz-muted); max-width: 360px; line-height: 1.6; }
+
+  /* Loading */
+  .loading-state { display: none; padding: 40px 24px; }
+  .loading-state.visible { display: block; }
+  .loading-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--sz-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px; }
+  .loading-steps { display: flex; flex-direction: column; gap: 10px; }
+  .loading-step {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border-radius: var(--radius-sm);
+    background: var(--sz-white); border: 1.5px solid var(--sz-border);
+    transition: all 0.3s;
+  }
+  .loading-step.done { border-color: #C8E6C9; background: #F1F8F2; }
+  .loading-step.active { border-color: var(--sz-blue); background: #EEF4FF; }
+  .loading-step-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--sz-border); flex-shrink: 0;
+  }
+  .loading-step.done .loading-step-dot { background: #4CAF50; }
+  .loading-step.active .loading-step-dot {
+    background: var(--sz-blue);
+    box-shadow: 0 0 0 3px rgba(0,85,255,0.2);
+    animation: pulse-dot 1s infinite;
+  }
+  @keyframes pulse-dot { 0%,100% { box-shadow: 0 0 0 3px rgba(0,85,255,0.2); } 50% { box-shadow: 0 0 0 6px rgba(0,85,255,0.1); } }
+  .loading-step-text { font-size: 13px; color: var(--sz-muted); }
+  .loading-step.done .loading-step-text { color: #2E7D32; }
+  .loading-step.active .loading-step-text { color: var(--sz-blue); font-weight: 500; }
+
+  /* Resultado */
+  .result-state { display: none; }
+  .result-state.visible { display: block; }
+
+  .result-header {
+    background: var(--sz-white); border-radius: var(--radius);
+    border: 1.5px solid var(--sz-border); padding: 20px 24px;
+    margin-bottom: 16px; display: flex; align-items: center; gap: 16px;
+  }
+  .result-type-badge {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    padding: 4px 12px; border-radius: 99px; text-transform: uppercase;
+  }
+  .badge-estatico { background: #E8F5E9; color: #2E7D32; }
+  .badge-narrado { background: #E3F2FD; color: #1565C0; }
+  .badge-apresentadora { background: #FFF0EF; color: #C62828; }
+  .result-formato-badge {
+    font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 99px;
+    background: var(--sz-off); color: var(--sz-muted); border: 1px solid var(--sz-border);
+  }
+  .result-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--sz-navy); margin-left: auto; }
+
+  .cenas-list { display: flex; flex-direction: column; gap: 12px; }
+  .cena-card {
+    background: var(--sz-white); border-radius: var(--radius);
+    border: 1.5px solid var(--sz-border); overflow: hidden;
+  }
+  .cena-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; background: var(--sz-navy); color: var(--sz-white);
+  }
+  .cena-num {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; flex-shrink: 0;
+  }
+  .cena-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; }
+  .cena-time { font-size: 11px; color: rgba(255,255,255,0.5); margin-left: auto; }
+  .cena-tipo-tag {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+    padding: 3px 8px; border-radius: 99px; text-transform: uppercase;
+    background: var(--sz-coral); color: var(--sz-white);
+  }
+  .cena-body { padding: 16px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .cena-field { }
+  .cena-field-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--sz-muted); margin-bottom: 6px;
+  }
+  .cena-field-content {
+    font-size: 13px; line-height: 1.6; color: var(--sz-text);
+    background: var(--sz-off); border-radius: var(--radius-sm);
+    padding: 10px 12px;
+  }
+  .cena-field-content.text-animado {
+    font-weight: 700; color: var(--sz-blue); font-family: 'Syne', sans-serif;
+    font-size: 12px; letter-spacing: 0.02em;
+  }
+  .cena-field-content.narracao { font-style: italic; color: var(--sz-muted); }
+  .cena-field-content.monica {
+    border-left: 3px solid var(--sz-coral); padding-left: 10px;
+    color: #7B1FA2; font-style: italic;
+  }
+
+  .api-note {
+    background: var(--sz-navy); border-radius: var(--radius);
+    padding: 16px 20px; margin-top: 16px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .api-note-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+  .api-note-title { font-size: 13px; font-weight: 600; color: var(--sz-coral); margin-bottom: 4px; }
+  .api-note-text { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+  .api-note-specs { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .api-spec {
+    font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 99px;
+    background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7);
+  }
+
+  /* RESPONSIVO */
+  @media (max-width: 768px) {
+    .maquina-layout { grid-template-columns: 1fr; }
+    .sidebar { height: auto; }
+    .cena-body { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .emp-grid { grid-template-columns: 1fr; }
+    .result-metric-grid { grid-template-columns: 1fr 1fr; }
+    header { padding: 0 16px; }
+    .nav-tabs { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#" onclick="showScreen('empreendimentos')">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z" fill="white"/>
+        <circle cx="12" cy="12" r="3" fill="#FC6058"/>
+      </svg>
+    </div>
+    sea<span>zone</span>
+  </a>
+
+  <nav class="nav-tabs">
+    <button class="nav-tab active" onclick="showScreen('empreendimentos'); setActiveTab(this)">Empreendimentos</button>
+    <button class="nav-tab" onclick="showScreen('maquina'); setActiveTab(this)">Máquina</button>
+  </nav>
+
+  <div class="header-right">
+    <span class="badge-hackathon">Hackathon AI 2026</span>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- ═══════════════════════════════
+       TELA 1 — EMPREENDIMENTOS
+  ═══════════════════════════════ -->
+  <div class="screen active" id="screen-empreendimentos">
+    <div class="empreendimentos-page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Empreendimentos</div>
+          <div class="page-sub">Selecione um empreendimento para gerar criativos</div>
+        </div>
+        <button class="btn-primary" onclick="showScreen('novo')">
+          + Novo empreendimento
+        </button>
+      </div>
+
+      <div class="emp-grid">
+        <!-- Card demo -->
+        <div class="emp-card" onclick="selecionarEmp('novo-campeche')">
+          <div class="emp-card-top">
+            <div class="emp-card-top-blob"></div>
+            <div class="emp-card-top-blob2"></div>
+            <div class="emp-card-top-label">Novo Campeche SPOT II</div>
+          </div>
+          <div class="emp-card-body">
+            <div class="emp-card-name">Novo Campeche SPOT II</div>
+            <div class="emp-card-city">Campeche · Florianópolis · SC</div>
+            <div class="emp-metrics">
+              <div class="emp-metric">
+                <div class="emp-metric-val">16,40%</div>
+                <div class="emp-metric-label">ROI estimado a.a.</div>
+              </div>
+              <div class="emp-metric">
+                <div class="emp-metric-val">R$ 5.500</div>
+                <div class="emp-metric-label">Rendimento/mês</div>
+              </div>
+              <div class="emp-metric">
+                <div class="emp-metric-val">R$ 335k</div>
+                <div class="emp-metric-label">Ticket mínimo</div>
+              </div>
+              <div class="emp-metric">
+                <div class="emp-metric-val">49</div>
+                <div class="emp-metric-label">Cotas disponíveis</div>
+              </div>
+            </div>
+          </div>
+          <div class="emp-card-footer">
+            <span class="emp-status">● Ativo — demo</span>
+            <span class="emp-arrow">→</span>
+          </div>
+        </div>
+
+        <!-- Card vazio para novos -->
+        <div class="emp-card" style="border-style:dashed; cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:280px; gap:12px;" onclick="showScreen('novo')">
+          <div style="width:48px;height:48px;border-radius:12px;background:var(--sz-off);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--sz-muted);">+</div>
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--sz-muted);">Novo empreendimento</div>
+          <div style="font-size:12px;color:var(--sz-muted);text-align:center;max-width:200px;line-height:1.5;">Cadastre via formulário, arquivo ou link</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════
+       TELA 2 — NOVO EMPREENDIMENTO
+  ═══════════════════════════════ -->
+  <div class="screen" id="screen-novo">
+    <div class="novo-page">
+      <button class="back-btn" onclick="showScreen('empreendimentos')">
+        ← Voltar para empreendimentos
+      </button>
+
+      <div style="margin-bottom:24px;">
+        <div class="page-title">Novo empreendimento</div>
+        <div class="page-sub">A IA lê o briefing e monta o contexto automaticamente</div>
+      </div>
+
+      <!-- Opção 1: Formulário -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon card-icon-blue">📋</div>
+          <div>
+            <div class="card-title">Formulário rápido</div>
+            <div class="card-sub">Preencha os dados principais e a IA monta o briefing</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">NOME DO EMPREENDIMENTO</label>
+              <input class="form-input" id="emp-nome" placeholder="Ex: Trancoso SPOT III" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">CIDADE / ESTADO</label>
+              <input class="form-input" id="emp-cidade" placeholder="Ex: Trancoso, BA" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">ROI ESTIMADO (% a.a.)</label>
+              <input class="form-input" id="emp-roi" placeholder="Ex: 18,5" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">RENDIMENTO MENSAL ESTIMADO</label>
+              <input class="form-input" id="emp-rendimento" placeholder="Ex: R$ 6.200" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">TICKET MÍNIMO</label>
+              <input class="form-input" id="emp-ticket" placeholder="Ex: R$ 280.000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">COTAS DISPONÍVEIS</label>
+              <input class="form-input" id="emp-cotas" placeholder="Ex: 42" />
+            </div>
+            <div class="form-group full">
+              <label class="form-label">PONTOS FORTES DO EMPREENDIMENTO</label>
+              <input class="form-input" id="emp-pontos" placeholder="Ex: Vista para o mar, próximo ao centro histórico, piscina aquecida..." />
+            </div>
+          </div>
+          <div style="margin-top:16px;">
+            <button class="btn-primary" onclick="gerarBriefingForm()">
+              ✦ Gerar briefing com IA
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Opção 2: Upload -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon card-icon-coral">📎</div>
+          <div>
+            <div class="card-title">Upload de arquivo</div>
+            <div class="card-sub">Suba o PDF ou Word do briefing — a IA extrai automaticamente</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="upload-area" onclick="document.getElementById('file-input').click()">
+            <div class="upload-icon">📄</div>
+            <div class="upload-label">Clique para selecionar o arquivo</div>
+            <div class="upload-sub">PDF, Word (.docx) ou texto (.txt) · Máx 10MB</div>
+            <input type="file" id="file-input" style="display:none" accept=".pdf,.docx,.txt" onchange="handleFileUpload(this)" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Opção 3: Link -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon card-icon-green">🔗</div>
+          <div>
+            <div class="card-title">Link / URL</div>
+            <div class="card-sub">Cole a URL da landing page ou Lovable — a IA faz a leitura</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;gap:10px;">
+            <input class="form-input" id="emp-url" placeholder="https://..." style="flex:1" />
+            <button class="btn-primary" onclick="gerarBriefingURL()">Analisar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resultado -->
+      <div class="result-briefing" id="briefing-result">
+        <div class="result-briefing-title">✦ Briefing gerado pela IA</div>
+        <div class="result-metric-grid" id="result-metrics"></div>
+        <div class="result-tags" id="result-tags"></div>
+        <div class="result-flags" id="result-flags"></div>
+        <div style="margin-top:20px;">
+          <button class="btn-primary" onclick="usarBriefing()">
+            Usar esse briefing na máquina →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════
+       TELA 3 — MÁQUINA
+  ═══════════════════════════════ -->
+  <div class="screen" id="screen-maquina">
+    <div class="maquina-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <button class="back-btn" onclick="showScreen('empreendimentos')" style="margin-bottom:8px;">← Empreendimentos</button>
+          <div class="sidebar-emp-name" id="sb-emp-name">Novo Campeche SPOT II</div>
+          <div class="sidebar-emp-city" id="sb-emp-city">Campeche · Florianópolis · SC</div>
+        </div>
+
+        <div class="sidebar-metrics" id="sb-metrics">
+          <div class="s-metric">
+            <div class="s-metric-val">16,40%</div>
+            <div class="s-metric-label">ROI a.a.</div>
+          </div>
+          <div class="s-metric">
+            <div class="s-metric-val">R$ 5.500</div>
+            <div class="s-metric-label">Rendimento/mês</div>
+          </div>
+          <div class="s-metric">
+            <div class="s-metric-val">R$ 335k</div>
+            <div class="s-metric-label">Ticket mínimo</div>
+          </div>
+          <div class="s-metric">
+            <div class="s-metric-val">49</div>
+            <div class="s-metric-label">Cotas</div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">Tipo de criativo</div>
+          <div class="type-grid">
+            <button class="type-btn active" onclick="setTipo('estatico', this)">
+              <div class="type-btn-icon">🖼</div>
+              <div>
+                <div class="type-btn-text">Estático</div>
+                <div class="type-btn-sub">Feed 4:5 · Reels 9:16</div>
+              </div>
+            </button>
+            <button class="type-btn" onclick="setTipo('narrado', this)">
+              <div class="type-btn-icon">🎙</div>
+              <div>
+                <div class="type-btn-text">Vídeo narrado</div>
+                <div class="type-btn-sub">Narração em off</div>
+              </div>
+            </button>
+            <button class="type-btn" onclick="setTipo('apresentadora', this)">
+              <div class="type-btn-icon">🎬</div>
+              <div>
+                <div class="type-btn-text">Com apresentadora</div>
+                <div class="type-btn-sub">Monica · HeyGen</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">Configuração</div>
+          <select class="select-field" id="sel-estrutura">
+            <option value="1">Estrutura 1 — L | F | RO | RE</option>
+            <option value="2">Estrutura 2 — L | RO | RE | F</option>
+            <option value="3">Estrutura 3 — F | RO | RE | L</option>
+          </select>
+          <select class="select-field" id="sel-formato">
+            <option value="feed">Feed — 4:5 · 1080×1350px</option>
+            <option value="reels">Reels/Stories — 9:16 · 1080×1920px</option>
+          </select>
+          <select class="select-field" id="sel-duracao" style="display:none">
+            <option value="30-40s">30–40 segundos</option>
+            <option value="10-20s">10–20 segundos</option>
+          </select>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">Hipóteses A/B</div>
+          <div class="hipotese-grid">
+            <button class="hip-btn active" onclick="toggleHip(this)">RE mensal</button>
+            <button class="hip-btn" onclick="toggleHip(this)">RE anual</button>
+            <button class="hip-btn active" onclick="toggleHip(this)">ROI</button>
+            <button class="hip-btn" onclick="toggleHip(this)">Gancho CDB</button>
+            <button class="hip-btn active" onclick="toggleHip(this)">Com ticket</button>
+            <button class="hip-btn" onclick="toggleHip(this)">Escassez</button>
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          <button class="btn-gerar" onclick="gerarCriativo()">
+            ✦ Gerar criativo
+          </button>
+        </div>
+      </aside>
+
+      <!-- CANVAS -->
+      <main class="canvas-area">
+        <div class="canvas-topbar">
+          <div class="variacao-tabs" id="variacao-tabs">
+            <button class="var-tab active" onclick="setVariacao(1, this)">V1</button>
+            <button class="var-tab" onclick="setVariacao(2, this)">V2</button>
+            <button class="var-tab" onclick="setVariacao(3, this)">V3</button>
+            <button class="var-tab" onclick="setVariacao(4, this)">V4</button>
+            <button class="var-tab" onclick="setVariacao(5, this)">V5</button>
+          </div>
+          <div class="canvas-actions">
+            <button class="canvas-action-btn" onclick="novaVariacao()">↻ Nova variação</button>
+            <button class="canvas-action-btn" onclick="exportarScript()">↓ Exportar script</button>
+          </div>
+        </div>
+
+        <div class="canvas-content">
+          <!-- Empty state -->
+          <div class="empty-state" id="empty-state">
+            <div class="empty-icon">✦</div>
+            <div class="empty-title">Pronto para gerar</div>
+            <div class="empty-sub">Configure o tipo, estrutura e hipóteses na barra lateral, depois clique em "Gerar criativo"</div>
+          </div>
+
+          <!-- Loading -->
+          <div class="loading-state" id="loading-state">
+            <div class="loading-title">Processando</div>
+            <div class="loading-steps" id="loading-steps"></div>
+          </div>
+
+          <!-- Resultado -->
+          <div class="result-state" id="result-state">
+            <div class="result-header">
+              <span class="result-type-badge" id="res-type-badge">Estático</span>
+              <span class="result-formato-badge" id="res-formato-badge">Feed · 4:5 · 1080×1350px</span>
+              <span class="result-title" id="res-title">Estrutura 1 — V1</span>
+            </div>
+            <div class="cenas-list" id="cenas-list"></div>
+            <div class="api-note">
+              <div class="api-note-icon">⚡</div>
+              <div>
+                <div class="api-note-title">Integração fal.ai</div>
+                <div class="api-note-text" id="api-note-text">Quando a chave do fal.ai estiver configurada no .env, a máquina vai gerar a imagem automaticamente usando Flux Pro e salvar em outputs/estatico/4x5/</div>
+                <div class="api-note-specs" id="api-note-specs"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── Estado da aplicação ────────────────────────────────────────────────────
+let tipoAtivo = 'estatico';
+let variacaoAtiva = 1;
+let empAtivo = 'novo-campeche';
+let briefingAtivo = {
+  nome: 'Novo Campeche SPOT II',
+  cidade: 'Campeche · Florianópolis · SC',
+  roi: '16,40%',
+  rendimento: 'R$ 5.500',
+  ticket: 'R$ 335k',
+  cotas: '49',
+  pontosForts: ['Praia mais buscada de FLN', 'Menor ticket vs concorrentes', 'Rooftop com vista mar', 'Gestão Seazone completa'],
+};
+
+// ── Navegação entre telas ──────────────────────────────────────────────────
+function showScreen(nome) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + nome).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach((t, i) => {
+    t.classList.toggle('active', ['empreendimentos','novo','maquina'][i] === nome);
+  });
+}
+
+function setActiveTab(el) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function selecionarEmp(id) {
+  empAtivo = id;
+  showScreen('maquina');
+  document.querySelector('.nav-tab:nth-child(2)').classList.add('active');
+  document.querySelector('.nav-tab:nth-child(1)').classList.remove('active');
+}
+
+// ── Configuração da máquina ────────────────────────────────────────────────
+function setTipo(tipo, btn) {
+  tipoAtivo = tipo;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('sel-duracao').style.display = tipo !== 'estatico' ? 'block' : 'none';
+}
+
+function toggleHip(btn) {
+  btn.classList.toggle('active');
+}
+
+function setVariacao(num, btn) {
+  variacaoAtiva = num;
+  document.querySelectorAll('.var-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── Geração de criativos ───────────────────────────────────────────────────
+const DADOS_CENAS = {
+  estatico: {
+    estrutura1: {
+      v1: { hipotese: 'RE mensal', destaque: '~R$ 5.500 líquidos por mês*', tipo: 'Fachada' },
+      v2: { hipotese: 'RE anual', destaque: 'R$ 66.424 líquidos por ano*', tipo: 'Fachada' },
+      v3: { hipotese: 'ROI', destaque: 'ROI 16,40% a.a. — A praia que mais fatura em FLN*', tipo: 'Fachada' },
+      v4: { hipotese: 'Comparativo', destaque: 'Concorrentes: R$ 584 mil em média. Esse: a partir de R$ 335 mil. ROI superior.*', tipo: 'Fachada' },
+      v5: { hipotese: 'Escassez + RE', destaque: 'Apenas 49 cotas — ~R$ 5.500 líquidos por mês*', tipo: 'Fachada' },
+    }
+  }
+};
+
+function gerarCriativo() {
+  const emptyState = document.getElementById('empty-state');
+  const loadingState = document.getElementById('loading-state');
+  const resultState = document.getElementById('result-state');
+
+  emptyState.style.display = 'none';
+  loadingState.classList.add('visible');
+  resultState.classList.remove('visible');
+
+  const estrutura = document.getElementById('sel-estrutura').value;
+  const formato = document.getElementById('sel-formato').value;
+  const duracao = tipoAtivo !== 'estatico' ? document.getElementById('sel-duracao').value : null;
+
+  const steps = [
+    'Lendo CLAUDE.md — contexto Seazone',
+    `Carregando briefing: ${briefingAtivo.nome}`,
+    `Identificando estrutura ${estrutura} — ${tipoAtivo}`,
+    'Aplicando hipóteses A/B selecionadas',
+    'Gerando script cena a cena',
+    tipoAtivo !== 'estatico' ? 'Preparando prompts fal.ai (Kling/Flux)' : 'Preparando prompt Flux Pro',
+    'Finalizando output'
+  ];
+
+  document.getElementById('loading-steps').innerHTML = steps.map((s, i) =>
+    `<div class="loading-step" id="ls-${i}">
+      <div class="loading-step-dot"></div>
+      <div class="loading-step-text">${s}</div>
+    </div>`
+  ).join('');
+
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i > 0) document.getElementById(`ls-${i-1}`)?.classList.replace('active','done');
+    if (i < steps.length) {
+      document.getElementById(`ls-${i}`)?.classList.add('active');
+      i++;
+    } else {
+      clearInterval(interval);
+      setTimeout(() => {
+        loadingState.classList.remove('visible');
+        mostrarResultado(estrutura, formato, duracao);
+      }, 400);
+    }
+  }, 380);
+}
+
+function mostrarResultado(estrutura, formato, duracao) {
+  const resultState = document.getElementById('result-state');
+  const cenasList = document.getElementById('cenas-list');
+
+  // Badge de tipo
+  const typeBadge = document.getElementById('res-type-badge');
+  typeBadge.textContent = { estatico: 'Estático', narrado: 'Vídeo narrado', apresentadora: 'Com apresentadora' }[tipoAtivo];
+  typeBadge.className = 'result-type-badge ' + { estatico: 'badge-estatico', narrado: 'badge-narrado', apresentadora: 'badge-apresentadora' }[tipoAtivo];
+
+  // Badge de formato
+  const fmtBadge = document.getElementById('res-formato-badge');
+  fmtBadge.textContent = formato === 'feed' ? 'Feed · 4:5 · 1080×1350px' : 'Reels · 9:16 · 1080×1920px';
+
+  document.getElementById('res-title').textContent = `Estrutura ${estrutura} — V${variacaoAtiva}`;
+
+  // Gerar cenas baseadas no tipo e estrutura
+  const cenas = gerarCenas(estrutura, formato, duracao);
+  cenasList.innerHTML = cenas.map((c, idx) => renderCena(c, idx + 1)).join('');
+
+  // Nota da API
+  const modelo = tipoAtivo === 'estatico' ? 'Flux Pro' : 'Kling v1.6 Pro';
+  const extensao = tipoAtivo === 'estatico' ? '.png' : '.mp4';
+  const pasta = `outputs/${tipoAtivo === 'estatico' ? 'estatico' : 'video'}/${formato === 'feed' ? '4x5' : '9x16'}/`;
+  const dims = formato === 'feed' ? '1080×1350px' : '1080×1920px';
+
+  document.getElementById('api-note-text').textContent =
+    `Quando a chave do fal.ai estiver configurada no .env, a máquina vai gerar ${tipoAtivo !== 'estatico' ? 'o vídeo' : 'a imagem'} automaticamente usando ${modelo} e salvar em ${pasta}`;
+
+  document.getElementById('api-note-specs').innerHTML =
+    `<span class="api-spec">${modelo}</span>
+     <span class="api-spec">${dims}</span>
+     <span class="api-spec">${extensao}</span>
+     <span class="api-spec">${pasta}</span>
+     ${tipoAtivo !== 'estatico' ? `<span class="api-spec">${duracao}</span>` : ''}`;
+
+  resultState.classList.add('visible');
+}
+
+function gerarCenas(estrutura, formato, duracao) {
+  const hipAtivas = Array.from(document.querySelectorAll('.hip-btn.active')).map(b => b.textContent);
+  const hipStr = hipAtivas.slice(0,3).join(' · ');
+
+  if (tipoAtivo === 'estatico') {
+    return [
+      {
+        num: 1, titulo: 'Imagem base', tipo: 'Fachada',
+        visual: `Render fachada Novo Campeche SPOT II — moderna, luminosa. Tamanho: ${formato === 'feed' ? '1080×1350px' : '1080×1920px'}`,
+        texto: `${hipAtivas.includes('RE mensal') ? '~R$ 5.500 LÍQUIDOS POR MÊS*' : hipAtivas.includes('ROI') ? 'ROI 16,40% A.A.*' : 'R$ 66.424 LÍQUIDOS POR ANO*'}\nCampeche • Florianópolis • SC`,
+        extra: 'A partir de R$ 335 mil | Gestão completa Seazone | Mesmo padrão Novo Campeche Spot'
+      },
+      {
+        num: 2, titulo: 'Overlay e tipografia', tipo: 'Design',
+        visual: 'Gradiente sutil na parte inferior (40% de escurecimento). Frase principal em Syne ExtraBold, maior elemento da peça.',
+        texto: hipAtivas.includes('Escassez') ? 'APENAS 49 COTAS — ~R$ 5.500/MÊS*' : 'A PARTIR DE R$ 335 MIL',
+        extra: 'Logo Seazone canto superior direito | Disclaimer no rodapé (fonte 12px)'
+      }
+    ];
+  }
+
+  if (tipoAtivo === 'narrado') {
+    const cenas = [];
+    if (estrutura === '1') {
+      cenas.push({ num:1, titulo:'Abertura — Localização', tipo:'L', tempo:'0:00–0:07',
+        visual:`Drone Praia do Novo Campeche. PIN animado do SPOT. ${formato === 'reels' ? '1080×1920' : '1080×1350'}`,
+        texto:'NOVO CAMPECHE • FLORIANÓPOLIS • A PRAIA QUE MAIS FATURAEM FLN',
+        extra:'"Novo Campeche, em Florianópolis. Um dos bairros com maior faturamento bruto de Airbnb em Santa Catarina."' });
+      cenas.push({ num:2, titulo:'Motivo 1 — Produto', tipo:'F', tempo:'0:07–0:15',
+        visual:'Render fachada + áreas comuns. Lettering "Motivo 1" animado.',
+        texto:'MOTIVO 1: O PRODUTO | PROJETO NATIVO PARA SHORT STAY',
+        extra:'"Primeiro motivo: o produto. Desenhado do zero para Airbnb — fachada valorizada, mesmo padrão que já provou a tese."' });
+      cenas.push({ num:3, titulo:'Motivo 2 — Retorno', tipo:'RO+RE', tempo:'0:15–0:23',
+        visual:'Infográfico animado: ROI 16,40% + R$5.500/mês.',
+        texto:`MOTIVO 2: O RETORNO | ROI 16,40% A.A.* | ~R$ 5.500/MÊS*`,
+        extra:'"Segundo motivo: ROI de 16,40% ao ano, acima da Selic. Rendimento estimado de R$ 5.500 por mês."' });
+      cenas.push({ num:4, titulo:'Motivo 3 — Localização', tipo:'L', tempo:'0:23–0:32',
+        visual:'Drone praia + rooftop. Lettering "Motivo 3" animado.',
+        texto:'MOTIVO 3: LOCALIZAÇÃO | ROOFTOP COM VISTA MAR | BAIXA SAZONALIDADE',
+        extra:'"Terceiro motivo: bairro com maior faturamento de Florianópolis, baixa sazonalidade e rooftop com vista para o mar."' });
+      cenas.push({ num:5, titulo:'CTA Final', tipo:'CTA', tempo:'0:32–0:40',
+        visual:'Tela final com logo Seazone + nome do empreendimento.',
+        texto:'A PARTIR DE R$ 335 MIL | CLIQUE EM SAIBA MAIS',
+        extra:'"A partir de R$ 335 mil. Clique em Saiba Mais." | Disclaimer no rodapé' });
+    }
+    return cenas;
+  }
+
+  // Apresentadora
+  const cenas = [];
+  if (estrutura === '1') {
+    cenas.push({ num:1, titulo:'Abertura — Vista aérea praia', tipo:'L', tempo:'0:00–0:07',
+      visual:`Drone Praia Novo Campeche. Água azul intensa. PIN animado. ${formato === 'reels' ? '1080×1920' : '1080×1350'}`,
+      texto:'NOVO CAMPECHE • FLORIANÓPOLIS • A PRAIA MAIS DESEJADA DA ILHA',
+      monica: null,
+      extra:'Monica ainda não aparece. Narração em off.' });
+    cenas.push({ num:2, titulo:'Fachada do empreendimento', tipo:'F', tempo:'0:07–0:14',
+      visual:'Render fachada moderna, luminosa, linhas retas.',
+      texto:'NOVO CAMPECHE SPOT II | PROJETADO PARA SHORT STAY',
+      monica: null,
+      extra:'Narração em off: "Esse é o Novo Campeche SPOT II — projeto desenhado do zero para Airbnb."' });
+    cenas.push({ num:3, titulo:'Monica — Dados financeiros', tipo:'RO+RE', tempo:'0:14–0:22',
+      visual:'Monica em estúdio neutro. Infográfico ROI + RE mensal sobreposto.',
+      texto:`ROI 16,40% A.A.* | ~R$ 5.500/MÊS ESTIMADOS*`,
+      monica: 'Eu sou a Monica, sócia da Seazone. Nosso projeto projeta ROI de 16,40% ao ano — acima da Selic e acima dos concorrentes. Cerca de R$ 5.500 por mês estimados.',
+      extra: 'Tom: autoridade, confiança. Pausa após "ao ano" para dar peso ao dado.' });
+    cenas.push({ num:4, titulo:'Localização + Rooftop', tipo:'L+RO', tempo:'0:22–0:32',
+      visual:'B-roll rooftop com vista mar + drone bairro.',
+      texto:'LOCALIZAÇÃO PREMIUM | ROOFTOP COM VISTA MAR | GESTÃO SEAZONE',
+      monica: 'Localização entre as mais desejadas de Florianópolis, rooftop com vista para o mar e gestão completa da Seazone.',
+      extra: 'Monica continua em quadro. B-roll intercalado.' });
+    cenas.push({ num:5, titulo:'CTA Final', tipo:'CTA', tempo:'0:32–0:40',
+      visual:'Tela final: rooftop + logo Seazone + nome do empreendimento.',
+      texto:'A PARTIR DE R$ 335 MIL | CLIQUE EM SAIBA MAIS',
+      monica: 'Se faz sentido para você, fale com o nosso time e entenda os detalhes.',
+      extra: 'Disclaimer obrigatório no rodapé da tela.' });
+  }
+  return cenas;
+}
+
+function renderCena(c, idx) {
+  const temMonica = c.monica != null;
+  return `
+    <div class="cena-card">
+      <div class="cena-header">
+        <div class="cena-num">${idx}</div>
+        <div class="cena-title">${c.titulo}</div>
+        <span class="cena-tipo-tag">${c.tipo}</span>
+        ${c.tempo ? `<span class="cena-time">${c.tempo}</span>` : ''}
+      </div>
+      <div class="cena-body">
+        <div class="cena-field">
+          <div class="cena-field-label">Visual / Imagem</div>
+          <div class="cena-field-content">${c.visual}</div>
+        </div>
+        <div class="cena-field">
+          <div class="cena-field-label">Texto animado na tela</div>
+          <div class="cena-field-content text-animado">${c.texto}</div>
+        </div>
+        <div class="cena-field">
+          <div class="cena-field-label">${temMonica && c.monica ? 'Fala da Monica' : 'Narração / Instrução'}</div>
+          <div class="cena-field-content ${temMonica && c.monica ? 'monica' : 'narracao'}">${temMonica && c.monica ? c.monica : c.extra}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── Novo empreendimento ────────────────────────────────────────────────────
+async function gerarBriefingForm() {
+  const nome = document.getElementById('emp-nome').value;
+  const cidade = document.getElementById('emp-cidade').value;
+  const roi = document.getElementById('emp-roi').value;
+  const rendimento = document.getElementById('emp-rendimento').value;
+  const ticket = document.getElementById('emp-ticket').value;
+  const cotas = document.getElementById('emp-cotas').value;
+  const pontos = document.getElementById('emp-pontos').value;
+
+  if (!nome || !roi) {
+    alert('Preencha pelo menos o nome e o ROI para continuar.');
+    return;
+  }
+
+  mostrarBriefingGerado(nome, cidade, roi, rendimento, ticket, cotas, pontos);
+}
+
+async function gerarBriefingURL() {
+  const url = document.getElementById('emp-url').value;
+  if (!url) return;
+  mostrarBriefingGerado('Empreendimento via URL', url, '—', '—', '—', '—', 'Extraído da URL: ' + url);
+}
+
+function handleFileUpload(input) {
+  const file = input.files[0];
+  if (file) mostrarBriefingGerado(file.name.replace(/\.[^.]+$/, ''), 'Extraído do arquivo', '—', '—', '—', '—', 'Arquivo: ' + file.name);
+}
+
+function mostrarBriefingGerado(nome, cidade, roi, rendimento, ticket, cotas, pontos) {
+  briefingAtivo = { nome, cidade, roi: roi + (roi !== '—' ? '%' : ''), rendimento, ticket, cotas, pontos };
+
+  document.getElementById('result-metrics').innerHTML = `
+    <div class="result-metric"><div class="result-metric-val">${roi}%</div><div class="result-metric-label">ROI estimado a.a.</div></div>
+    <div class="result-metric"><div class="result-metric-val">${rendimento}</div><div class="result-metric-label">Rendimento/mês</div></div>
+    <div class="result-metric"><div class="result-metric-val">${ticket}</div><div class="result-metric-label">Ticket mínimo</div></div>`;
+
+  document.getElementById('result-tags').innerHTML =
+    ['Estrutura 1', 'Estrutura 2', 'Estrutura 3', 'Feed 4:5', 'Reels 9:16', '15 variações A/B']
+      .map(t => `<span class="result-tag">${t}</span>`).join('');
+
+  const flags = [
+    { label: 'Gancho CDB', active: parseFloat(roi) > 12 },
+    { label: 'Rooftop', active: pontos?.toLowerCase().includes('rooftop') },
+    { label: 'Escassez', active: parseInt(cotas) < 50 },
+    { label: 'Vista mar', active: pontos?.toLowerCase().includes('vista') },
+  ];
+
+  document.getElementById('result-flags').innerHTML = flags
+    .map(f => `<span class="result-flag ${f.active ? 'active' : ''}">${f.active ? '✓' : '○'} ${f.label}</span>`).join('');
+
+  document.getElementById('briefing-result').classList.add('visible');
+}
+
+function usarBriefing() {
+  document.getElementById('sb-emp-name').textContent = briefingAtivo.nome;
+  document.getElementById('sb-emp-city').textContent = briefingAtivo.cidade;
+  showScreen('maquina');
+}
+
+// ── Exportar script ────────────────────────────────────────────────────────
+function exportarScript() {
+  const cenas = document.querySelectorAll('.cena-card');
+  if (!cenas.length) { alert('Gere um criativo primeiro!'); return; }
+
+  let txt = `MÁQUINA DE CRIATIVOS SEAZONE\n`;
+  txt += `Empreendimento: ${briefingAtivo.nome}\n`;
+  txt += `Tipo: ${tipoAtivo} | Estrutura: ${document.getElementById('sel-estrutura').value}\n`;
+  txt += `Formato: ${document.getElementById('sel-formato').value}\n\n`;
+
+  cenas.forEach((c, i) => {
+    txt += `CENA ${i+1}: ${c.querySelector('.cena-title').textContent}\n`;
+    txt += `Visual: ${c.querySelectorAll('.cena-field-content')[0].textContent}\n`;
+    txt += `Texto animado: ${c.querySelectorAll('.cena-field-content')[1].textContent}\n`;
+    txt += `Narração/Monica: ${c.querySelectorAll('.cena-field-content')[2].textContent}\n\n`;
+  });
+
+  txt += '\n*Projeção estimada. Não constitui garantia de rentabilidade.';
+
+  const blob = new Blob([txt], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `script_${briefingAtivo.nome.replace(/\s+/g,'_')}_E${document.getElementById('sel-estrutura').value}_V${variacaoAtiva}.txt`;
+  a.click();
+}
+
+function novaVariacao() {
+  const tabs = document.querySelectorAll('.var-tab');
+  const next = (variacaoAtiva % 5) + 1;
+  tabs.forEach(t => t.classList.remove('active'));
+  tabs[next-1].classList.add('active');
+  variacaoAtiva = next;
+  if (document.getElementById('result-state').classList.contains('visible')) gerarCriativo();
+}
+</script>
+</body>
+</html>
