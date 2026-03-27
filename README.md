@@ -1,4 +1,4 @@
-# Máquina de Criativos Seazone
+ # Máquina de Criativos Seazone
 > Hackathon Marketing AI 2026 — Claude Code + VEO 3 + HeyGen + Canva
 
 Uma máquina autônoma de criação de criativos para campanhas de marketing da Seazone Investimentos. Recebe um briefing de empreendimento e gera scripts, prompts e assets prontos para campanha — com mínima intervenção humana.
