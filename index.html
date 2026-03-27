@@ -7,364 +7,609 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#0A0F1E;--bg2:#111827;--bg3:#1A2235;--border:rgba(255,255,255,0.08);
-  --blue:#4F8EF7;--blue-light:#7AABFF;--coral:#FC6058;--coral-light:#FF8A84;
-  --navy:#00143D;--white:#FFFFFF;--text:#E8EDF5;--muted:#6B7A99;--muted2:#3D4A66;
-  --green:#34D399;--radius:16px;--radius-sm:10px;
+  --bg: #0A0F1E;
+  --bg2: #111827;
+  --bg3: #1A2235;
+  --border: rgba(255,255,255,0.08);
+  --border-active: rgba(252,96,88,0.5);
+  --blue: #4F8EF7;
+  --blue-light: #7AABFF;
+  --coral: #FC6058;
+  --coral-light: #FF8A84;
+  --navy: #00143D;
+  --white: #FFFFFF;
+  --text: #E8EDF5;
+  --muted: #6B7A99;
+  --muted2: #3D4A66;
+  --green: #34D399;
+  --radius: 16px;
+  --radius-sm: 10px;
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
-.blobs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
-.blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.12;}
-.b1{width:700px;height:700px;background:#4F8EF7;top:-300px;right:-200px;}
-.b2{width:500px;height:500px;background:#FC6058;bottom:-200px;left:-150px;}
-header{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;}
-.logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--white);text-decoration:none;cursor:pointer;}
-.logo-icon{width:30px;height:30px;background:var(--coral);border-radius:8px;display:flex;align-items:center;justify-content:center;}
-.logo-icon svg{width:16px;height:16px;}
-.logo-sub{font-size:12px;font-weight:400;color:var(--muted);margin-left:4px;}
-.motor-badge{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--green);background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);padding:4px 12px;border-radius:99px;}
-.motor-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-.nav-tabs{display:flex;gap:2px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:99px;padding:3px;}
-.nav-tab{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500;padding:5px 16px;border-radius:99px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s;}
-.nav-tab.active{background:var(--coral);color:var(--white);}
-.screen{display:none;position:relative;z-index:1;}
-.screen.active{display:block;}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-/* EMPREENDIMENTOS */
-.emp-page{padding:36px 28px;max-width:1000px;margin:0 auto;}
-.page-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;}
-.page-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--white);}
-.page-sub{font-size:13px;color:var(--muted);margin-top:3px;}
-.btn-coral{display:inline-flex;align-items:center;gap:7px;background:var(--coral);color:var(--white);font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;padding:9px 20px;border-radius:99px;border:none;cursor:pointer;transition:all 0.2s;}
-.btn-coral:hover{background:#e54e46;transform:translateY(-1px);box-shadow:0 6px 20px rgba(252,96,88,0.35);}
-.emp-list{display:flex;flex-direction:column;gap:10px;}
-.emp-row{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all 0.2s;}
-.emp-row:hover{border-color:var(--blue);background:var(--bg3);transform:translateX(4px);}
-.emp-icon{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#0055FF22,#FC605822);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.emp-info{flex:1;}
-.emp-name{font-size:15px;font-weight:600;color:var(--white);}
-.emp-city{font-size:12px;color:var(--muted);margin-top:2px;}
-.emp-chips{display:flex;gap:8px;margin-left:auto;}
-.emp-chip{font-size:12px;font-weight:600;padding:4px 12px;border-radius:99px;background:rgba(79,142,247,0.12);color:var(--blue-light);border:1px solid rgba(79,142,247,0.2);}
-.emp-chip-coral{background:rgba(252,96,88,0.12);color:var(--coral-light);border:1px solid rgba(252,96,88,0.2);}
-.emp-arrow{color:var(--muted);font-size:18px;margin-left:8px;}
-.emp-add{background:transparent;border:1.5px dashed var(--muted2);border-radius:var(--radius);padding:20px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:all 0.2s;color:var(--muted);font-size:14px;font-weight:500;margin-top:10px;}
-.emp-add:hover{border-color:var(--blue);color:var(--blue-light);}
+/* ── BLOBS ── */
+.blobs { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.12; }
+.b1 { width: 700px; height: 700px; background: #4F8EF7; top: -300px; right: -200px; }
+.b2 { width: 500px; height: 500px; background: #FC6058; bottom: -200px; left: -150px; }
+.b3 { width: 300px; height: 300px; background: #4F8EF7; bottom: 100px; right: 300px; opacity: 0.06; }
 
-/* NOVO EMP */
-.novo-page{padding:32px 28px;max-width:700px;margin:0 auto;}
-.back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;border:none;background:none;margin-bottom:20px;transition:color 0.2s;}
-.back:hover{color:var(--text);}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;}
-.card-hdr{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
-.card-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:rgba(79,142,247,0.1);}
-.card-title{font-size:14px;font-weight:600;color:var(--white);}
-.card-sub{font-size:12px;color:var(--muted);margin-top:1px;}
-.card-body{padding:20px;}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.fg{display:flex;flex-direction:column;gap:6px;}
-.fg.full{grid-column:1/-1;}
-.flabel{font-size:11px;font-weight:600;letter-spacing:0.06em;color:var(--muted);text-transform:uppercase;}
-.finput{font-family:'Space Grotesk',sans-serif;font-size:13px;padding:9px 13px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg3);color:var(--text);outline:none;transition:border-color 0.2s;}
-.finput:focus{border-color:var(--blue);}
-.finput::placeholder{color:var(--muted2);}
-.upload-zone{border:1.5px dashed var(--muted2);border-radius:var(--radius);padding:36px;text-align:center;cursor:pointer;transition:all 0.2s;}
-.upload-zone:hover{border-color:var(--blue);background:rgba(79,142,247,0.04);}
-.result-card{background:linear-gradient(135deg,#0D1A3A,#1A0D2E);border:1px solid rgba(79,142,247,0.25);border-radius:var(--radius);padding:20px;display:none;margin-top:0;}
-.result-card.show{display:block;}
-.result-label{font-size:11px;font-weight:700;letter-spacing:0.1em;color:var(--coral);text-transform:uppercase;margin-bottom:14px;}
-.r-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
-.r-metric{background:rgba(255,255,255,0.05);border-radius:10px;padding:11px 13px;}
-.r-metric-val{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--white);}
-.r-metric-lbl{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;}
-.r-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
-.r-tag{font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(252,96,88,0.15);color:var(--coral-light);}
-.r-flags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
-.r-flag{font-size:11px;padding:3px 9px;border-radius:99px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);}
-.r-flag.on{background:rgba(79,142,247,0.2);color:var(--blue-light);}
+/* ── HEADER ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,15,30,0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px; height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700;
+  color: var(--white); text-decoration: none; cursor: pointer;
+}
+.logo-icon {
+  width: 30px; height: 30px; background: var(--coral);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+}
+.logo-icon svg { width: 16px; height: 16px; }
+.logo-sub { font-size: 12px; font-weight: 400; color: var(--muted); margin-left: 4px; }
+.motor-badge {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--green);
+  background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.2);
+  padding: 4px 12px; border-radius: 99px;
+}
+.motor-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-/* MÁQUINA */
-.maquina-wrap{display:grid;grid-template-columns:280px 1fr;height:calc(100vh - 60px);}
-.sb{background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;}
-.sb-hdr{padding:16px;border-bottom:1px solid var(--border);}
-.sb-emp{font-size:14px;font-weight:600;color:var(--white);}
-.sb-city{font-size:11px;color:var(--muted);margin-top:2px;}
-.sb-metrics{padding:14px 16px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:7px;}
-.sbm{background:var(--bg3);border-radius:var(--radius-sm);padding:9px 10px;}
-.sbm-val{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--blue-light);}
-.sbm-lbl{font-size:10px;color:var(--muted);margin-top:1px;}
-.sb-sec{padding:14px 16px;border-bottom:1px solid var(--border);}
-.sb-sec-title{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:9px;}
-.type-grid{display:flex;flex-direction:column;gap:5px;}
-.type-btn{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;cursor:pointer;transition:all 0.18s;text-align:left;}
-.type-btn:hover{border-color:rgba(79,142,247,0.4);background:rgba(79,142,247,0.05);}
-.type-btn.active{border-color:var(--coral);background:rgba(252,96,88,0.08);}
-.type-ico{width:26px;height:26px;border-radius:7px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
-.type-btn.active .type-ico{background:var(--coral);}
-.type-name{font-size:12px;font-weight:600;color:var(--text);}
-.type-sub{font-size:10px;color:var(--muted);}
-.sel{width:100%;font-family:'Space Grotesk',sans-serif;font-size:12px;padding:8px 11px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg3);color:var(--text);margin-bottom:7px;outline:none;cursor:pointer;transition:border-color 0.2s;}
-.sel:focus{border-color:var(--blue);}
-.hip-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
-.hip{font-size:11px;font-weight:500;padding:5px 7px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;text-align:center;}
-.hip:hover{border-color:rgba(79,142,247,0.4);color:var(--blue-light);}
-.hip.on{border-color:var(--blue);background:rgba(79,142,247,0.12);color:var(--blue-light);}
-.sb-footer{padding:14px 16px;margin-top:auto;}
-.btn-gerar{width:100%;padding:13px;border-radius:99px;background:var(--coral);color:var(--white);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
-.btn-gerar:hover{background:#e54e46;box-shadow:0 4px 20px rgba(252,96,88,0.4);transform:translateY(-1px);}
-.btn-gerar:disabled{background:var(--muted2);cursor:not-allowed;transform:none;box-shadow:none;}
+/* ── TABS NAV ── */
+.nav-tabs {
+  display: flex; gap: 2px; background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border); border-radius: 99px; padding: 3px;
+}
+.nav-tab {
+  font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 5px 16px; border-radius: 99px; border: none;
+  background: transparent; color: var(--muted); cursor: pointer; transition: all 0.2s;
+}
+.nav-tab.active { background: var(--coral); color: var(--white); }
+
+/* ── SCREENS ── */
+.screen { display: none; position: relative; z-index: 1; }
+.screen.active { display: block; }
+
+/* ════════════════════════════
+   TELA 1 — EMPREENDIMENTOS
+════════════════════════════ */
+.emp-page { padding: 36px 28px; max-width: 1000px; margin: 0 auto; }
+.page-hdr { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 28px; }
+.page-title { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: var(--white); }
+.page-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+
+.btn-coral {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--coral); color: var(--white);
+  font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600;
+  padding: 9px 20px; border-radius: 99px; border: none;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-coral:hover { background: #e54e46; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(252,96,88,0.35); }
+
+.emp-list { display: flex; flex-direction: column; gap: 10px; }
+.emp-row {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 20px;
+  display: flex; align-items: center; gap: 16px;
+  cursor: pointer; transition: all 0.2s;
+}
+.emp-row:hover { border-color: var(--blue); background: var(--bg3); transform: translateX(4px); }
+.emp-icon {
+  width: 42px; height: 42px; border-radius: 10px;
+  background: linear-gradient(135deg, #0055FF22, #FC605822);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;
+}
+.emp-info { flex: 1; }
+.emp-name { font-size: 15px; font-weight: 600; color: var(--white); }
+.emp-city { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.emp-chips { display: flex; gap: 8px; margin-left: auto; }
+.emp-chip {
+  font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 99px;
+  background: rgba(79,142,247,0.12); color: var(--blue-light);
+  border: 1px solid rgba(79,142,247,0.2);
+}
+.emp-chip-coral {
+  background: rgba(252,96,88,0.12); color: var(--coral-light);
+  border: 1px solid rgba(252,96,88,0.2);
+}
+.emp-arrow { color: var(--muted); font-size: 18px; margin-left: 8px; }
+
+.emp-add {
+  background: transparent; border: 1.5px dashed var(--muted2);
+  border-radius: var(--radius); padding: 20px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  cursor: pointer; transition: all 0.2s; color: var(--muted);
+  font-size: 14px; font-weight: 500;
+}
+.emp-add:hover { border-color: var(--blue); color: var(--blue-light); }
+
+/* ════════════════════════════
+   TELA 2 — NOVO EMP
+════════════════════════════ */
+.novo-page { padding: 32px 28px; max-width: 700px; margin: 0 auto; }
+.back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); cursor: pointer; border: none; background: none; margin-bottom: 20px; transition: color 0.2s; }
+.back:hover { color: var(--text); }
+
+.card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; margin-bottom: 16px;
+}
+.card-hdr {
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+}
+.card-ico {
+  width: 34px; height: 34px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;
+  background: rgba(79,142,247,0.1);
+}
+.card-title { font-size: 14px; font-weight: 600; color: var(--white); }
+.card-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+.card-body { padding: 20px; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fg { display: flex; flex-direction: column; gap: 6px; }
+.fg.full { grid-column: 1/-1; }
+.flabel { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase; }
+.finput {
+  font-family: 'Space Grotesk', sans-serif; font-size: 13px;
+  padding: 9px 13px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--bg3);
+  color: var(--text); outline: none; transition: border-color 0.2s;
+}
+.finput:focus { border-color: var(--blue); }
+.finput::placeholder { color: var(--muted2); }
+
+.upload-zone {
+  border: 1.5px dashed var(--muted2); border-radius: var(--radius);
+  padding: 36px; text-align: center; cursor: pointer; transition: all 0.2s;
+}
+.upload-zone:hover { border-color: var(--blue); background: rgba(79,142,247,0.04); }
+.upload-emoji { font-size: 28px; margin-bottom: 10px; }
+.upload-label { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.upload-sub { font-size: 12px; color: var(--muted); }
+
+.result-card {
+  background: linear-gradient(135deg, #0D1A3A, #1A0D2E);
+  border: 1px solid rgba(79,142,247,0.25);
+  border-radius: var(--radius); padding: 20px; display: none; margin-top: 0;
+}
+.result-card.show { display: block; }
+.result-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--coral); text-transform: uppercase; margin-bottom: 14px; }
+.r-metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 14px; }
+.r-metric { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 11px 13px; }
+.r-metric-val { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--white); }
+.r-metric-lbl { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+.r-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.r-tag { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: rgba(252,96,88,0.15); color: var(--coral-light); }
+.r-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.r-flag { font-size: 11px; padding: 3px 9px; border-radius: 99px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
+.r-flag.on { background: rgba(79,142,247,0.2); color: var(--blue-light); }
+
+/* ════════════════════════════
+   TELA 3 — MÁQUINA
+════════════════════════════ */
+.maquina-wrap {
+  display: grid; grid-template-columns: 280px 1fr;
+  height: calc(100vh - 60px);
+}
+
+/* SIDEBAR */
+.sb {
+  background: var(--bg2); border-right: 1px solid var(--border);
+  overflow-y: auto; display: flex; flex-direction: column;
+}
+.sb-hdr { padding: 16px; border-bottom: 1px solid var(--border); }
+.sb-emp { font-size: 14px; font-weight: 600; color: var(--white); }
+.sb-city { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.sb-metrics { padding: 14px 16px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.sbm { background: var(--bg3); border-radius: var(--radius-sm); padding: 9px 10px; }
+.sbm-val { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--blue-light); }
+.sbm-lbl { font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+.sb-sec { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.sb-sec-title { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted2); margin-bottom: 9px; }
+
+.type-grid { display: flex; flex-direction: column; gap: 5px; }
+.type-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 11px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: transparent;
+  cursor: pointer; transition: all 0.18s; text-align: left;
+}
+.type-btn:hover { border-color: rgba(79,142,247,0.4); background: rgba(79,142,247,0.05); }
+.type-btn.active { border-color: var(--coral); background: rgba(252,96,88,0.08); }
+.type-ico {
+  width: 26px; height: 26px; border-radius: 7px; background: var(--bg3);
+  display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0;
+}
+.type-btn.active .type-ico { background: var(--coral); }
+.type-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.type-sub { font-size: 10px; color: var(--muted); }
+
+.sel {
+  width: 100%; font-family: 'Space Grotesk', sans-serif; font-size: 12px;
+  padding: 8px 11px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--bg3);
+  color: var(--text); margin-bottom: 7px; outline: none; cursor: pointer;
+  transition: border-color 0.2s;
+}
+.sel:focus { border-color: var(--blue); }
+
+.hip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.hip {
+  font-size: 11px; font-weight: 500; padding: 5px 7px; border-radius: 7px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; transition: all 0.15s; text-align: center;
+}
+.hip:hover { border-color: rgba(79,142,247,0.4); color: var(--blue-light); }
+.hip.on { border-color: var(--blue); background: rgba(79,142,247,0.12); color: var(--blue-light); }
+
+.sb-footer { padding: 14px 16px; margin-top: auto; }
+.btn-gerar {
+  width: 100%; padding: 13px; border-radius: 99px;
+  background: var(--coral); color: var(--white);
+  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+  border: none; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-gerar:hover { background: #e54e46; box-shadow: 0 4px 20px rgba(252,96,88,0.4); transform: translateY(-1px); }
 
 /* CANVAS */
-.canvas{background:var(--bg);overflow-y:auto;display:flex;flex-direction:column;}
-.canvas-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.var-tabs{display:flex;gap:4px;}
-.vtab{font-size:12px;font-weight:600;padding:4px 12px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;}
-.vtab.active{background:var(--navy);border-color:var(--blue-light);color:var(--white);}
-.c-actions{display:flex;gap:7px;}
-.c-btn{font-size:12px;font-weight:500;padding:5px 13px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;}
-.c-btn:hover{border-color:var(--text);color:var(--text);}
-.canvas-inner{padding:20px;flex:1;}
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:400px;text-align:center;}
-.empty-icon{width:72px;height:72px;border-radius:18px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:18px;}
-.empty-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:8px;}
-.empty-sub{font-size:13px;color:var(--muted);max-width:320px;line-height:1.6;}
-.loading{display:none;}
-.loading.show{display:block;}
-.load-title{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
-.load-steps{display:flex;flex-direction:column;gap:8px;}
-.lstep{display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:var(--radius-sm);background:var(--bg2);border:1px solid var(--border);transition:all 0.3s;}
-.lstep.done{border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.04);}
-.lstep.active{border-color:rgba(79,142,247,0.4);background:rgba(79,142,247,0.06);}
-.ldot{width:7px;height:7px;border-radius:50%;background:var(--muted2);flex-shrink:0;}
-.lstep.done .ldot{background:var(--green);}
-.lstep.active .ldot{background:var(--blue);animation:pd 1s infinite;}
-@keyframes pd{0%,100%{box-shadow:0 0 0 3px rgba(79,142,247,0.2)}50%{box-shadow:0 0 0 6px rgba(79,142,247,0.08)}}
-.ltext{font-size:12px;color:var(--muted);}
-.lstep.done .ltext{color:var(--green);}
-.lstep.active .ltext{color:var(--blue-light);font-weight:500;}
-.result{display:none;}
-.result.show{display:block;}
-.res-hdr{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.res-badge{font-size:11px;font-weight:700;letter-spacing:0.05em;padding:3px 10px;border-radius:99px;text-transform:uppercase;}
-.rb-est{background:rgba(52,211,153,0.12);color:var(--green);}
-.rb-nar{background:rgba(79,142,247,0.12);color:var(--blue-light);}
-.rb-apr{background:rgba(252,96,88,0.12);color:var(--coral-light);}
-.res-fmt{font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,0.06);color:var(--muted);border:1px solid var(--border);}
-.res-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-left:auto;}
-.cenas{display:flex;flex-direction:column;gap:10px;}
-.cena{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.cena-hdr{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border-bottom:1px solid var(--border);}
-.cena-n{width:26px;height:26px;border-radius:7px;background:rgba(79,142,247,0.15);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--blue-light);flex-shrink:0;}
-.cena-ttl{font-size:13px;font-weight:600;color:var(--white);}
-.cena-tag{font-size:10px;font-weight:700;letter-spacing:0.05em;padding:2px 8px;border-radius:99px;text-transform:uppercase;background:var(--coral);color:var(--white);}
-.cena-time{font-size:11px;color:var(--muted);margin-left:auto;}
-.cena-body{padding:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-.cf-label{font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;}
-.cf-val{font-size:12px;line-height:1.65;color:var(--text);background:var(--bg3);border-radius:var(--radius-sm);padding:9px 11px;}
-.cf-val.ta{font-weight:700;color:var(--blue-light);font-size:11px;}
-.cf-val.monica{border-left:3px solid var(--coral);color:#D4AAFF;font-style:italic;}
-.cf-val.narracao{font-style:italic;color:var(--muted);}
+.canvas { background: var(--bg); overflow-y: auto; display: flex; flex-direction: column; }
+.canvas-bar {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.var-tabs { display: flex; gap: 4px; }
+.vtab {
+  font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 99px;
+  border: 1px solid var(--border); background: transparent; color: var(--muted);
+  cursor: pointer; transition: all 0.15s;
+}
+.vtab.active { background: var(--navy); border-color: var(--blue-light); color: var(--white); }
+.c-actions { display: flex; gap: 7px; }
+.c-btn {
+  font-size: 12px; font-weight: 500; padding: 5px 13px; border-radius: 99px;
+  border: 1px solid var(--border); background: transparent; color: var(--muted);
+  cursor: pointer; transition: all 0.15s;
+}
+.c-btn:hover { border-color: var(--text); color: var(--text); }
 
-/* GERAÇÃO REAL */
-.gen-area{margin-top:16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;}
-.gen-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.gen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
-.gen-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;position:relative;}
-.gen-card img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;}
-.gen-card video{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;}
-.gen-card-label{padding:8px 10px;font-size:11px;color:var(--muted);font-weight:500;}
-.gen-placeholder{width:100%;aspect-ratio:4/5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--bg3);}
-.gen-spinner{width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
-.gen-placeholder-label{font-size:11px;color:var(--muted);}
-.gen-error{font-size:11px;color:#F87171;padding:8px 10px;}
-.btn-gerar-assets{width:100%;padding:11px;border-radius:99px;background:linear-gradient(135deg,#0055FF,#4F8EF7);color:var(--white);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;}
-.btn-gerar-assets:hover{opacity:0.9;transform:translateY(-1px);}
-.btn-gerar-assets:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.canvas-inner { padding: 20px; flex: 1; }
 
-/* REFERÊNCIAS VISUAIS */
-.ref-area{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;}
-.ref-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px;display:flex;align-items:center;}
-.ref-sub{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5;}
-.ref-upload-row{display:flex;align-items:flex-start;gap:12px;}
-.ref-dropzone{border:1.5px dashed var(--muted2);border-radius:var(--radius-sm);padding:16px 20px;text-align:center;cursor:pointer;transition:all 0.2s;min-width:140px;flex-shrink:0;}
-.ref-dropzone:hover{border-color:var(--blue);background:rgba(79,142,247,0.04);}
-.ref-drop-label{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px;}
-.ref-drop-sub{font-size:11px;color:var(--muted);}
-.ref-previews{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
-.ref-analise{background:var(--bg3);border-radius:var(--radius-sm);padding:14px;margin-top:14px;border:1px solid rgba(79,142,247,0.15);}
-.ref-analise-title{font-size:11px;font-weight:700;color:var(--coral);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;}
-.fal-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;background:rgba(79,142,247,0.15);color:var(--blue-light);border:1px solid rgba(79,142,247,0.2);}
+/* Empty */
+.empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; min-height: 400px; text-align: center;
+}
+.empty-icon {
+  width: 72px; height: 72px; border-radius: 18px;
+  background: var(--bg2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; font-size: 32px;
+  margin-bottom: 18px;
+}
+.empty-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+.empty-sub { font-size: 13px; color: var(--muted); max-width: 320px; line-height: 1.6; }
 
-/* TELA 4 — WORKSHOP DE BRIEFING */
-.workshop-layout{display:grid;grid-template-columns:1fr 420px;height:calc(100vh - 60px);gap:0;}
-.workshop-left{overflow-y:auto;padding:24px;background:var(--bg);}
-.workshop-right{background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;}
-.wk-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:4px;}
-.wk-sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
-.formato-sec{margin-bottom:24px;}
-.formato-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);}
-.formato-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-.fi-est{background:rgba(52,211,153,0.12);}
-.fi-nar{background:rgba(79,142,247,0.12);}
-.fi-apr{background:rgba(252,96,88,0.12);}
-.formato-nome{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);}
-.formato-desc{font-size:12px;color:var(--muted);margin-top:1px;}
-.estrut-tabs{display:flex;gap:4px;margin-bottom:12px;}
-.etab{font-size:11px;font-weight:600;padding:4px 12px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;}
-.etab.active{background:var(--navy);border-color:var(--blue-light);color:var(--white);}
-.var-cards{display:flex;flex-direction:column;gap:8px;}
-.var-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;transition:border-color 0.2s;}
-.var-card:hover{border-color:rgba(79,142,247,0.3);}
-.var-card.selected{border-color:var(--coral);}
-.var-card-hdr{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg3);cursor:pointer;}
-.var-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:rgba(79,142,247,0.15);color:var(--blue-light);}
-.var-hip{font-size:11px;color:var(--muted);margin-left:auto;}
-.var-card-body{padding:12px 14px;display:none;}
-.var-card.open .var-card-body{display:block;}
-.var-cena{margin-bottom:8px;padding:8px 10px;background:var(--bg3);border-radius:8px;}
-.var-cena-ttl{font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px;}
-.var-cena-fields{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-.vcf-label{font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted2);margin-bottom:3px;}
-.vcf-val{font-size:11px;color:var(--text);line-height:1.5;}
-.vcf-val.ta{color:var(--blue-light);font-weight:600;font-size:10px;}
-.vcf-val.monica{color:#D4AAFF;font-style:italic;font-size:11px;}
-/* CHAT */
-.chat-hdr{padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
-.chat-hdr-title{font-size:13px;font-weight:700;color:var(--white);}
-.chat-hdr-sub{font-size:11px;color:var(--muted);margin-top:2px;}
-.chat-msgs{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
-.chat-msg{display:flex;gap:8px;align-items:flex-start;}
-.chat-msg.user{flex-direction:row-reverse;}
-.chat-bubble{font-size:12px;line-height:1.6;padding:9px 12px;border-radius:12px;max-width:280px;}
-.chat-msg.ai .chat-bubble{background:var(--bg3);color:var(--text);border-radius:4px 12px 12px 12px;}
-.chat-msg.user .chat-bubble{background:var(--coral);color:var(--white);border-radius:12px 4px 12px 12px;}
-.chat-avatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:2px;}
-.chat-avatar.ai{background:var(--navy);color:var(--blue-light);}
-.chat-avatar.user{background:var(--coral);color:var(--white);}
-.chat-input-area{padding:12px 16px;border-top:1px solid var(--border);flex-shrink:0;}
-.chat-input-row{display:flex;gap:8px;}
-.chat-finput{flex:1;font-family:'Space Grotesk',sans-serif;font-size:13px;padding:8px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg3);color:var(--text);outline:none;resize:none;}
-.chat-finput:focus{border-color:var(--blue);}
-.chat-send{width:36px;height:36px;border-radius:var(--radius-sm);background:var(--coral);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;}
-.chat-send:hover{background:#e54e46;}
-.chat-send svg{width:16px;height:16px;}
-.chat-footer{margin-top:10px;}
-.btn-aprovar{width:100%;padding:11px;border-radius:99px;background:var(--green);color:var(--navy);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:7px;}
-.btn-aprovar:hover{opacity:0.9;transform:translateY(-1px);}
-.wk-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;height:300px;gap:16px;}
-.wk-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--coral);border-radius:50%;animation:spin 0.8s linear infinite;}
-.wk-loading-text{font-size:13px;color:var(--muted);}
-.wk-loading-steps{font-size:11px;color:var(--muted2);text-align:center;line-height:1.8;}
+/* Loading */
+.loading { display: none; }
+.loading.show { display: block; }
+.load-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.load-steps { display: flex; flex-direction: column; gap: 8px; }
+.lstep {
+  display: flex; align-items: center; gap: 11px;
+  padding: 11px 14px; border-radius: var(--radius-sm);
+  background: var(--bg2); border: 1px solid var(--border); transition: all 0.3s;
+}
+.lstep.done { border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.04); }
+.lstep.active { border-color: rgba(79,142,247,0.4); background: rgba(79,142,247,0.06); }
+.ldot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted2); flex-shrink: 0; }
+.lstep.done .ldot { background: var(--green); }
+.lstep.active .ldot { background: var(--blue); animation: pd 1s infinite; }
+@keyframes pd { 0%,100%{box-shadow:0 0 0 3px rgba(79,142,247,0.2)} 50%{box-shadow:0 0 0 6px rgba(79,142,247,0.08)} }
+.ltext { font-size: 12px; color: var(--muted); }
+.lstep.done .ltext { color: var(--green); }
+.lstep.active .ltext { color: var(--blue-light); font-weight: 500; }
+
+/* Result */
+.result { display: none; }
+.result.show { display: block; }
+
+.res-hdr {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px 20px; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.res-badge {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+  padding: 3px 10px; border-radius: 99px; text-transform: uppercase;
+}
+.rb-est { background: rgba(52,211,153,0.12); color: var(--green); }
+.rb-nar { background: rgba(79,142,247,0.12); color: var(--blue-light); }
+.rb-apr { background: rgba(252,96,88,0.12); color: var(--coral-light); }
+.res-fmt {
+  font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 99px;
+  background: rgba(255,255,255,0.06); color: var(--muted);
+  border: 1px solid var(--border);
+}
+.res-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--white); margin-left: auto; }
+
+.cenas { display: flex; flex-direction: column; gap: 10px; }
+.cena {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+}
+.cena-hdr {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; background: var(--bg3); border-bottom: 1px solid var(--border);
+}
+.cena-n {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: rgba(79,142,247,0.15); display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; color: var(--blue-light); flex-shrink: 0;
+}
+.cena-ttl { font-size: 13px; font-weight: 600; color: var(--white); }
+.cena-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+  padding: 2px 8px; border-radius: 99px; text-transform: uppercase;
+  background: var(--coral); color: var(--white);
+}
+.cena-time { font-size: 11px; color: var(--muted); margin-left: auto; }
+.cena-body { padding: 14px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.cf-label { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted2); margin-bottom: 6px; }
+.cf-val {
+  font-size: 12px; line-height: 1.65; color: var(--text);
+  background: var(--bg3); border-radius: var(--radius-sm); padding: 9px 11px;
+}
+.cf-val.ta { font-weight: 700; color: var(--blue-light); font-size: 11px; letter-spacing: 0.02em; }
+.cf-val.monica { border-left: 3px solid var(--coral); color: #D4AAFF; font-style: italic; }
+.cf-val.narracao { font-style: italic; color: var(--muted); }
+
+.api-note {
+  background: linear-gradient(135deg, #0D1A3A, #0A0F20);
+  border: 1px solid rgba(79,142,247,0.2);
+  border-radius: var(--radius); padding: 14px 18px; margin-top: 14px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.api-ico { font-size: 17px; flex-shrink: 0; margin-top: 2px; }
+.api-title { font-size: 12px; font-weight: 700; color: var(--coral-light); margin-bottom: 4px; }
+.api-text { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+.api-specs { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.api-spec { font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 99px; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.55); }
+
+/* RESPONSIVE */
+@media(max-width:768px) {
+  .maquina-wrap { grid-template-columns: 1fr; }
+  .cena-body { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  header { padding: 0 16px; }
+  .logo-sub,.motor-badge { display:none; }
+}
 </style>
 </head>
 <body>
-<div class="blobs"><div class="blob b1"></div><div class="blob b2"></div></div>
+
+<div class="blobs">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+</div>
 
 <header>
   <div class="logo" onclick="goScreen('empreendimentos')">
     <div class="logo-icon">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3L21 9.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1V9.5z" fill="white"/><circle cx="12" cy="12" r="2.5" fill="#FC6058"/></svg>
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M3 9.5L12 3L21 9.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1V9.5z" fill="white"/>
+        <circle cx="12" cy="12" r="2.5" fill="#FC6058"/>
+      </svg>
     </div>
     seazone <span class="logo-sub">· Máquina de Criativos</span>
   </div>
+
   <nav class="nav-tabs">
     <button class="nav-tab active" id="tab-emp" onclick="goScreen('empreendimentos')">Empreendimentos</button>
     <button class="nav-tab" id="tab-maq" onclick="goScreen('maquina')">Máquina</button>
   </nav>
-  <div class="motor-badge"><div class="motor-dot"></div>motor ativo</div>
+
+  <div class="motor-badge">
+    <div class="motor-dot"></div>
+    motor ativo
+  </div>
 </header>
 
 <div id="app">
 
-<!-- TELA 1 -->
+<!-- ════════════════════════════
+     TELA 1 — EMPREENDIMENTOS
+════════════════════════════ -->
 <div class="screen active" id="screen-empreendimentos">
   <div class="emp-page">
     <div class="page-hdr">
-      <div><div class="page-title">Empreendimentos</div><div class="page-sub">Selecione para gerar criativos</div></div>
+      <div>
+        <div class="page-title">Empreendimentos</div>
+        <div class="page-sub" id="emp-count">1 empreendimento cadastrado</div>
+      </div>
       <button class="btn-coral" onclick="goScreen('novo')">+ Novo empreendimento</button>
     </div>
-    <div class="emp-list">
-      <div class="emp-row" onclick="selectEmp()">
+
+    <div class="emp-list" id="emp-list">
+      <div class="emp-row" onclick="selectEmp('novo-campeche')">
         <div class="emp-icon">🏖</div>
-        <div class="emp-info"><div class="emp-name">Novo Campeche SPOT II</div><div class="emp-city">Campeche · Florianópolis — SC</div></div>
-        <div class="emp-chips"><span class="emp-chip">16,40% a.a.</span><span class="emp-chip emp-chip-coral">R$ 5.500/mês</span></div>
+        <div class="emp-info">
+          <div class="emp-name">Novo Campeche SPOT II</div>
+          <div class="emp-city">Campeche · Florianópolis — SC</div>
+        </div>
+        <div class="emp-chips">
+          <span class="emp-chip">16,40% a.a.</span>
+          <span class="emp-chip emp-chip-coral">R$ 5.500/mês</span>
+        </div>
         <span class="emp-arrow">›</span>
       </div>
     </div>
-    <div class="emp-add" onclick="goScreen('novo')"><span style="font-size:18px">+</span> Cadastrar novo empreendimento</div>
+
+    <div class="emp-add" style="margin-top:10px;" onclick="goScreen('novo')">
+      <span style="font-size:18px;">+</span>
+      Cadastrar novo empreendimento
+    </div>
   </div>
 </div>
 
-<!-- TELA 2 -->
+<!-- ════════════════════════════
+     TELA 2 — NOVO EMP
+════════════════════════════ -->
 <div class="screen" id="screen-novo">
   <div class="novo-page">
     <button class="back" onclick="goScreen('empreendimentos')">← Voltar</button>
-    <div style="margin-bottom:22px"><div class="page-title">Novo empreendimento</div><div class="page-sub">A IA lê o briefing e monta o contexto automaticamente</div></div>
+    <div style="margin-bottom:22px;">
+      <div class="page-title">Novo empreendimento</div>
+      <div class="page-sub">A IA lê o briefing e monta o contexto automaticamente</div>
+    </div>
+
+    <!-- Formulário -->
     <div class="card">
-      <div class="card-hdr"><div class="card-ico">📋</div><div><div class="card-title">Formulário rápido</div><div class="card-sub">Preencha os dados e a IA monta o briefing</div></div></div>
+      <div class="card-hdr">
+        <div class="card-ico">📋</div>
+        <div>
+          <div class="card-title">Formulário rápido</div>
+          <div class="card-sub">Preencha os dados e a IA monta o briefing completo</div>
+        </div>
+      </div>
       <div class="card-body">
         <div class="form-grid">
           <div class="fg"><label class="flabel">Nome</label><input class="finput" id="f-nome" placeholder="Ex: Trancoso SPOT III"/></div>
           <div class="fg"><label class="flabel">Cidade / Estado</label><input class="finput" id="f-cidade" placeholder="Ex: Trancoso, BA"/></div>
           <div class="fg"><label class="flabel">ROI estimado (% a.a.)</label><input class="finput" id="f-roi" placeholder="Ex: 18,5"/></div>
-          <div class="fg"><label class="flabel">Rendimento mensal</label><input class="finput" id="f-rend" placeholder="Ex: R$ 6.200"/></div>
+          <div class="fg"><label class="flabel">Rendimento mensal estimado</label><input class="finput" id="f-rend" placeholder="Ex: R$ 6.200"/></div>
           <div class="fg"><label class="flabel">Ticket mínimo</label><input class="finput" id="f-ticket" placeholder="Ex: R$ 280.000"/></div>
           <div class="fg"><label class="flabel">Cotas disponíveis</label><input class="finput" id="f-cotas" placeholder="Ex: 42"/></div>
-          <div class="fg full"><label class="flabel">Pontos fortes</label><input class="finput" id="f-pontos" placeholder="Ex: Vista para o mar, piscina aquecida..."/></div>
+          <div class="fg full"><label class="flabel">Pontos fortes</label><input class="finput" id="f-pontos" placeholder="Ex: Vista para o mar, piscina aquecida, próximo ao centro histórico..."/></div>
         </div>
-        <div style="margin-top:14px"><button class="btn-coral" onclick="gerarForm()">✦ Gerar briefing com IA</button></div>
+        <div style="margin-top:14px;"><button class="btn-coral" onclick="gerarForm()">✦ Gerar briefing com IA</button></div>
       </div>
     </div>
+
+    <!-- Upload -->
     <div class="card">
-      <div class="card-hdr"><div class="card-ico" style="background:rgba(252,96,88,0.1)">📎</div><div><div class="card-title">Upload de arquivo</div><div class="card-sub">PDF, Word ou TXT</div></div></div>
-      <div class="card-body"><div class="upload-zone" onclick="document.getElementById('f-file').click()"><div style="font-size:28px;margin-bottom:10px">📄</div><div style="font-size:14px;font-weight:500;color:var(--text)">Clique para selecionar</div><div style="font-size:12px;color:var(--muted)">PDF, .docx, .txt · Máx 10MB</div><input type="file" id="f-file" style="display:none" accept=".pdf,.docx,.txt" onchange="handleFile(this)"/></div></div>
+      <div class="card-hdr">
+        <div class="card-ico" style="background:rgba(252,96,88,0.1)">📎</div>
+        <div>
+          <div class="card-title">Upload de arquivo</div>
+          <div class="card-sub">PDF, Word ou TXT — a IA extrai as informações</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="upload-zone" onclick="document.getElementById('f-file').click()">
+          <div class="upload-emoji">📄</div>
+          <div class="upload-label">Clique para selecionar</div>
+          <div class="upload-sub">PDF, .docx, .txt · Máx 10MB</div>
+          <input type="file" id="f-file" style="display:none" accept=".pdf,.docx,.txt" onchange="handleFile(this)"/>
+        </div>
+      </div>
     </div>
+
+    <!-- Link -->
     <div class="card">
-      <div class="card-hdr"><div class="card-ico" style="background:rgba(52,211,153,0.1)">🔗</div><div><div class="card-title">Link / URL</div><div class="card-sub">Cole a URL do Lovable ou landing page</div></div></div>
-      <div class="card-body"><div style="display:flex;gap:10px"><input class="finput" id="f-url" placeholder="https://..." style="flex:1"/><button class="btn-coral" onclick="gerarURL()">Analisar</button></div></div>
+      <div class="card-hdr">
+        <div class="card-ico" style="background:rgba(52,211,153,0.1)">🔗</div>
+        <div>
+          <div class="card-title">Link / URL</div>
+          <div class="card-sub">Cole a URL do Lovable ou landing page</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;gap:10px;">
+          <input class="finput" id="f-url" placeholder="https://..." style="flex:1"/>
+          <button class="btn-coral" onclick="gerarURL()">Analisar</button>
+        </div>
+      </div>
     </div>
+
+    <!-- Resultado -->
     <div class="result-card" id="r-card">
       <div class="result-label">✦ Briefing gerado pela IA</div>
       <div class="r-metrics" id="r-metrics"></div>
       <div class="r-tags" id="r-tags"></div>
       <div class="r-flags" id="r-flags"></div>
-      <button class="btn-coral" onclick="usarBriefing()" style="margin-top:16px">Usar esse briefing na máquina →</button>
+      <button class="btn-coral" onclick="usarBriefing()" style="margin-top:16px;">Usar esse briefing na máquina →</button>
     </div>
   </div>
 </div>
 
-<!-- TELA 3 — MÁQUINA -->
+<!-- ════════════════════════════
+     TELA 3 — MÁQUINA
+════════════════════════════ -->
 <div class="screen" id="screen-maquina">
   <div class="maquina-wrap">
+
+    <!-- SIDEBAR -->
     <aside class="sb">
       <div class="sb-hdr">
-        <button class="back" onclick="goScreen('empreendimentos')" style="margin-bottom:6px">← Empreendimentos</button>
+        <button class="back" onclick="goScreen('empreendimentos')" style="margin-bottom:6px;">← Empreendimentos</button>
         <div class="sb-emp" id="sb-nome">Novo Campeche SPOT II</div>
         <div class="sb-city" id="sb-city">Campeche · Florianópolis — SC</div>
       </div>
+
       <div class="sb-metrics">
         <div class="sbm"><div class="sbm-val">16,40%</div><div class="sbm-lbl">ROI a.a.</div></div>
         <div class="sbm"><div class="sbm-val">R$ 5.500</div><div class="sbm-lbl">Rend./mês</div></div>
         <div class="sbm"><div class="sbm-val">R$ 335k</div><div class="sbm-lbl">Ticket mín.</div></div>
         <div class="sbm"><div class="sbm-val">49</div><div class="sbm-lbl">Cotas</div></div>
       </div>
+
       <div class="sb-sec">
         <div class="sb-sec-title">Tipo de criativo</div>
         <div class="type-grid">
-          <button class="type-btn active" onclick="setTipo('estatico',this)"><div class="type-ico">🖼</div><div><div class="type-name">Estático</div><div class="type-sub">Feed 4:5 · Reels 9:16</div></div></button>
-          <button class="type-btn" onclick="setTipo('narrado',this)"><div class="type-ico">🎙</div><div><div class="type-name">Vídeo narrado</div><div class="type-sub">Narração em off</div></div></button>
-          <button class="type-btn" onclick="setTipo('apresentadora',this)"><div class="type-ico">🎬</div><div><div class="type-name">Com apresentadora</div><div class="type-sub">Monica · HeyGen</div></div></button>
+          <button class="type-btn active" onclick="setTipo('estatico',this)">
+            <div class="type-ico">🖼</div>
+            <div><div class="type-name">Estático</div><div class="type-sub">Feed 4:5 · Reels 9:16</div></div>
+          </button>
+          <button class="type-btn" onclick="setTipo('narrado',this)">
+            <div class="type-ico">🎙</div>
+            <div><div class="type-name">Vídeo narrado</div><div class="type-sub">Narração em off</div></div>
+          </button>
+          <button class="type-btn" onclick="setTipo('apresentadora',this)">
+            <div class="type-ico">🎬</div>
+            <div><div class="type-name">Com apresentadora</div><div class="type-sub">Monica · HeyGen</div></div>
+          </button>
         </div>
       </div>
+
       <div class="sb-sec">
         <div class="sb-sec-title">Configuração</div>
-        <select class="sel" id="sel-est" onchange="onConfigChange()"><option value="1">Estrutura 1 — L | F | RO | RE</option><option value="2">Estrutura 2 — L | RO | RE | F</option><option value="3">Estrutura 3 — F | RO | RE | L</option></select>
-        <select class="sel" id="sel-fmt" onchange="onConfigChange()"><option value="feed">Feed — 4:5 · 1080×1350px</option><option value="reels">Reels/Stories — 9:16 · 1080×1920px</option></select>
-        <select class="sel" id="sel-dur" style="display:none" onchange="onConfigChange()"><option value="30-40s">30–40 segundos</option><option value="10-20s">10–20 segundos</option></select>
+        <select class="sel" id="sel-est">
+          <option value="1">Estrutura 1 — L | F | RO | RE</option>
+          <option value="2">Estrutura 2 — L | RO | RE | F</option>
+          <option value="3">Estrutura 3 — F | RO | RE | L</option>
+        </select>
+        <select class="sel" id="sel-fmt">
+          <option value="feed">Feed — 4:5 · 1080×1350px</option>
+          <option value="reels">Reels/Stories — 9:16 · 1080×1920px</option>
+        </select>
+        <select class="sel" id="sel-dur" style="display:none">
+          <option value="30-40s">30–40 segundos</option>
+          <option value="10-20s">10–20 segundos</option>
+        </select>
       </div>
+
       <div class="sb-sec">
         <div class="sb-sec-title">Hipóteses A/B</div>
         <div class="hip-grid">
@@ -376,21 +621,33 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.85);backdrop
           <button class="hip" onclick="toggleH(this)">Escassez</button>
         </div>
       </div>
+
       <div class="sb-footer">
-        <button class="btn-gerar" id="btn-gerar-script" onclick="gerar()">✦ Gerar script</button>
+        <button class="btn-gerar" onclick="gerar()">✦ Gerar criativo</button>
       </div>
     </aside>
 
+    <!-- CANVAS -->
     <main class="canvas">
       <div class="canvas-bar">
-        <div class="var-tabs"><button class="vtab active" onclick="setVar(1,this)">V1</button><button class="vtab" onclick="setVar(2,this)">V2</button><button class="vtab" onclick="setVar(3,this)">V3</button><button class="vtab" onclick="setVar(4,this)">V4</button><button class="vtab" onclick="setVar(5,this)">V5</button></div>
-        <div class="c-actions"><button class="c-btn" onclick="mostrarPainelCompliance()">✓ Compliance</button><button class="c-btn" onclick="novaVar()">↻ Nova variação</button><button class="c-btn" onclick="exportar()">↓ Exportar script</button></div>
+        <div class="var-tabs" id="vtabs">
+          <button class="vtab active" onclick="setVar(1,this)">V1</button>
+          <button class="vtab" onclick="setVar(2,this)">V2</button>
+          <button class="vtab" onclick="setVar(3,this)">V3</button>
+          <button class="vtab" onclick="setVar(4,this)">V4</button>
+          <button class="vtab" onclick="setVar(5,this)">V5</button>
+        </div>
+        <div class="c-actions">
+          <button class="c-btn" onclick="novaVar()">↻ Nova variação</button>
+          <button class="c-btn" onclick="exportar()">↓ Exportar script</button>
+        </div>
       </div>
+
       <div class="canvas-inner">
         <div class="empty" id="st-empty">
           <div class="empty-icon">✦</div>
           <div class="empty-title">Pronto para gerar</div>
-          <div class="empty-sub">Configure o tipo, estrutura e hipóteses e clique em "Gerar script"</div>
+          <div class="empty-sub">Configure o tipo, estrutura e hipóteses na barra lateral e clique em "Gerar criativo"</div>
         </div>
         <div class="loading" id="st-load">
           <div class="load-title">Processando</div>
@@ -403,812 +660,197 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.85);backdrop
             <span class="res-title" id="rb-title">Estrutura 1 — V1</span>
           </div>
           <div class="cenas" id="cenas-out"></div>
-
-          <!-- REFERÊNCIAS VISUAIS -->
-          <div class="ref-area" id="ref-area">
-            <div class="ref-title"><span>📎 Referências visuais</span><span class="fal-badge" style="margin-left:8px">opcional — melhora o resultado</span></div>
-            <div class="ref-sub">Suba fotos reais do empreendimento. A IA analisa e extrai os elementos visuais para enriquecer a geração.</div>
-            <div class="ref-upload-row">
-              <div class="ref-dropzone" onclick="document.getElementById('ref-input').click()">
-                <div style="font-size:24px;margin-bottom:8px">🖼</div>
-                <div class="ref-drop-label">Clique para adicionar fotos</div>
-                <div class="ref-drop-sub">JPG, PNG · até 5 imagens</div>
-                <input type="file" id="ref-input" multiple accept="image/*" style="display:none" onchange="handleRefImages(this)"/>
-              </div>
-              <div class="ref-previews" id="ref-previews"></div>
+          <div class="api-note">
+            <div class="api-ico">⚡</div>
+            <div>
+              <div class="api-title">Integração fal.ai</div>
+              <div class="api-text" id="api-txt">Quando a chave do fal.ai estiver no .env, a máquina vai gerar o asset automaticamente usando Flux Pro.</div>
+              <div class="api-specs" id="api-specs"></div>
             </div>
-            <div class="ref-analise" id="ref-analise" style="display:none">
-              <div class="ref-analise-title">✦ Análise da IA</div>
-              <div class="ref-analise-text" id="ref-analise-text"></div>
-            </div>
-          </div>
-
-          <!-- ÁREA DE GERAÇÃO REAL COM FAL.AI -->
-          <div class="gen-area">
-            <div class="gen-title">⚡ Gerar assets com fal.ai<span class="fal-badge" style="margin-left:8px">Flux Pro · Kling v1.6</span></div>
-            <div class="gen-grid" id="gen-grid"></div>
-            <button class="btn-gerar-assets" id="btn-assets" onclick="gerarAssets()">✦ Gerar imagens e vídeos agora</button>
           </div>
         </div>
       </div>
     </main>
   </div>
-
-<!-- TELA 4 — WORKSHOP DE BRIEFING -->
-<div class="screen" id="screen-workshop">
-  <div class="workshop-layout">
-    <!-- ESQUERDA: Scripts gerados -->
-    <div class="workshop-left">
-      <button class="back" onclick="goScreen('novo')" style="margin-bottom:16px">← Voltar</button>
-      <div class="wk-title" id="wk-emp-nome">Novo Campeche SPOT II</div>
-      <div class="wk-sub">Revise os scripts gerados. Use o chat ao lado para solicitar ajustes antes de aprovar.</div>
-
-      <!-- Loading state -->
-      <div class="wk-loading" id="wk-loading">
-        <div class="wk-spinner"></div>
-        <div class="wk-loading-text">Gerando scripts completos...</div>
-        <div class="wk-loading-steps" id="wk-loading-steps"></div>
-      </div>
-
-      <!-- Scripts gerados -->
-      <div id="wk-scripts" style="display:none">
-        <!-- Estático -->
-        <div class="formato-sec">
-          <div class="formato-hdr">
-            <div class="formato-icon fi-est">🖼</div>
-            <div><div class="formato-nome">Estático</div><div class="formato-desc">Feed 4:5 (1080×1350px) · Reels 9:16 (1080×1920px)</div></div>
-          </div>
-          <div class="estrut-tabs" id="et-est">
-            <button class="etab active" onclick="setEstrutura('est',1,this)">Estrutura 1</button>
-            <button class="etab" onclick="setEstrutura('est',2,this)">Estrutura 2</button>
-            <button class="etab" onclick="setEstrutura('est',3,this)">Estrutura 3</button>
-          </div>
-          <div class="var-cards" id="vc-est"></div>
-        </div>
-
-        <!-- Narrado -->
-        <div class="formato-sec">
-          <div class="formato-hdr">
-            <div class="formato-icon fi-nar">🎙</div>
-            <div><div class="formato-nome">Vídeo narrado</div><div class="formato-desc">Narração em off · B-roll VEO 3 / Kling</div></div>
-          </div>
-          <div class="estrut-tabs" id="et-nar">
-            <button class="etab active" onclick="setEstrutura('nar',1,this)">Estrutura 1</button>
-            <button class="etab" onclick="setEstrutura('nar',2,this)">Estrutura 2</button>
-            <button class="etab" onclick="setEstrutura('nar',3,this)">Estrutura 3</button>
-          </div>
-          <div class="var-cards" id="vc-nar"></div>
-        </div>
-
-        <!-- Apresentadora -->
-        <div class="formato-sec">
-          <div class="formato-hdr">
-            <div class="formato-icon fi-apr">🎬</div>
-            <div><div class="formato-nome">Com apresentadora</div><div class="formato-desc">Monica · HeyGen · B-roll intercalado</div></div>
-          </div>
-          <div class="estrut-tabs" id="et-apr">
-            <button class="etab active" onclick="setEstrutura('apr',1,this)">Estrutura 1</button>
-            <button class="etab" onclick="setEstrutura('apr',2,this)">Estrutura 2</button>
-            <button class="etab" onclick="setEstrutura('apr',3,this)">Estrutura 3</button>
-          </div>
-          <div class="var-cards" id="vc-apr"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DIREITA: Chat de ajustes -->
-    <div class="workshop-right">
-      <div class="chat-hdr">
-        <div class="chat-hdr-title">✦ Ajuste com IA</div>
-        <div class="chat-hdr-sub">Peça alterações nos scripts antes de aprovar</div>
-      </div>
-      <div class="chat-msgs" id="chat-msgs">
-        <div class="chat-msg ai">
-          <div class="chat-avatar ai">✦</div>
-          <div class="chat-bubble">Scripts gerados! Revise as estruturas e variações ao lado. Me peça qualquer ajuste — posso mudar o tom, trocar o gancho, ajustar os dados financeiros ou reorganizar as cenas.</div>
-        </div>
-      </div>
-      <div class="chat-input-area">
-        <div class="chat-input-row">
-          <textarea class="chat-finput" id="chat-input" placeholder="Ex: Deixa o tom mais direto na V1..." rows="2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();enviarChat();}"></textarea>
-          <button class="chat-send" onclick="enviarChat()">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
-        <div class="chat-footer">
-          <button class="btn-aprovar" onclick="aprovarEIrParaMaquina()">✓ Aprovar e ir para a máquina</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-</div>
-</div>
+
+</div><!-- /app -->
 
 <script>
-// ── Configuração fal.ai ──────────────────────────────────────────────────
-const FAL_KEY = '6243d572-28a2-4c4e-a66c-8ade8f171076:ede1d8c14eb4d0f40dab687c8d36e586';
-
-
-// ── Referências visuais ───────────────────────────────────────────────────
-let refImages = [];
-let promptEnriquecido = '';
-
-async function handleRefImages(input) {
-  const files = Array.from(input.files).slice(0, 5);
-  if (!files.length) return;
-  const previews = document.getElementById('ref-previews');
-  previews.innerHTML = '';
-  refImages = [];
-  for (const file of files) {
-    const b64full = await fileToBase64(file);
-    refImages.push({ base64: b64full.split(',')[1], mediaType: file.type });
-    const d = document.createElement('div');
-    d.innerHTML = '<img src="' + b64full + '" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.1)"/>';
-    previews.appendChild(d);
-  }
-  await analisarRefs();
-}
-
-function fileToBase64(file) {
-  return new Promise(r => { const fr = new FileReader(); fr.onload = e => r(e.target.result); fr.readAsDataURL(file); });
-}
-
-async function analisarRefs() {
-  const analiseDiv = document.getElementById('ref-analise');
-  const analiseText = document.getElementById('ref-analise-text');
-  analiseDiv.style.display = 'block';
-  analiseText.innerHTML = '<span style="color:var(--muted)">⏳ Analisando imagens com IA...</span>';
-  try {
-    const content = [
-      ...refImages.map(img => ({ type:'image', source:{ type:'base64', media_type:img.mediaType, data:img.base64 }})),
-      { type:'text', text:'Você é especialista em marketing imobiliário da Seazone Investimentos. Analise essas imagens de referência do empreendimento e extraia: 1. ELEMENTOS: cores dominantes, materiais, estilo arquitetônico. 2. DESTAQUES: o que mais chama atenção (vista, piscina, acabamento, paisagismo). 3. PROMPT_EXTRA: descrição em inglês (máx 80 palavras) dos elementos visuais para enriquecer prompts de geração de imagem com IA. Responda APENAS em JSON com as chaves: elementos, destaques, prompt_extra' }
-    ];
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{ role:'user', content }] })
-    });
-    const data = await res.json();
-    const text = data.content?.[0]?.text || '';
-    const jm = text.match(/\{[\s\S]*\}/);
-    if (jm) {
-      const p = JSON.parse(jm[0]);
-      promptEnriquecido = p.prompt_extra || '';
-      analiseText.innerHTML =
-        '<div style="margin-bottom:10px"><div style="font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Elementos visuais</div><div style="font-size:13px;color:var(--text)">' + (p.elementos||'—') + '</div></div>' +
-        '<div style="margin-bottom:10px"><div style="font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Destaques</div><div style="font-size:13px;color:var(--text)">' + (p.destaques||'—') + '</div></div>' +
-        '<div><div style="font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Enriquecimento do prompt</div><div style="font-size:12px;color:var(--blue-light);font-style:italic;background:var(--bg);padding:8px 10px;border-radius:8px">' + promptEnriquecido + '</div></div>' +
-        '<div style="margin-top:10px;font-size:11px;color:var(--green)">✓ Prompts enriquecidos — a geração vai refletir as características reais do empreendimento</div>';
-    } else {
-      promptEnriquecido = '';
-      analiseText.innerHTML = '<span style="color:var(--muted)">Análise concluída.</span>';
-    }
-  } catch(err) {
-    analiseText.innerHTML = '<span style="color:#F87171">Erro: ' + err.message + '</span>';
-  }
-}
-
-const CONTEXTO = 'Professional marketing photography for Seazone Investimentos, premium real estate investment Brazil. Photorealistic, cinematic, high-end campaign quality. Bright natural light, no dark filters, no text in image, no people in architectural shots, modern aspirational aesthetic.';
-
-// Prompts por tipo
-const PROMPTS_IMAGEM = {
-  'fachada': { prompt: CONTEXTO + ' Modern luxury apartment building facade in Florianópolis Brazil. Contemporary architecture, clean lines, floor-to-ceiling glass, natural wood, white concrete. Tropical landscaping. Bright midday sunlight, blue sky. No people. Ultra-realistic 4K.', modelo: 'fal-ai/flux-pro' },
-  'aerea': { prompt: CONTEXTO + ' Aerial drone photography Novo Campeche Beach Florianópolis Brazil. Crystal clear turquoise water, white sand, green vegetation. 45 degree angle, wide shot. Perfect sunny day. No people. Cinematic 4K.', modelo: 'fal-ai/flux-pro' },
-  'rooftop': { prompt: CONTEXTO + ' Luxury rooftop terrace panoramic ocean view Florianópolis Brazil. Glass railings, contemporary design. Golden hour light. No people. Ultra-realistic 4K.', modelo: 'fal-ai/flux-pro' },
-};
-
-const PROMPTS_VIDEO = {
-  'broll-praia': { prompt: 'Cinematic aerial drone shot slowly approaching Novo Campeche Beach Florianópolis Brazil. Crystal clear turquoise water, white sand beach, gentle waves. Bright sunny day. Smooth camera movement. No people. Photorealistic 4K.', modelo: 'fal-ai/kling-video/v1.6/pro/text-to-video' },
-  'broll-fachada': { prompt: 'Cinematic reveal shot modern luxury apartment building facade Florianópolis Brazil. Camera slowly pulls back. Contemporary architecture glass and wood. Bright daylight blue sky. No people. Ultra-realistic 4K.', modelo: 'fal-ai/kling-video/v1.6/pro/text-to-video' },
-  'broll-rooftop': { prompt: 'Slow cinematic panning luxury rooftop terrace overlooking turquoise ocean Florianópolis Brazil. Glass railings, contemporary. Camera pans from terrace to reveal ocean. Golden hour. No people. 4K.', modelo: 'fal-ai/kling-video/v1.6/pro/text-to-video' },
-};
-
-// ── Estado ───────────────────────────────────────────────────────────────
+// ── Estado ─────────────────────────────────────────────────────────────────
 let tipo = 'estatico', varN = 1;
 let briefing = { nome:'Novo Campeche SPOT II', city:'Campeche · Florianópolis — SC', roi:'16,40%', rend:'R$ 5.500', ticket:'R$ 335k', cotas:'49' };
 
-// ── Navegação ────────────────────────────────────────────────────────────
+// ── Navegação ───────────────────────────────────────────────────────────────
 function goScreen(id) {
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-'+id).classList.add('active');
-  document.getElementById('tab-emp')?.classList.toggle('active', id==='empreendimentos');
-  document.getElementById('tab-maq')?.classList.toggle('active', id==='maquina');
+  ['emp','maq'].forEach((t,i) => document.getElementById('tab-'+t)?.classList.toggle('active', i===['empreendimentos','maquina'].indexOf(id)));
 }
-function selectEmp() { goScreen('maquina'); document.getElementById('tab-maq').classList.add('active'); document.getElementById('tab-emp').classList.remove('active'); }
-function setTipo(t,btn) {
-  tipo=t;
-  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+function selectEmp(id) { goScreen('maquina'); document.getElementById('tab-maq')?.classList.add('active'); document.getElementById('tab-emp')?.classList.remove('active'); }
+
+// ── Tipo ────────────────────────────────────────────────────────────────────
+function setTipo(t, btn) {
+  tipo = t;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('sel-dur').style.display=t!=='estatico'?'block':'none';
+  document.getElementById('sel-dur').style.display = t !== 'estatico' ? 'block' : 'none';
 }
-function toggleH(btn){btn.classList.toggle('on');}
+function toggleH(btn) { btn.classList.toggle('on'); }
+function setVar(n, btn) { varN=n; document.querySelectorAll('.vtab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); }
 
-function setVar(n,btn) {
-  varN=n;
-  document.querySelectorAll('.vtab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  if(document.getElementById('st-result').classList.contains('show')) {
-    atualizarConteudo(document.getElementById('sel-est').value, document.getElementById('sel-fmt').value, tipo!=='estatico'?document.getElementById('sel-dur').value:null);
-  }
-}
-
-function onConfigChange() {
-  if(document.getElementById('st-result').classList.contains('show')) {
-    atualizarConteudo(document.getElementById('sel-est').value, document.getElementById('sel-fmt').value, tipo!=='estatico'?document.getElementById('sel-dur').value:null);
-  }
-}
-
-function atualizarConteudo(est,fmt,dur) {
-  document.getElementById('rb-fmt').textContent=fmt==='feed'?'Feed · 4:5 · 1080×1350px':'Reels · 9:16 · 1080×1920px';
-  document.getElementById('rb-title').textContent=`Estrutura ${est} — V${varN}`;
-  const tb=document.getElementById('rb-type');
-  tb.textContent={estatico:'Estático',narrado:'Vídeo narrado',apresentadora:'Com apresentadora'}[tipo];
-  tb.className='res-badge '+{estatico:'rb-est',narrado:'rb-nar',apresentadora:'rb-apr'}[tipo];
-  document.getElementById('cenas-out').innerHTML=buildCenas(est,fmt,dur).map((c,i)=>renderC(c,i+1)).join('');
-  const grid=document.getElementById('gen-grid');
-  if(tipo==='estatico'){
-    grid.innerHTML=['fachada','aerea','rooftop'].map(k=>`<div class="gen-card" id="gc-${k}"><div class="gen-placeholder"><div style="font-size:24px">🖼</div><div class="gen-placeholder-label">${k}</div></div><div class="gen-card-label">Flux Pro · ${fmt==='feed'?'4:5':'9:16'}</div></div>`).join('');
-  } else {
-    grid.innerHTML=['broll-praia','broll-fachada','broll-rooftop'].map(k=>`<div class="gen-card" id="gc-${k}"><div class="gen-placeholder"><div style="font-size:24px">🎬</div><div class="gen-placeholder-label">${k}</div></div><div class="gen-card-label">Kling v1.6 · 5s · ${fmt==='feed'?'4:5':'9:16'}</div></div>`).join('');
-  }
-  document.getElementById('btn-assets').disabled=false;
-  document.getElementById('btn-assets').textContent='✦ Gerar imagens e vídeos agora';
-}
-
-// ── Gerar script ─────────────────────────────────────────────────────────
+// ── Geração ─────────────────────────────────────────────────────────────────
 function gerar() {
-  const e=document.getElementById('st-empty'),l=document.getElementById('st-load'),r=document.getElementById('st-result');
-  e.style.display='none';l.classList.add('show');r.classList.remove('show');
-  const est=document.getElementById('sel-est').value, fmt=document.getElementById('sel-fmt').value;
-  const dur=tipo!=='estatico'?document.getElementById('sel-dur').value:null;
-  const steps=['Lendo CLAUDE.md — contexto Seazone',`Carregando briefing: ${briefing.nome}`,`Estrutura ${est} — tipo: ${tipo}`,'Aplicando hipóteses A/B','Gerando script cena a cena',tipo!=='estatico'?'Preparando prompts Kling v1.6':'Preparando prompts Flux Pro','Finalizando output'];
-  document.getElementById('load-steps').innerHTML=steps.map((s,i)=>`<div class="lstep" id="ls${i}"><div class="ldot"></div><div class="ltext">${s}</div></div>`).join('');
-  let i=0; const iv=setInterval(()=>{
-    if(i>0){const p=document.getElementById(`ls${i-1}`);p?.classList.remove('active');p?.classList.add('done');}
-    if(i<steps.length){document.getElementById(`ls${i}`)?.classList.add('active');i++;}
-    else{clearInterval(iv);setTimeout(()=>{l.classList.remove('show');mostrar(est,fmt,dur);},400);}
+  const e=document.getElementById('st-empty'), l=document.getElementById('st-load'), r=document.getElementById('st-result');
+  e.style.display='none'; l.classList.add('show'); r.classList.remove('show');
+
+  const est = document.getElementById('sel-est').value;
+  const fmt = document.getElementById('sel-fmt').value;
+  const dur = tipo!=='estatico' ? document.getElementById('sel-dur').value : null;
+
+  const steps = [
+    'Lendo CLAUDE.md — contexto Seazone',
+    `Carregando briefing: ${briefing.nome}`,
+    `Identificando estrutura ${est} — tipo: ${tipo}`,
+    'Aplicando hipóteses A/B selecionadas',
+    'Gerando script cena a cena',
+    tipo!=='estatico' ? 'Preparando prompts fal.ai — Kling v1.6 Pro' : 'Preparando prompt fal.ai — Flux Pro',
+    'Finalizando output'
+  ];
+
+  document.getElementById('load-steps').innerHTML = steps.map((s,i)=>`<div class="lstep" id="ls${i}"><div class="ldot"></div><div class="ltext">${s}</div></div>`).join('');
+
+  let i=0;
+  const iv = setInterval(()=>{
+    if(i>0) { const p=document.getElementById(`ls${i-1}`); p?.classList.remove('active'); p?.classList.add('done'); }
+    if(i<steps.length) { document.getElementById(`ls${i}`)?.classList.add('active'); i++; }
+    else { clearInterval(iv); setTimeout(()=>{ l.classList.remove('show'); mostrar(est,fmt,dur); },400); }
   },360);
 }
 
-function mostrar(est,fmt,dur) {
+function mostrar(est, fmt, dur) {
   const r=document.getElementById('st-result');
   const tb=document.getElementById('rb-type');
-  tb.textContent={estatico:'Estático',narrado:'Vídeo narrado',apresentadora:'Com apresentadora'}[tipo];
-  tb.className='res-badge '+{estatico:'rb-est',narrado:'rb-nar',apresentadora:'rb-apr'}[tipo];
-  document.getElementById('rb-fmt').textContent=fmt==='feed'?'Feed · 4:5 · 1080×1350px':'Reels · 9:16 · 1080×1920px';
-  document.getElementById('rb-title').textContent=`Estrutura ${est} — V${varN}`;
-  document.getElementById('cenas-out').innerHTML=buildCenas(est,fmt,dur).map((c,i)=>renderC(c,i+1)).join('');
+  tb.textContent = {estatico:'Estático',narrado:'Vídeo narrado',apresentadora:'Com apresentadora'}[tipo];
+  tb.className = 'res-badge ' + {estatico:'rb-est',narrado:'rb-nar',apresentadora:'rb-apr'}[tipo];
+  document.getElementById('rb-fmt').textContent = fmt==='feed' ? 'Feed · 4:5 · 1080×1350px' : 'Reels · 9:16 · 1080×1920px';
+  document.getElementById('rb-title').textContent = `Estrutura ${est} — V${varN}`;
 
-  // Prepara grid de geração
-  const grid=document.getElementById('gen-grid');
-  if(tipo==='estatico') {
-    grid.innerHTML=['fachada','aerea','rooftop'].map(k=>`
-      <div class="gen-card" id="gc-${k}">
-        <div class="gen-placeholder"><div style="font-size:24px">🖼</div><div class="gen-placeholder-label">${k}</div></div>
-        <div class="gen-card-label">Flux Pro · ${fmt==='feed'?'4:5':'9:16'}</div>
-      </div>`).join('');
-  } else {
-    grid.innerHTML=['broll-praia','broll-fachada','broll-rooftop'].map(k=>`
-      <div class="gen-card" id="gc-${k}">
-        <div class="gen-placeholder"><div style="font-size:24px">🎬</div><div class="gen-placeholder-label">${k}</div></div>
-        <div class="gen-card-label">Kling v1.6 · 5s · ${fmt==='feed'?'4:5':'9:16'}</div>
-      </div>`).join('');
-  }
+  const cenas = buildCenas(est, fmt, dur);
+  document.getElementById('cenas-out').innerHTML = cenas.map((c,i)=>renderC(c,i+1)).join('');
+
+  const modelo = tipo==='estatico' ? 'Flux Pro' : 'Kling v1.6 Pro';
+  const ext = tipo==='estatico' ? '.png' : '.mp4';
+  const pasta = `outputs/${tipo==='estatico'?'estatico':'video'}/${fmt==='feed'?'4x5':'9x16'}/`;
+  const dims = fmt==='feed' ? '1080×1350px' : '1080×1920px';
+  document.getElementById('api-txt').textContent = `Quando a chave do fal.ai estiver no .env, a máquina vai gerar o asset usando ${modelo} e salvar em ${pasta}`;
+  document.getElementById('api-specs').innerHTML = [modelo, dims, ext, pasta, ...(dur?[dur]:[])].map(s=>`<span class="api-spec">${s}</span>`).join('');
+
   r.classList.add('show');
 }
 
-// ── Geração real com fal.ai ───────────────────────────────────────────────
-async function gerarAssets() {
-  const btn=document.getElementById('btn-assets');
-  btn.disabled=true; btn.textContent='⏳ Gerando...';
-  const fmt=document.getElementById('sel-fmt').value;
-  const isVideo=tipo!=='estatico';
-  const size=fmt==='feed'?'portrait_4_3':'portrait_9_16';
+function buildCenas(est, fmt, dur) {
+  const hips = Array.from(document.querySelectorAll('.hip.on')).map(b=>b.textContent);
+  const dims = fmt==='feed'?'1080×1350px':'1080×1920px';
 
-  const items=isVideo?Object.entries(PROMPTS_VIDEO):Object.entries(PROMPTS_IMAGEM);
-
-  for(const [key,cfg] of items) {
-    const card=document.getElementById('gc-'+key);
-    if(!card) continue;
-    card.querySelector('.gen-placeholder').innerHTML=`<div class="gen-spinner"></div><div class="gen-placeholder-label">Gerando...</div>`;
-    try {
-      if(!isVideo) {
-        const url=await gerarImagem(cfg.prompt, size);
-        card.innerHTML=`<img src="${url}" alt="${key}"/><div class="gen-card-label">✓ ${key} — Flux Pro</div>`;
-      } else {
-        const url=await gerarVideo(cfg.prompt, fmt);
-        card.innerHTML=`<video src="${url}" controls autoplay muted loop style="width:100%;aspect-ratio:4/5;object-fit:cover"></video><div class="gen-card-label">✓ ${key} — Kling v1.6</div>`;
-      }
-    } catch(err) {
-      card.innerHTML=`<div class="gen-placeholder"><div style="font-size:24px">⚠️</div></div><div class="gen-error">${err.message}</div>`;
-    }
-  }
-  btn.disabled=false; btn.textContent='↻ Gerar novamente';
-}
-
-async function gerarImagem(prompt, size) {
-  const res=await fetch('https://fal.run/fal-ai/flux-pro',{
-    method:'POST',
-    headers:{'Authorization':`Key ${FAL_KEY}`,'Content-Type':'application/json'},
-    body:JSON.stringify({prompt,image_size:size,num_inference_steps:28,guidance_scale:3.5,num_images:1,enable_safety_checker:true})
-  });
-  if(!res.ok) throw new Error(`Erro ${res.status}`);
-  const data=await res.json();
-  const url=data.images?.[0]?.url||data.image?.url;
-  if(!url) throw new Error('URL não encontrada');
-  return url;
-}
-
-async function gerarVideo(prompt, fmt) {
-  const ratio=fmt==='feed'?'9:16':'9:16';
-  const res=await fetch('https://fal.run/fal-ai/kling-video/v1.6/pro/text-to-video',{
-    method:'POST',
-    headers:{'Authorization':`Key ${FAL_KEY}`,'Content-Type':'application/json'},
-    body:JSON.stringify({prompt: prompt + (promptEnriquecido ? ' ' + promptEnriquecido : ''),duration:'5',aspect_ratio:ratio,negative_prompt:'text, watermark, people, dark, blurry'})
-  });
-  if(!res.ok) throw new Error(`Erro ${res.status}`);
-  const data=await res.json();
-  // Polling se assíncrono
-  if(data.request_id) return await pollFal(data.request_id,'fal-ai/kling-video/v1.6/pro/text-to-video');
-  const url=data.video?.url||data.video_url;
-  if(!url) throw new Error('URL não encontrada');
-  return url;
-}
-
-async function pollFal(requestId, model) {
-  for(let i=0;i<60;i++) {
-    await new Promise(r=>setTimeout(r,5000));
-    const res=await fetch(`https://queue.fal.run/${model}/requests/${requestId}`,{headers:{'Authorization':`Key ${FAL_KEY}`}});
-    const data=await res.json();
-    if(data.status==='COMPLETED') { const r=data.response||data; return r.video?.url||r.video_url; }
-    if(data.status==='FAILED') throw new Error('Geração falhou');
-  }
-  throw new Error('Timeout');
-}
-
-// ── Cenas ─────────────────────────────────────────────────────────────────
-function buildCenas(est,fmt,dur) {
-  const dims=fmt==='feed'?'1080×1350px':'1080×1920px';
-
-  // Hipótese destaque por variação
-  const hipV={
-    1:{ta:'~R$ 5.500 LÍQUIDOS POR MÊS*\nCampeche • Florianópolis • SC', hip:'RE mensal'},
-    2:{ta:'R$ 66.424 LÍQUIDOS POR ANO*\nCampeche • Florianópolis • SC', hip:'RE anual'},
-    3:{ta:'ROI 16,40% A.A.* — A PRAIA QUE MAIS FATURAEM FLN', hip:'ROI'},
-    4:{ta:'CDI LÍQUIDO: ~9,8% | SPOT II: 16,40% A.A.*\nNovo Campeche', hip:'Gancho CDB'},
-    5:{ta:'APENAS 49 COTAS — ~R$ 5.500 LÍQUIDOS POR MÊS*', hip:'Escassez'},
-  }[varN] || {ta:'~R$ 5.500 LÍQUIDOS POR MÊS*', hip:'RE mensal'};
-
-  if(tipo==='estatico') return [
-    {n:1,tit:'Imagem base',tag:'Fachada',visual:`Render fachada Novo Campeche SPOT II — moderna, luminosa. Tamanho: ${dims}`,ta:hipV.ta,extra:`Hipótese ${varN}: ${hipV.hip} | A partir de R$ 335 mil | Gestão Seazone`},
-    {n:2,tit:'Overlay e tipografia',tag:'Design',visual:'Gradiente sutil na parte inferior. Frase principal em destaque máximo.',ta:'A PARTIR DE R$ 335 MIL',extra:'Logo Seazone | Disclaimer no rodapé'}
+  if (tipo==='estatico') return [
+    { n:1, tit:'Imagem base', tag:'Fachada', visual:`Render fachada Novo Campeche SPOT II — moderna, luminosa, linhas retas. Tamanho: ${dims}`, ta: hips.includes('RE mensal')?'~R$ 5.500 LÍQUIDOS POR MÊS*\nCampeche • Florianópolis • SC':'ROI 16,40% A.A.*\nCampeche • Florianópolis • SC', extra:'A partir de R$ 335 mil | Gestão completa Seazone | Mesmo padrão Novo Campeche Spot' },
+    { n:2, tit:'Overlay e tipografia', tag:'Design', visual:'Gradiente sutil na parte inferior (40% de opacidade). Frase principal em Syne ExtraBold — maior elemento da peça.', ta: hips.includes('Escassez')?'APENAS 49 COTAS':'A PARTIR DE R$ 335 MIL', extra:'Logo Seazone canto superior direito | Disclaimer no rodapé (fonte 12px)' }
   ];
 
-  // Estrutura 1: L → F → RO+RE → L → CTA
-  if(tipo==='narrado' && est==='1') return [
-    {n:1,tit:'Abertura — Localização',tag:'L',tempo:'0:00–0:07',visual:`Drone Praia Novo Campeche. PIN animado. ${dims}`,ta:'NOVO CAMPECHE • FLORIANÓPOLIS\nA PRAIA QUE MAIS FATURAEM FLN',narracao:'"Novo Campeche, em Florianópolis. Um dos bairros com maior faturamento bruto de Airbnb em Santa Catarina."'},
-    {n:2,tit:'Motivo 1 — Produto',tag:'F',tempo:'0:07–0:15',visual:'Render fachada + áreas comuns.',ta:'MOTIVO 1: O PRODUTO\nSHORT STAY NATIVO',narracao:'"Primeiro motivo: produto desenhado do zero para Airbnb."'},
-    {n:3,tit:'Motivo 2 — Retorno',tag:'RO+RE',tempo:'0:15–0:23',visual:'Infográfico animado.',ta:`MOTIVO 2: ${hipV.ta}`,narracao:`"Segundo motivo: ${hipV.hip==='ROI'?'ROI de 16,40% ao ano':'rendimento estimado de R$ 5.500 por mês'}, acima da Selic."`},
-    {n:4,tit:'Motivo 3 — Localização',tag:'L',tempo:'0:23–0:32',visual:'Drone praia + rooftop.',ta:'MOTIVO 3: LOCALIZAÇÃO\nROOFTOP COM VISTA MAR',narracao:'"Bairro com maior faturamento de Florianópolis, rooftop com vista mar."'},
-    {n:5,tit:'CTA Final',tag:'CTA',tempo:'0:32–0:40',visual:'Tela final com logo.',ta:'A PARTIR DE R$ 335 MIL\nCLIQUE EM SAIBA MAIS',narracao:'"A partir de R$ 335 mil. Clique em Saiba Mais."'}
+  if (tipo==='narrado') return [
+    { n:1, tit:'Abertura — Localização', tag:'L', tempo:'0:00–0:07', visual:`Drone Praia do Novo Campeche. PIN animado do SPOT. ${dims}`, ta:'NOVO CAMPECHE • FLORIANÓPOLIS\nA PRAIA QUE MAIS FATURAEM FLN', narracao:'"Novo Campeche, em Florianópolis. Um dos bairros com maior faturamento bruto de Airbnb em Santa Catarina."' },
+    { n:2, tit:'Motivo 1 — Produto', tag:'F', tempo:'0:07–0:15', visual:'Render fachada + áreas comuns. Lettering "Motivo 1" animado.', ta:'MOTIVO 1: O PRODUTO\nPROJETO NATIVO PARA SHORT STAY', narracao:'"Primeiro motivo: o produto. Desenhado do zero para Airbnb — fachada valorizada, mesmo padrão que já provou a tese."' },
+    { n:3, tit:'Motivo 2 — Retorno', tag:'RO+RE', tempo:'0:15–0:23', visual:'Infográfico animado: ROI 16,40% + R$5.500/mês.', ta:'MOTIVO 2: O RETORNO\nROI 16,40% A.A.* | ~R$ 5.500/MÊS*', narracao:'"Segundo motivo: ROI de 16,40% ao ano, acima da Selic. Rendimento estimado de R$ 5.500 por mês."' },
+    { n:4, tit:'Motivo 3 — Localização', tag:'L', tempo:'0:23–0:32', visual:'Drone praia + rooftop. Lettering "Motivo 3" animado.', ta:'MOTIVO 3: LOCALIZAÇÃO\nROOFTOP COM VISTA MAR | BAIXA SAZONALIDADE', narracao:'"Terceiro motivo: bairro com maior faturamento de Florianópolis, baixa sazonalidade e rooftop com vista mar."' },
+    { n:5, tit:'CTA Final', tag:'CTA', tempo:'0:32–0:40', visual:'Tela final com logo Seazone + nome do empreendimento.', ta:'A PARTIR DE R$ 335 MIL\nCLIQUE EM SAIBA MAIS', narracao:'"A partir de R$ 335 mil. Clique em Saiba Mais." | Disclaimer no rodapé' }
   ];
 
-  // Estrutura 2: L → RO+RE → F → CTA
-  if(tipo==='narrado' && est==='2') return [
-    {n:1,tit:'Abertura — Localização',tag:'L',tempo:'0:00–0:07',visual:`Drone Praia Novo Campeche. ${dims}`,ta:'NOVO CAMPECHE • FLORIANÓPOLIS',narracao:'"Novo Campeche — bairro com maior faturamento bruto de Florianópolis."'},
-    {n:2,tit:'Retorno financeiro',tag:'RO+RE',tempo:'0:07–0:17',visual:'Infográfico ROI + rendimento.',ta:hipV.ta,narracao:`"ROI de 16,40% ao ano — ${hipV.hip==='Gancho CDB'?'acima do CDI líquido de imposto de renda':'acima da Selic e dos concorrentes da região'}."`},
-    {n:3,tit:'O produto',tag:'F',tempo:'0:17–0:27',visual:'Render fachada + áreas comuns.',ta:'SHORT STAY NATIVO\nMESMO PADRÃO NOVO CAMPECHE SPOT',narracao:'"Projeto desenhado do zero para Airbnb — fachada valorizada, rooftop com vista mar."'},
-    {n:4,tit:'CTA Final',tag:'CTA',tempo:'0:27–0:35',visual:'Tela final com logo.',ta:'A PARTIR DE R$ 335 MIL\nCLIQUE EM SAIBA MAIS',narracao:'"A partir de R$ 335 mil. Gestão completa Seazone."'}
+  return [
+    { n:1, tit:'Abertura — Vista aérea praia', tag:'L', tempo:'0:00–0:07', visual:`Drone Praia Novo Campeche. Água azul intensa. PIN animado. ${dims}`, ta:'NOVO CAMPECHE • FLORIANÓPOLIS\nA PRAIA MAIS DESEJADA DA ILHA', monica:null, extra:'Monica ainda não aparece. Narração em off.' },
+    { n:2, tit:'Fachada do empreendimento', tag:'F', tempo:'0:07–0:14', visual:'Render fachada moderna, luminosa, linhas retas.', ta:'NOVO CAMPECHE SPOT II\nPROJETADO PARA SHORT STAY', monica:null, extra:'"Esse é o Novo Campeche SPOT II — projeto desenhado do zero para Airbnb."' },
+    { n:3, tit:'Monica — Dados financeiros', tag:'RO+RE', tempo:'0:14–0:22', visual:'Monica em estúdio neutro. Infográfico ROI + RE mensal sobreposto.', ta:`ROI 16,40% A.A.* | ~R$ 5.500/MÊS ESTIMADOS*`, monica:'Eu sou a Monica, sócia da Seazone. Nosso projeto projeta ROI de 16,40% ao ano — acima da Selic e acima dos concorrentes. Cerca de R$ 5.500 por mês estimados.', extra:'Tom: autoridade. Pausa após "ao ano".' },
+    { n:4, tit:'Localização + Rooftop', tag:'L+RO', tempo:'0:22–0:32', visual:'B-roll rooftop com vista mar + drone bairro.', ta:'LOCALIZAÇÃO PREMIUM | ROOFTOP COM VISTA MAR\nGESTÃO SEAZONE', monica:'Localização entre as mais desejadas de Florianópolis, rooftop com vista para o mar e gestão completa da Seazone.', extra:'Monica continua em quadro.' },
+    { n:5, tit:'CTA Final', tag:'CTA', tempo:'0:32–0:40', visual:'Tela final: rooftop + logo Seazone.', ta:'A PARTIR DE R$ 335 MIL\nCLIQUE EM SAIBA MAIS', monica:'Se faz sentido para você, fale com o nosso time e entenda os detalhes.', extra:'Disclaimer obrigatório no rodapé.' }
   ];
-
-  // Estrutura 3: F → RO+RE → L → CTA
-  if(tipo==='narrado' && est==='3') return [
-    {n:1,tit:'Abertura — Fachada',tag:'F',tempo:'0:00–0:07',visual:`Render fachada Novo Campeche SPOT II. ${dims}`,ta:'NOVO CAMPECHE SPOT II\nSHORT STAY NATIVO',narracao:'"Esse é o Novo Campeche SPOT II — projeto desenhado do zero para Airbnb."'},
-    {n:2,tit:'Retorno financeiro',tag:'RO+RE',tempo:'0:07–0:17',visual:'Infográfico animado.',ta:hipV.ta,narracao:'"ROI de 16,40% ao ano, acima da Selic. Gestão completa da Seazone."'},
-    {n:3,tit:'Localização',tag:'L',tempo:'0:17–0:27',visual:'Drone praia + rooftop com vista mar.',ta:'CAMPECHE • FLORIANÓPOLIS\nROOFTOP COM VISTA MAR',narracao:'"Localizado em um dos bairros com maior faturamento de Florianópolis, baixa sazonalidade."'},
-    {n:4,tit:'CTA Final',tag:'CTA',tempo:'0:27–0:35',visual:'Tela final com logo.',ta:'A PARTIR DE R$ 335 MIL\nCLIQUE EM SAIBA MAIS',narracao:'"A partir de R$ 335 mil. Clique em Saiba Mais."'}
-  ];
-
-  // APRESENTADORA
-  const ceBaseMonica = [
-    {n:1,tit:'Abertura — Vista aérea praia',tag:'L',tempo:'0:00–0:07',visual:`Drone Praia Novo Campeche. ${dims}`,ta:'NOVO CAMPECHE • FLORIANÓPOLIS\nA PRAIA MAIS DESEJADA DA ILHA',monica:null,extra:'Monica ainda não aparece. Narração em off.'},
-    {n:2,tit:'Fachada',tag:'F',tempo:'0:07–0:14',visual:'Render fachada moderna.',ta:'NOVO CAMPECHE SPOT II\nSHORT STAY NATIVO',monica:null,extra:'"Esse é o Novo Campeche SPOT II — projeto desenhado do zero para Airbnb."'},
-    {n:3,tit:'Monica — Dados financeiros',tag:'RO+RE',tempo:'0:14–0:22',visual:'Monica em estúdio neutro.',ta:hipV.ta,monica:`Eu sou a Monica, sócia da Seazone. ${hipV.hip==='Gancho CDB'?'O CDI líquido de imposto de renda está em torno de 9,8% ao ano. Nosso projeto projeta 16,40% — e ainda tem o imóvel no seu nome.':'Nosso projeto projeta ROI de 16,40% ao ano — acima da Selic e acima dos concorrentes. Cerca de R$ 5.500 por mês estimados.'}`,extra:'Tom: autoridade.'},
-    {n:4,tit:'Localização + Rooftop',tag:'L+RO',tempo:'0:22–0:32',visual:'B-roll rooftop + drone bairro.',ta:'ROOFTOP COM VISTA MAR | GESTÃO SEAZONE',monica:'Localização entre as mais desejadas de Florianópolis, rooftop com vista para o mar e gestão completa da Seazone.',extra:'Monica continua em quadro.'},
-    {n:5,tit:'CTA Final',tag:'CTA',tempo:'0:32–0:40',visual:'Tela final + logo.',ta:'A PARTIR DE R$ 335 MIL\nCLIQUE EM SAIBA MAIS',monica:'Se faz sentido, fale com o nosso time.',extra:'Disclaimer no rodapé.'}
-  ];
-
-  // Estrutura 2 para apresentadora: L → Monica+RO → F → CTA
-  if(est==='2') return [
-    ceBaseMonica[0],
-    {...ceBaseMonica[2], n:2, tempo:'0:07–0:17'},
-    {...ceBaseMonica[1], n:3, tempo:'0:17–0:25'},
-    {...ceBaseMonica[3], n:4, tempo:'0:25–0:33'},
-    {...ceBaseMonica[4], n:5, tempo:'0:33–0:40'},
-  ];
-
-  // Estrutura 3: F → Monica+RO → L → CTA
-  if(est==='3') return [
-    {...ceBaseMonica[1], n:1, tempo:'0:00–0:07'},
-    {...ceBaseMonica[2], n:2, tempo:'0:07–0:17'},
-    {...ceBaseMonica[3], n:3, tempo:'0:17–0:27'},
-    {...ceBaseMonica[0], n:4, tempo:'0:27–0:33', ta:'CAMPECHE • FLORIANÓPOLIS\nBAIXA SAZONALIDADE'},
-    {...ceBaseMonica[4], n:5, tempo:'0:33–0:40'},
-  ];
-
-  return ceBaseMonica; // Estrutura 1 padrão
 }
 
-function renderC(c,i) {
-  const col3=tipo==='apresentadora'&&c.monica?`<div><div class="cf-label">Fala da Monica</div><div class="cf-val monica">${c.monica}</div></div>`:tipo==='narrado'?`<div><div class="cf-label">Narração em off</div><div class="cf-val narracao">${c.narracao||c.extra}</div></div>`:`<div><div class="cf-label">Instrução</div><div class="cf-val narracao">${c.extra}</div></div>`;
-  return `<div class="cena"><div class="cena-hdr"><div class="cena-n">${i}</div><div class="cena-ttl">${c.tit}</div><span class="cena-tag">${c.tag}</span>${c.tempo?`<span class="cena-time">${c.tempo}</span>`:''}</div><div class="cena-body"><div><div class="cf-label">Visual</div><div class="cf-val">${c.visual}</div></div><div><div class="cf-label">Texto animado</div><div class="cf-val ta">${c.ta}</div></div>${col3}</div></div>`;
+function renderC(c, i) {
+  const isMon = tipo==='apresentadora';
+  const isNar = tipo==='narrado';
+  const col3 = isMon && c.monica ? `<div><div class="cf-label">Fala da Monica</div><div class="cf-val monica">${c.monica}</div></div>` :
+                isNar ? `<div><div class="cf-label">Narração em off</div><div class="cf-val narracao">${c.narracao||c.extra}</div></div>` :
+                `<div><div class="cf-label">Instrução</div><div class="cf-val narracao">${c.extra}</div></div>`;
+  return `<div class="cena">
+    <div class="cena-hdr">
+      <div class="cena-n">${i}</div>
+      <div class="cena-ttl">${c.tit}</div>
+      <span class="cena-tag">${c.tag}</span>
+      ${c.tempo?`<span class="cena-time">${c.tempo}</span>`:''}
+    </div>
+    <div class="cena-body">
+      <div><div class="cf-label">Visual / Imagem</div><div class="cf-val">${c.visual}</div></div>
+      <div><div class="cf-label">Texto animado na tela</div><div class="cf-val ta">${c.ta}</div></div>
+      ${col3}
+    </div>
+  </div>`;
 }
 
-// ── Novo empreendimento ───────────────────────────────────────────────────
-function gerarForm(){const nome=document.getElementById('f-nome').value,roi=document.getElementById('f-roi').value;if(!nome||!roi){alert('Preencha nome e ROI.');return;}briefing={nome,city:document.getElementById('f-cidade').value,roi:roi+'%',rend:document.getElementById('f-rend').value,ticket:document.getElementById('f-ticket').value,cotas:document.getElementById('f-cotas').value};abrirWorkshop(briefing);}
-function gerarURL(){const u=document.getElementById('f-url').value;if(!u)return;showResult({nome:'Via URL',city:u,roi:'—',rend:'—',ticket:'—',cotas:'—'},'URL: '+u);}
-function handleFile(inp){if(inp.files[0])showResult({nome:inp.files[0].name.replace(/\.[^.]+$/,''),city:'Do arquivo',roi:'—',rend:'—',ticket:'—',cotas:'—'},'Arquivo: '+inp.files[0].name);}
-function showResult(b,pontos){briefing=b;document.getElementById('r-metrics').innerHTML=`<div class="r-metric"><div class="r-metric-val">${b.roi}</div><div class="r-metric-lbl">ROI a.a.</div></div><div class="r-metric"><div class="r-metric-val">${b.rend}</div><div class="r-metric-lbl">Rendimento/mês</div></div><div class="r-metric"><div class="r-metric-val">${b.ticket}</div><div class="r-metric-lbl">Ticket mínimo</div></div>`;document.getElementById('r-tags').innerHTML=['Estrutura 1','Estrutura 2','Estrutura 3','Feed 4:5','Reels 9:16'].map(t=>`<span class="r-tag">${t}</span>`).join('');const flags=[{l:'Gancho CDB',a:parseFloat(b.roi)>12},{l:'Rooftop',a:pontos?.toLowerCase().includes('rooftop')},{l:'Escassez',a:parseInt(b.cotas)<50}];document.getElementById('r-flags').innerHTML=flags.map(f=>`<span class="r-flag ${f.a?'on':''}">${f.a?'✓':'○'} ${f.l}</span>`).join('');document.getElementById('r-card').classList.add('show');}
-function usarBriefing(){abrirWorkshop(briefing);}
+// ── Novo empreendimento ──────────────────────────────────────────────────────
+function gerarForm() {
+  const nome=document.getElementById('f-nome').value;
+  const roi=document.getElementById('f-roi').value;
+  if(!nome||!roi){alert('Preencha pelo menos o nome e o ROI.');return;}
+  briefing = { nome, city:document.getElementById('f-cidade').value, roi:roi+'%', rend:document.getElementById('f-rend').value, ticket:document.getElementById('f-ticket').value, cotas:document.getElementById('f-cotas').value };
+  showResult(briefing, document.getElementById('f-pontos').value);
+}
+function gerarURL() { const u=document.getElementById('f-url').value; if(!u)return; showResult({nome:'Empreendimento via URL',city:u,roi:'—',rend:'—',ticket:'—',cotas:'—'},'URL: '+u); }
+function handleFile(inp) { if(inp.files[0]) showResult({nome:inp.files[0].name.replace(/\.[^.]+$/,''),city:'Extraído do arquivo',roi:'—',rend:'—',ticket:'—',cotas:'—'},'Arquivo: '+inp.files[0].name); }
 
-// ── Export / variação ─────────────────────────────────────────────────────
-function exportar(){const cenas=document.querySelectorAll('.cena');if(!cenas.length){alert('Gere um script primeiro!');return;}let txt=`MÁQUINA DE CRIATIVOS SEAZONE\nEmpreendimento: ${briefing.nome}\nTipo: ${tipo} | Estrutura: ${document.getElementById('sel-est').value}\nFormato: ${document.getElementById('sel-fmt').value}\n\n`;cenas.forEach((c,i)=>{const v=c.querySelectorAll('.cf-val');txt+=`CENA ${i+1}: ${c.querySelector('.cena-ttl').textContent}\nVisual: ${v[0]?.textContent}\nTexto animado: ${v[1]?.textContent}\nNarração/Monica: ${v[2]?.textContent}\n\n`;});txt+='*Projeção estimada. Não constitui garantia de rentabilidade.';const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));a.download=`script_E${document.getElementById('sel-est').value}_V${varN}.txt`;a.click();}
-function novaVar(){const tabs=document.querySelectorAll('.vtab');const next=(varN%5)+1;tabs.forEach(t=>t.classList.remove('active'));tabs[next-1].classList.add('active');varN=next;if(document.getElementById('st-result').classList.contains('show'))gerar();}
-
-// ── Workshop de Briefing ───────────────────────────────────────────────────
-let wkScripts = { est:{}, nar:{}, apr:{} };
-let wkBriefingCtx = '';
-let wkEstrutura = { est:1, nar:1, apr:1 };
-let chatHistory = [];
-
-async function abrirWorkshop(b) {
-  goScreen('workshop');
-  document.getElementById('wk-emp-nome').textContent = b.nome;
-  document.getElementById('wk-loading').style.display = 'flex';
-  document.getElementById('wk-scripts').style.display = 'none';
-  chatHistory = [];
-  document.getElementById('chat-msgs').innerHTML = `<div class="chat-msg ai"><div class="chat-avatar ai">✦</div><div class="chat-bubble">Gerando os scripts para ${b.nome}... aguarde um momento.</div></div>`;
-
-  wkBriefingCtx = `
-Empreendimento: ${b.nome}
-Cidade: ${b.city}
-ROI: ${b.roi} a.a.
-Rendimento mensal: ${b.rend}
-Ticket mínimo: ${b.ticket}
-Cotas disponíveis: ${b.cotas}
-
-CONTEXTO SEAZONE (CLAUDE.md):
-- ICP: investidores 36-50 anos, empresários, renda >R$21k/mês, motivação = renda passiva
-- Tom: autoridade de especialista, dados e fatos, linguagem de posse ("nosso projeto")
-- NUNCA: "garantido", "pé na areia", distância exata da praia, "vista para o mar nas unidades"
-- SEMPRE: "projeção estimada" em dados financeiros
-- Concorrentes médios: R$ 584.166 (ticket), CDI líquido referência: ~9,8% a.a.
-`;
-
-  const loadSteps = document.getElementById('wk-loading-steps');
-  const stepTexts = [
-    'Agente de Briefing — lendo contexto Seazone...',
-    'Agente de Roteiro — gerando scripts estáticos...',
-    'Agente de Roteiro — gerando scripts narrados...',
-    'Agente de Roteiro — gerando scripts com apresentadora...',
-    'Agente de Compliance — verificando regras de marca...',
-    'Agente de Prompt Visual — preparando prompts fal.ai...',
-    'Finalizando...'
-  ];
-  let si = 0;
-  const stepIv = setInterval(() => {
-    if(si < stepTexts.length) { loadSteps.textContent = stepTexts[si]; si++; }
-  }, 2200);
-
-  try {
-    // AGENTE DE ROTEIRO — prompt especializado
-    const prompt = `Voce e o Agente de Roteiro da Maquina de Criativos Seazone.
-
-${wkBriefingCtx}
-
-REGRAS OBRIGATORIAS:
-1. Tom de autoridade — nunca corretor, nunca entusiasta excessivo
-2. Linguagem de posse: "nosso projeto", "nos estruturamos"
-3. Dados sempre com "projecao estimada" — nunca garantido
-4. Comparativos permitidos: vs Selic (~10,75%), vs CDI liquido (~9,8% a.a.), vs concorrentes (R$ 584k ticket)
-5. NUNCA: distancia exata da praia, "pe na areia", "garantido", "certeza"
-6. CTA suave: "fale com nosso time", "entenda os detalhes"
-
-Para cada cena de video, gere prompt_falai em ingles otimizado para Flux Pro (imagem) ou Kling (video):
-- Especifique: angulo de camera, movimento, condicao de luz, elementos em destaque
-- Nunca pessoas especificas no B-roll — so atriz generica para apresentadora
-
-FORMATOS: estatico | narrado | apresentadora
-ESTRUTURAS:
-- E1: Localizacao (praia) -> Fachada -> ROI+RE -> Rooftop -> CTA
-- E2: Localizacao -> ROI+RE Monica -> Fachada -> CTA  
-- E3: Fachada -> ROI+RE Monica -> Localizacao -> CTA
-
-VARIACOES (hipotese destaque):
-V1: Rendimento mensal | V2: Rendimento anual | V3: ROI vs Selic | V4: Gancho CDB | V5: Escassez + rendimento
-
-Responda APENAS em JSON valido:
-{
-  "estatico": {
-    "e1": [{"titulo":"","hipotese":"","cenas":[{"titulo":"","tipo":"","visual":"","prompt_falai":"","texto_animado":"","instrucao":""}]}],
-    "e2": [], "e3": []
-  },
-  "narrado": {
-    "e1": [{"titulo":"","hipotese":"","cenas":[{"titulo":"","tipo":"","visual":"","prompt_falai":"","texto_animado":"","narracao_ou_monica":""}]}],
-    "e2": [], "e3": []
-  },
-  "apresentadora": {
-    "e1": [{"titulo":"","hipotese":"","cenas":[{"titulo":"","tipo":"","visual":"","prompt_falai":"","texto_animado":"","narracao_ou_monica":"","tom":""}]}],
-    "e2": [], "e3": []
-  }
-}`;
-
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:8000, messages:[{role:'user',content:prompt}] })
-    });
-    const data = await res.json();
-    clearInterval(stepIv);
-
-    const text = data.content?.[0]?.text || '';
-    const jm = text.match(/\{[\s\S]*\}/);
-    if(jm) {
-      wkScripts = JSON.parse(jm[0]);
-      loadSteps.textContent = 'Agente de Compliance — verificando regras de marca...';
-      await rodarAgentCompliance();
-      loadSteps.textContent = 'Agente de Prompt Visual — enriquecendo prompts fal.ai...';
-      await rodarAgentPromptVisual();
-      renderWorkshop();
-    } else {
-      throw new Error('Resposta inválida da IA');
-    }
-  } catch(err) {
-    clearInterval(stepIv);
-    loadSteps.textContent = 'Erro: ' + err.message;
-  }
+function showResult(b, pontos) {
+  briefing = b;
+  document.getElementById('r-metrics').innerHTML = `
+    <div class="r-metric"><div class="r-metric-val">${b.roi}</div><div class="r-metric-lbl">ROI a.a.</div></div>
+    <div class="r-metric"><div class="r-metric-val">${b.rend}</div><div class="r-metric-lbl">Rendimento/mês</div></div>
+    <div class="r-metric"><div class="r-metric-val">${b.ticket}</div><div class="r-metric-lbl">Ticket mínimo</div></div>`;
+  document.getElementById('r-tags').innerHTML = ['Estrutura 1','Estrutura 2','Estrutura 3','Feed 4:5','Reels 9:16','15 variações A/B'].map(t=>`<span class="r-tag">${t}</span>`).join('');
+  const roi = parseFloat(b.roi);
+  const flags = [{l:'Gancho CDB',a:roi>12},{l:'Rooftop',a:pontos?.toLowerCase().includes('rooftop')},{l:'Escassez',a:parseInt(b.cotas)<50},{l:'Vista mar',a:pontos?.toLowerCase().includes('vista')}];
+  document.getElementById('r-flags').innerHTML = flags.map(f=>`<span class="r-flag ${f.a?'on':''}">${f.a?'✓':'○'} ${f.l}</span>`).join('');
+  document.getElementById('r-card').classList.add('show');
 }
 
-function renderWorkshop() {
-  document.getElementById('wk-loading').style.display = 'none';
-  document.getElementById('wk-scripts').style.display = 'block';
-  renderVarCards('est', wkEstrutura.est);
-  renderVarCards('nar', wkEstrutura.nar);
-  renderVarCards('apr', wkEstrutura.apr);
-
-  const complianceStatus = wkCompliance.aprovado
-    ? '<span style="color:#34D399">✓ Compliance aprovado</span>'
-    : '<span style="color:#FC6058">⚠ ' + (wkCompliance.issues||[]).length + ' ponto(s) ajustado(s) pelo Agente de Compliance</span>';
-
-  document.getElementById('chat-msgs').innerHTML = `<div class="chat-msg ai"><div class="chat-avatar ai">✦</div><div class="chat-bubble">Scripts gerados! ${complianceStatus}<br><br>Revise as 3 estruturas e 5 variações por formato ao lado. Me peça qualquer ajuste — posso mudar o tom, trocar o gancho, ajustar dados ou reorganizar as cenas.</div></div>`;
-  chatHistory = [];
-}
-
-function renderVarCards(fmt, est) {
-  const key = 'e' + est;
-  const data = wkScripts[fmt === 'est' ? 'estatico' : fmt === 'nar' ? 'narrado' : 'apresentadora'];
-  const vars = data?.[key] || [];
-  const container = document.getElementById('vc-' + fmt);
-  if(!container) return;
-
-  container.innerHTML = vars.map((v, vi) => {
-    const cenasHtml = (v.cenas || []).map(c => `
-      <div class="var-cena">
-        <div class="var-cena-ttl">${c.titulo || ''} <span style="background:var(--coral);color:#fff;font-size:9px;padding:1px 6px;border-radius:99px;font-weight:700">${c.tipo||''}</span></div>
-        <div class="var-cena-fields">
-          <div><div class="vcf-label">Visual</div><div class="vcf-val">${c.visual||''}</div></div>
-          <div><div class="vcf-label">Texto animado</div><div class="vcf-val ta">${c.texto_animado||''}</div></div>
-          ${c.narracao_ou_monica ? `<div style="grid-column:1/-1"><div class="vcf-label">${fmt==='apr'?'Monica':'Narração'}</div><div class="vcf-val monica">${c.narracao_ou_monica}</div></div>` : ''}
-          ${c.instrucao ? `<div style="grid-column:1/-1"><div class="vcf-label">Instrução</div><div class="vcf-val" style="color:var(--muted)">${c.instrucao}</div></div>` : ''}
-          ${c.prompt_falai ? `<div style="grid-column:1/-1"><div class="vcf-label" style="color:#4F8EF7">⚡ Prompt fal.ai</div><div class="vcf-val" style="color:#7AABFF;font-size:10px;font-style:italic">${c.prompt_falai}</div></div>` : ''}
-        </div>
-      </div>`).join('');
-
-    return `<div class="var-card" id="vc-${fmt}-${vi}">
-      <div class="var-card-hdr" onclick="toggleVarCard('${fmt}',${vi})">
-        <span class="var-badge">V${vi+1}</span>
-        <span style="font-size:12px;font-weight:600;color:var(--text)">${v.titulo||'Variação '+(vi+1)}</span>
-        <span class="var-hip">${v.hipotese||''}</span>
-        <span style="color:var(--muted);font-size:14px;margin-left:8px">›</span>
-      </div>
-      <div class="var-card-body">${cenasHtml}</div>
-    </div>`;
-  }).join('');
-}
-
-function toggleVarCard(fmt, vi) {
-  const card = document.getElementById('vc-' + fmt + '-' + vi);
-  card?.classList.toggle('open');
-}
-
-function setEstrutura(fmt, est, btn) {
-  wkEstrutura[fmt] = est;
-  const tabContainer = document.getElementById('et-' + fmt);
-  tabContainer?.querySelectorAll('.etab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  renderVarCards(fmt, est);
-}
-
-// ── Chat de ajustes ────────────────────────────────────────────────────────
-async function enviarChat() {
-  const input = document.getElementById('chat-input');
-  const msg = input.value.trim();
-  if(!msg) return;
-  input.value = '';
-
-  adicionarMensagem('user', msg);
-  chatHistory.push({ role:'user', content:msg });
-
-  const typing = adicionarMensagem('ai', '⏳ Ajustando scripts...');
-
-  try {
-    const systemPrompt = `Você é o assistente da Máquina de Criativos Seazone. 
-Contexto do empreendimento: ${wkBriefingCtx}
-Scripts atuais: ${JSON.stringify(wkScripts).slice(0,3000)}...
-
-O usuário quer fazer ajustes nos scripts. Quando pedir alterações específicas, aplique e retorne o JSON completo atualizado dos scripts no mesmo formato. Quando for uma pergunta ou comentário, responda normalmente em texto.
-Se retornar JSON, envolva em <scripts_json>...</scripts_json>.`;
-
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:8000,
-        system: systemPrompt,
-        messages: chatHistory
-      })
-    });
-    const data = await res.json();
-    const text = data.content?.[0]?.text || '';
-
-    // Remove typing indicator
-    typing.remove();
-
-    // Check if has updated scripts
-    const scriptsMatch = text.match(/<scripts_json>([\s\S]*?)<\/scripts_json>/);
-    if(scriptsMatch) {
-      try {
-        const newScripts = JSON.parse(scriptsMatch[1].trim());
-        wkScripts = newScripts;
-        renderVarCards('est', wkEstrutura.est);
-        renderVarCards('nar', wkEstrutura.nar);
-        renderVarCards('apr', wkEstrutura.apr);
-        const respText = text.replace(/<scripts_json>[\s\S]*?<\/scripts_json>/, '').trim();
-        adicionarMensagem('ai', respText || '✓ Scripts atualizados! Revise as alterações ao lado.');
-      } catch(e) {
-        adicionarMensagem('ai', text.replace(/<scripts_json>[\s\S]*?<\/scripts_json>/, '').trim() || 'Scripts ajustados!');
-      }
-    } else {
-      adicionarMensagem('ai', text);
-    }
-
-    chatHistory.push({ role:'assistant', content: text });
-  } catch(err) {
-    typing.remove();
-    adicionarMensagem('ai', 'Erro: ' + err.message);
-  }
-}
-
-function adicionarMensagem(tipo, texto) {
-  const msgs = document.getElementById('chat-msgs');
-  const div = document.createElement('div');
-  div.className = 'chat-msg ' + tipo;
-  div.innerHTML = `<div class="chat-avatar ${tipo}">${tipo==='ai'?'✦':'J'}</div><div class="chat-bubble">${texto}</div>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-  return div;
-}
-
-function aprovarEIrParaMaquina() {
-  const b = briefing;
-  document.getElementById('sb-nome').textContent = b.nome;
-  document.getElementById('sb-city').textContent = b.city;
+function usarBriefing() {
+  document.getElementById('sb-nome').textContent = briefing.nome;
+  document.getElementById('sb-city').textContent = briefing.city;
   goScreen('maquina');
-  document.getElementById('tab-maq').classList.add('active');
-  document.getElementById('tab-emp').classList.remove('active');
-  adicionarMensagem('ai', '✓ Briefing aprovado! Os scripts estão prontos para uso na máquina.');
+  document.getElementById('tab-maq')?.classList.add('active');
+  document.getElementById('tab-emp')?.classList.remove('active');
 }
 
-
-// ── AGENTE DE COMPLIANCE ─────────────────────────────────────────────────
-let wkCompliance = { aprovado: true, issues: [] };
-
-async function rodarAgentCompliance() {
-  try {
-    const scriptsStr = JSON.stringify(wkScripts).slice(0, 4000);
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{
-          role: 'user',
-          content: 'Voce e o Agente de Compliance da Seazone. Verifique: sem garantido, sem pe na areia, dados com projecao estimada. Scripts: ' + scriptsStr + '. Responda JSON: {"aprovado":true,"issues":[],"resumo":"ok"}'
-      })
-    });
-    const data = await res.json();
-    const text = data.content?.[0]?.text || '';
-    const jm = text.match(/\{[\s\S]*\}/);
-    if (jm) wkCompliance = JSON.parse(jm[0]);
-    else wkCompliance = { aprovado: true, issues: [], resumo: 'Verificacao concluida' };
-  } catch(e) {
-    wkCompliance = { aprovado: true, issues: [], resumo: 'Compliance OK' };
-  }
+// ── Exportar / variação ──────────────────────────────────────────────────────
+function exportar() {
+  const cenas = document.querySelectorAll('.cena');
+  if(!cenas.length){alert('Gere um criativo primeiro!');return;}
+  let txt = `MÁQUINA DE CRIATIVOS SEAZONE\nEmpreendimento: ${briefing.nome}\nTipo: ${tipo} | Estrutura: ${document.getElementById('sel-est').value}\nFormato: ${document.getElementById('sel-fmt').value}\n\n`;
+  cenas.forEach((c,i)=>{
+    const vals = c.querySelectorAll('.cf-val');
+    txt += `CENA ${i+1}: ${c.querySelector('.cena-ttl').textContent}\nVisual: ${vals[0]?.textContent}\nTexto animado: ${vals[1]?.textContent}\nNarração/Monica: ${vals[2]?.textContent}\n\n`;
+  });
+  txt += '*Projeção estimada. Não constitui garantia de rentabilidade.';
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));
+  a.download=`script_${briefing.nome.replace(/\s+/g,'_')}_E${document.getElementById('sel-est').value}_V${varN}.txt`;
+  a.click();
 }
 
-// ── AGENTE DE PROMPT VISUAL ─────────────────────────────────────────────
-async function rodarAgentPromptVisual() {
-  try {
-    // Coleta todas as cenas sem prompt_falai e enriquece
-    const todasCenas = [];
-    for (const fmt of ['estatico','narrado','apresentadora']) {
-      for (const est of ['e1','e2','e3']) {
-        const vars = wkScripts[fmt]?.[est] || [];
-        vars.forEach((v, vi) => {
-          (v.cenas || []).forEach((c, ci) => {
-            if (!c.prompt_falai) {
-              todasCenas.push({ fmt, est, vi, ci, visual: c.visual, tipo: c.tipo, fmtNome: fmt });
-            }
-          });
-        });
-      }
-    }
-    if (!todasCenas.length) return;
-
-    // Gera prompts em lote (pega as 10 primeiras cenas para nao demorar demais)
-    const amostra = todasCenas.slice(0, 10);
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 2000,
-        messages: [{
-          rolecontent: 'Voce e o Agente de Prompt Visual da Seazone. Gere prompts em ingles para fal.ai para cada cena: ' + amostra.map(function(c,i){ return i+'. '+c.visual; }).join(' | ')
-    const data = await res.json();
-    const text = data.content?.[0]?.text || '';
-    const jm = text.match(/\{[\s\S]*\}/);
-    if (!jm) return;
-    const result = JSON.parse(jm[0]);
-    const prompts = result.prompts || [];
-
-    // Injeta os prompts gerados nas cenas correspondentes
-    amostra.forEach((c, i) => {
-      if (prompts[i] && wkScripts[c.fmt]?.[c.est]?.[c.vi]?.cenas?.[c.ci]) {
-        wkScripts[c.fmt][c.est][c.vi].cenas[c.ci].prompt_falai = prompts[i];
-      }
-    });
-  } catch(e) {
-    // Silently continue if prompt visual fails
-  }
+function novaVar() {
+  const tabs=document.querySelectorAll('.vtab');
+  const next=(varN%5)+1;
+  tabs.forEach(t=>t.classList.remove('active'));
+  tabs[next-1].classList.add('active');
+  varN=next;
+  if(document.getElementById('st-result').classList.contains('show')) gerar();
 }
-
-// ── Painel de compliance na tela de resultado ─────────────────────────────
-function mostrarPainelCompliance() {
-  const existing = document.getElementById('compliance-panel');
-  if (existing) { existing.remove(); return; }
-
-  const panel = document.createElement('div');
-  panel.id = 'compliance-panel';
-  panel.style.cssText = 'background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:14px;';
-
-  const status = wkCompliance.aprovado
-    ? '<span style="color:var(--green);font-weight:700">✓ Aprovado</span>'
-    : '<span style="color:var(--coral);font-weight:700">⚠ Revisado</span>';
-
-  panel.innerHTML = `
-    <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:8px">Agente de Compliance ${status}</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:${wkCompliance.issues?.length ? '10px' : '0'}">${wkCompliance.resumo || ''}</div>
-    ${(wkCompliance.issues||[]).map(i => `<div style="font-size:11px;color:var(--coral-light);padding:4px 0;border-top:1px solid var(--border)">• ${i}</div>`).join('')}
-  `;
-
-  const cenasList = document.getElementById('cenas-out');
-  cenasList?.parentNode.insertBefore(panel, cenasList);
-}
-
 </script>
 </body>
 </html>
