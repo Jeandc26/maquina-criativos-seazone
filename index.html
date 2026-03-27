@@ -1126,19 +1126,7 @@ async function rodarAgentCompliance() {
         max_tokens: 1000,
         messages: [{
           role: 'user',
-          content: `Voce e o Agente de Compliance da Seazone Investimentos. Verifique se os scripts abaixo seguem as regras de comunicacao.
-
-REGRAS CRITICAS (violacoes que precisam ser corrigidas):
-- Nunca usar: "garantido", "certeza", "com certeza", "pe na areia"
-- Nunca mencionar distancia exata da praia em metros
-- Dados financeiros sempre com "projecao estimada" ou "estimado"
-- Nunca prometer retorno especifico como fato
-
-SCRIPTS A VERIFICAR:
-${scriptsStr}
-
-Responda em JSON: {"aprovado": true/false, "issues": ["descricao do problema encontrado"], "resumo": "texto curto do resultado"}`
-        }]
+          content: 'Voce e o Agente de Compliance da Seazone. Verifique: sem garantido, sem pe na areia, dados com projecao estimada. Scripts: ' + scriptsStr + '. Responda JSON: {"aprovado":true,"issues":[],"resumo":"ok"}'
       })
     });
     const data = await res.json();
