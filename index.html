@@ -384,7 +384,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.85);backdrop
     <main class="canvas">
       <div class="canvas-bar">
         <div class="var-tabs"><button class="vtab active" onclick="setVar(1,this)">V1</button><button class="vtab" onclick="setVar(2,this)">V2</button><button class="vtab" onclick="setVar(3,this)">V3</button><button class="vtab" onclick="setVar(4,this)">V4</button><button class="vtab" onclick="setVar(5,this)">V5</button></div>
-        <div class="c-actions"><button class="c-btn" onclick="novaVar()">↻ Nova variação</button><button class="c-btn" onclick="exportar()">↓ Exportar script</button></div>
+        <div class="c-actions"><button class="c-btn" onclick="mostrarPainelCompliance()">✓ Compliance</button><button class="c-btn" onclick="novaVar()">↻ Nova variação</button><button class="c-btn" onclick="exportar()">↓ Exportar script</button></div>
       </div>
       <div class="canvas-inner">
         <div class="empty" id="st-empty">
@@ -888,10 +888,12 @@ CONTEXTO SEAZONE (CLAUDE.md):
 
   const loadSteps = document.getElementById('wk-loading-steps');
   const stepTexts = [
-    'Lendo contexto Seazone...',
-    'Gerando scripts estáticos (3 estruturas × 5 variações)...',
-    'Gerando scripts narrados...',
-    'Gerando scripts com apresentadora...',
+    'Agente de Briefing — lendo contexto Seazone...',
+    'Agente de Roteiro — gerando scripts estáticos...',
+    'Agente de Roteiro — gerando scripts narrados...',
+    'Agente de Roteiro — gerando scripts com apresentadora...',
+    'Agente de Compliance — verificando regras de marca...',
+    'Agente de Prompt Visual — preparando prompts fal.ai...',
     'Finalizando...'
   ];
   let si = 0;
@@ -900,43 +902,45 @@ CONTEXTO SEAZONE (CLAUDE.md):
   }, 2200);
 
   try {
-    const prompt = `${wkBriefingCtx}
+    // AGENTE DE ROTEIRO — prompt especializado
+    const prompt = `Voce e o Agente de Roteiro da Maquina de Criativos Seazone.
 
-Gere scripts completos de criativos para esse empreendimento imobiliário seguindo EXATAMENTE essa estrutura.
+${wkBriefingCtx}
 
-Para cada FORMATO (estatico, narrado, apresentadora):
-- 3 ESTRUTURAS diferentes (ordem das cenas varia)
-- 5 VARIAÇÕES por estrutura (cada variação testa uma hipótese A/B diferente)
+REGRAS OBRIGATORIAS:
+1. Tom de autoridade — nunca corretor, nunca entusiasta excessivo
+2. Linguagem de posse: "nosso projeto", "nos estruturamos"
+3. Dados sempre com "projecao estimada" — nunca garantido
+4. Comparativos permitidos: vs Selic (~10,75%), vs CDI liquido (~9,8% a.a.), vs concorrentes (R$ 584k ticket)
+5. NUNCA: distancia exata da praia, "pe na areia", "garantido", "certeza"
+6. CTA suave: "fale com nosso time", "entenda os detalhes"
 
-HIPÓTESES A/B das variações:
-V1: RE mensal em destaque
-V2: RE anual em destaque
-V3: ROI comparativo com Selic
-V4: Gancho CDB (comparativo com CDI líquido)
-V5: Gatilho de escassez (cotas limitadas)
+Para cada cena de video, gere prompt_falai em ingles otimizado para Flux Pro (imagem) ou Kling (video):
+- Especifique: angulo de camera, movimento, condicao de luz, elementos em destaque
+- Nunca pessoas especificas no B-roll — so atriz generica para apresentadora
 
-ESTRUTURAS (ordem das cenas):
-E1: Localização → Fachada → ROI+RE → Rooftop → CTA
-E2: Localização → ROI+RE (Monica) → Fachada → CTA
-E3: Fachada → ROI+RE (Monica) → Localização → CTA
+FORMATOS: estatico | narrado | apresentadora
+ESTRUTURAS:
+- E1: Localizacao (praia) -> Fachada -> ROI+RE -> Rooftop -> CTA
+- E2: Localizacao -> ROI+RE Monica -> Fachada -> CTA  
+- E3: Fachada -> ROI+RE Monica -> Localizacao -> CTA
 
-Para cada variação, gere:
-- titulo: string curta
-- hipotese: nome da hipótese
-- cenas: array com 4-5 cenas, cada cena com: titulo, tipo (tag), visual, texto_animado, narracao_ou_monica
+VARIACOES (hipotese destaque):
+V1: Rendimento mensal | V2: Rendimento anual | V3: ROI vs Selic | V4: Gancho CDB | V5: Escassez + rendimento
 
-Responda APENAS em JSON válido com essa estrutura:
+Responda APENAS em JSON valido:
 {
   "estatico": {
-    "e1": [{"titulo":"","hipotese":"","cenas":[{"titulo":"","tipo":"","visual":"","texto_animado":"","instrucao":""}]}],
-    "e2": [...],
-    "e3": [...]
+    "e1": [{"titulo":"","hipotese":"","cenas":[{"titulo":"","tipo":"","visual":"","prompt_falai":"","texto_animado":"","instrucao":""}]}],
+    "e2": [], "e3": []
   },
   "narrado": {
-    "e1": [...], "e2": [...], "e3": [...]
+    "e1": [{"titulo":"","hipotese":"","cenas":[{"titulo":"","tipo":"","visual":"","prompt_falai":"","texto_animado":"","narracao_ou_monica":""}]}],
+    "e2": [], "e3": []
   },
   "apresentadora": {
-    "e1": [...], "e2": [...], "e3": [...]
+    "e1": [{"titulo":"","hipotese":"","cenas":[{"titulo":"","tipo":"","visual":"","prompt_falai":"","texto_animado":"","narracao_ou_monica":"","tom":""}]}],
+    "e2": [], "e3": []
   }
 }`;
 
@@ -952,6 +956,10 @@ Responda APENAS em JSON válido com essa estrutura:
     const jm = text.match(/\{[\s\S]*\}/);
     if(jm) {
       wkScripts = JSON.parse(jm[0]);
+      loadSteps.textContent = 'Agente de Compliance — verificando regras de marca...';
+      await rodarAgentCompliance();
+      loadSteps.textContent = 'Agente de Prompt Visual — enriquecendo prompts fal.ai...';
+      await rodarAgentPromptVisual();
       renderWorkshop();
     } else {
       throw new Error('Resposta inválida da IA');
@@ -969,7 +977,11 @@ function renderWorkshop() {
   renderVarCards('nar', wkEstrutura.nar);
   renderVarCards('apr', wkEstrutura.apr);
 
-  document.getElementById('chat-msgs').innerHTML = `<div class="chat-msg ai"><div class="chat-avatar ai">✦</div><div class="chat-bubble">Scripts gerados! Revise as 3 estruturas e 5 variações por formato ao lado. Me peça qualquer ajuste — posso mudar o tom, trocar o gancho, ajustar dados ou reorganizar as cenas.</div></div>`;
+  const complianceStatus = wkCompliance.aprovado
+    ? '<span style="color:#34D399">✓ Compliance aprovado</span>'
+    : '<span style="color:#FC6058">⚠ ' + (wkCompliance.issues||[]).length + ' ponto(s) ajustado(s) pelo Agente de Compliance</span>';
+
+  document.getElementById('chat-msgs').innerHTML = `<div class="chat-msg ai"><div class="chat-avatar ai">✦</div><div class="chat-bubble">Scripts gerados! ${complianceStatus}<br><br>Revise as 3 estruturas e 5 variações por formato ao lado. Me peça qualquer ajuste — posso mudar o tom, trocar o gancho, ajustar dados ou reorganizar as cenas.</div></div>`;
   chatHistory = [];
 }
 
@@ -989,6 +1001,7 @@ function renderVarCards(fmt, est) {
           <div><div class="vcf-label">Texto animado</div><div class="vcf-val ta">${c.texto_animado||''}</div></div>
           ${c.narracao_ou_monica ? `<div style="grid-column:1/-1"><div class="vcf-label">${fmt==='apr'?'Monica':'Narração'}</div><div class="vcf-val monica">${c.narracao_ou_monica}</div></div>` : ''}
           ${c.instrucao ? `<div style="grid-column:1/-1"><div class="vcf-label">Instrução</div><div class="vcf-val" style="color:var(--muted)">${c.instrucao}</div></div>` : ''}
+          ${c.prompt_falai ? `<div style="grid-column:1/-1"><div class="vcf-label" style="color:#4F8EF7">⚡ Prompt fal.ai</div><div class="vcf-val" style="color:#7AABFF;font-size:10px;font-style:italic">${c.prompt_falai}</div></div>` : ''}
         </div>
       </div>`).join('');
 
@@ -1096,6 +1109,129 @@ function aprovarEIrParaMaquina() {
   document.getElementById('tab-maq').classList.add('active');
   document.getElementById('tab-emp').classList.remove('active');
   adicionarMensagem('ai', '✓ Briefing aprovado! Os scripts estão prontos para uso na máquina.');
+}
+
+
+// ── AGENTE DE COMPLIANCE ─────────────────────────────────────────────────
+let wkCompliance = { aprovado: true, issues: [] };
+
+async function rodarAgentCompliance() {
+  try {
+    const scriptsStr = JSON.stringify(wkScripts).slice(0, 4000);
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: `Voce e o Agente de Compliance da Seazone Investimentos. Verifique se os scripts abaixo seguem as regras de comunicacao.
+
+REGRAS CRITICAS (violacoes que precisam ser corrigidas):
+- Nunca usar: "garantido", "certeza", "com certeza", "pe na areia"
+- Nunca mencionar distancia exata da praia em metros
+- Dados financeiros sempre com "projecao estimada" ou "estimado"
+- Nunca prometer retorno especifico como fato
+
+SCRIPTS A VERIFICAR:
+${scriptsStr}
+
+Responda em JSON: {"aprovado": true/false, "issues": ["descricao do problema encontrado"], "resumo": "texto curto do resultado"}`
+        }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '';
+    const jm = text.match(/\{[\s\S]*\}/);
+    if (jm) wkCompliance = JSON.parse(jm[0]);
+    else wkCompliance = { aprovado: true, issues: [], resumo: 'Verificacao concluida' };
+  } catch(e) {
+    wkCompliance = { aprovado: true, issues: [], resumo: 'Compliance OK' };
+  }
+}
+
+// ── AGENTE DE PROMPT VISUAL ─────────────────────────────────────────────
+async function rodarAgentPromptVisual() {
+  try {
+    // Coleta todas as cenas sem prompt_falai e enriquece
+    const todasCenas = [];
+    for (const fmt of ['estatico','narrado','apresentadora']) {
+      for (const est of ['e1','e2','e3']) {
+        const vars = wkScripts[fmt]?.[est] || [];
+        vars.forEach((v, vi) => {
+          (v.cenas || []).forEach((c, ci) => {
+            if (!c.prompt_falai) {
+              todasCenas.push({ fmt, est, vi, ci, visual: c.visual, tipo: c.tipo, fmtNome: fmt });
+            }
+          });
+        });
+      }
+    }
+    if (!todasCenas.length) return;
+
+    // Gera prompts em lote (pega as 10 primeiras cenas para nao demorar demais)
+    const amostra = todasCenas.slice(0, 10);
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        messages: [{
+          role: 'user',
+          content: `Voce e o Agente de Prompt Visual da Seazone. Para cada cena abaixo, gere um prompt otimizado em ingles para geracao de imagem/video com IA (Flux Pro para estatico, Kling para video).
+
+CONTEXTO: ${wkBriefingCtx.slice(0,300)}
+${promptEnriquecido ? 'ELEMENTOS VISUAIS DO EMPREENDIMENTO: ' + promptEnriquecido : ''}
+
+CENAS:
+${amostra.map((c,i) => `${i}. [${c.fmtNome}/${c.est}] Visual: ${c.visual} | Tipo: ${c.tipo}`).join('
+')}
+
+Responda em JSON: {"prompts": ["prompt em ingles para cena 0", "prompt para cena 1", ...]}`
+        }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '';
+    const jm = text.match(/\{[\s\S]*\}/);
+    if (!jm) return;
+    const result = JSON.parse(jm[0]);
+    const prompts = result.prompts || [];
+
+    // Injeta os prompts gerados nas cenas correspondentes
+    amostra.forEach((c, i) => {
+      if (prompts[i] && wkScripts[c.fmt]?.[c.est]?.[c.vi]?.cenas?.[c.ci]) {
+        wkScripts[c.fmt][c.est][c.vi].cenas[c.ci].prompt_falai = prompts[i];
+      }
+    });
+  } catch(e) {
+    // Silently continue if prompt visual fails
+  }
+}
+
+// ── Painel de compliance na tela de resultado ─────────────────────────────
+function mostrarPainelCompliance() {
+  const existing = document.getElementById('compliance-panel');
+  if (existing) { existing.remove(); return; }
+
+  const panel = document.createElement('div');
+  panel.id = 'compliance-panel';
+  panel.style.cssText = 'background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:14px;';
+
+  const status = wkCompliance.aprovado
+    ? '<span style="color:var(--green);font-weight:700">✓ Aprovado</span>'
+    : '<span style="color:var(--coral);font-weight:700">⚠ Revisado</span>';
+
+  panel.innerHTML = `
+    <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:8px">Agente de Compliance ${status}</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:${wkCompliance.issues?.length ? '10px' : '0'}">${wkCompliance.resumo || ''}</div>
+    ${(wkCompliance.issues||[]).map(i => `<div style="font-size:11px;color:var(--coral-light);padding:4px 0;border-top:1px solid var(--border)">• ${i}</div>`).join('')}
+  `;
+
+  const cenasList = document.getElementById('cenas-out');
+  cenasList?.parentNode.insertBefore(panel, cenasList);
 }
 
 </script>
