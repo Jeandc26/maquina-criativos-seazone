@@ -183,6 +183,19 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.85);backdrop
 .btn-gerar-assets{width:100%;padding:11px;border-radius:99px;background:linear-gradient(135deg,#0055FF,#4F8EF7);color:var(--white);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;}
 .btn-gerar-assets:hover{opacity:0.9;transform:translateY(-1px);}
 .btn-gerar-assets:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+
+/* REFERÊNCIAS VISUAIS */
+.ref-area{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;}
+.ref-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px;display:flex;align-items:center;}
+.ref-sub{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5;}
+.ref-upload-row{display:flex;align-items:flex-start;gap:12px;}
+.ref-dropzone{border:1.5px dashed var(--muted2);border-radius:var(--radius-sm);padding:16px 20px;text-align:center;cursor:pointer;transition:all 0.2s;min-width:140px;flex-shrink:0;}
+.ref-dropzone:hover{border-color:var(--blue);background:rgba(79,142,247,0.04);}
+.ref-drop-label{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px;}
+.ref-drop-sub{font-size:11px;color:var(--muted);}
+.ref-previews{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+.ref-analise{background:var(--bg3);border-radius:var(--radius-sm);padding:14px;margin-top:14px;border:1px solid rgba(79,142,247,0.15);}
+.ref-analise-title{font-size:11px;font-weight:700;color:var(--coral);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;}
 .fal-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;background:rgba(79,142,247,0.15);color:var(--blue-light);border:1px solid rgba(79,142,247,0.2);}
 </style>
 </head>
@@ -330,16 +343,30 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.85);backdrop
           </div>
           <div class="cenas" id="cenas-out"></div>
 
+          <!-- REFERÊNCIAS VISUAIS -->
+          <div class="ref-area" id="ref-area">
+            <div class="ref-title"><span>📎 Referências visuais</span><span class="fal-badge" style="margin-left:8px">opcional — melhora o resultado</span></div>
+            <div class="ref-sub">Suba fotos reais do empreendimento. A IA analisa e extrai os elementos visuais para enriquecer a geração.</div>
+            <div class="ref-upload-row">
+              <div class="ref-dropzone" onclick="document.getElementById('ref-input').click()">
+                <div style="font-size:24px;margin-bottom:8px">🖼</div>
+                <div class="ref-drop-label">Clique para adicionar fotos</div>
+                <div class="ref-drop-sub">JPG, PNG · até 5 imagens</div>
+                <input type="file" id="ref-input" multiple accept="image/*" style="display:none" onchange="handleRefImages(this)"/>
+              </div>
+              <div class="ref-previews" id="ref-previews"></div>
+            </div>
+            <div class="ref-analise" id="ref-analise" style="display:none">
+              <div class="ref-analise-title">✦ Análise da IA</div>
+              <div class="ref-analise-text" id="ref-analise-text"></div>
+            </div>
+          </div>
+
           <!-- ÁREA DE GERAÇÃO REAL COM FAL.AI -->
           <div class="gen-area">
-            <div class="gen-title">
-              ⚡ Gerar assets com fal.ai
-              <span class="fal-badge">Flux Pro · Kling v1.6</span>
-            </div>
+            <div class="gen-title">⚡ Gerar assets com fal.ai<span class="fal-badge" style="margin-left:8px">Flux Pro · Kling v1.6</span></div>
             <div class="gen-grid" id="gen-grid"></div>
-            <button class="btn-gerar-assets" id="btn-assets" onclick="gerarAssets()">
-              ✦ Gerar imagens e vídeos agora
-            </button>
+            <button class="btn-gerar-assets" id="btn-assets" onclick="gerarAssets()">✦ Gerar imagens e vídeos agora</button>
           </div>
         </div>
       </div>
@@ -351,6 +378,66 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.85);backdrop
 <script>
 // ── Configuração fal.ai ──────────────────────────────────────────────────
 const FAL_KEY = '6243d572-28a2-4c4e-a66c-8ade8f171076:ede1d8c14eb4d0f40dab687c8d36e586';
+
+
+// ── Referências visuais ───────────────────────────────────────────────────
+let refImages = [];
+let promptEnriquecido = '';
+
+async function handleRefImages(input) {
+  const files = Array.from(input.files).slice(0, 5);
+  if (!files.length) return;
+  const previews = document.getElementById('ref-previews');
+  previews.innerHTML = '';
+  refImages = [];
+  for (const file of files) {
+    const b64full = await fileToBase64(file);
+    refImages.push({ base64: b64full.split(',')[1], mediaType: file.type });
+    const d = document.createElement('div');
+    d.innerHTML = '<img src="' + b64full + '" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.1)"/>';
+    previews.appendChild(d);
+  }
+  await analisarRefs();
+}
+
+function fileToBase64(file) {
+  return new Promise(r => { const fr = new FileReader(); fr.onload = e => r(e.target.result); fr.readAsDataURL(file); });
+}
+
+async function analisarRefs() {
+  const analiseDiv = document.getElementById('ref-analise');
+  const analiseText = document.getElementById('ref-analise-text');
+  analiseDiv.style.display = 'block';
+  analiseText.innerHTML = '<span style="color:var(--muted)">⏳ Analisando imagens com IA...</span>';
+  try {
+    const content = [
+      ...refImages.map(img => ({ type:'image', source:{ type:'base64', media_type:img.mediaType, data:img.base64 }})),
+      { type:'text', text:'Você é especialista em marketing imobiliário da Seazone Investimentos. Analise essas imagens de referência do empreendimento e extraia: 1. ELEMENTOS: cores dominantes, materiais, estilo arquitetônico. 2. DESTAQUES: o que mais chama atenção (vista, piscina, acabamento, paisagismo). 3. PROMPT_EXTRA: descrição em inglês (máx 80 palavras) dos elementos visuais para enriquecer prompts de geração de imagem com IA. Responda APENAS em JSON com as chaves: elementos, destaques, prompt_extra' }
+    ];
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{ role:'user', content }] })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '';
+    const jm = text.match(/\{[\s\S]*\}/);
+    if (jm) {
+      const p = JSON.parse(jm[0]);
+      promptEnriquecido = p.prompt_extra || '';
+      analiseText.innerHTML =
+        '<div style="margin-bottom:10px"><div style="font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Elementos visuais</div><div style="font-size:13px;color:var(--text)">' + (p.elementos||'—') + '</div></div>' +
+        '<div style="margin-bottom:10px"><div style="font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Destaques</div><div style="font-size:13px;color:var(--text)">' + (p.destaques||'—') + '</div></div>' +
+        '<div><div style="font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Enriquecimento do prompt</div><div style="font-size:12px;color:var(--blue-light);font-style:italic;background:var(--bg);padding:8px 10px;border-radius:8px">' + promptEnriquecido + '</div></div>' +
+        '<div style="margin-top:10px;font-size:11px;color:var(--green)">✓ Prompts enriquecidos — a geração vai refletir as características reais do empreendimento</div>';
+    } else {
+      promptEnriquecido = '';
+      analiseText.innerHTML = '<span style="color:var(--muted)">Análise concluída.</span>';
+    }
+  } catch(err) {
+    analiseText.innerHTML = '<span style="color:#F87171">Erro: ' + err.message + '</span>';
+  }
+}
 
 const CONTEXTO = 'Professional marketing photography for Seazone Investimentos, premium real estate investment Brazil. Photorealistic, cinematic, high-end campaign quality. Bright natural light, no dark filters, no text in image, no people in architectural shots, modern aspirational aesthetic.';
 
@@ -508,7 +595,7 @@ async function gerarVideo(prompt, fmt) {
   const res=await fetch('https://fal.run/fal-ai/kling-video/v1.6/pro/text-to-video',{
     method:'POST',
     headers:{'Authorization':`Key ${FAL_KEY}`,'Content-Type':'application/json'},
-    body:JSON.stringify({prompt,duration:'5',aspect_ratio:ratio,negative_prompt:'text, watermark, people, dark, blurry'})
+    body:JSON.stringify({prompt: prompt + (promptEnriquecido ? ' ' + promptEnriquecido : ''),duration:'5',aspect_ratio:ratio,negative_prompt:'text, watermark, people, dark, blurry'})
   });
   if(!res.ok) throw new Error(`Erro ${res.status}`);
   const data=await res.json();
