@@ -197,6 +197,67 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.85);backdrop
 .ref-analise{background:var(--bg3);border-radius:var(--radius-sm);padding:14px;margin-top:14px;border:1px solid rgba(79,142,247,0.15);}
 .ref-analise-title{font-size:11px;font-weight:700;color:var(--coral);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;}
 .fal-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;background:rgba(79,142,247,0.15);color:var(--blue-light);border:1px solid rgba(79,142,247,0.2);}
+
+/* TELA 4 — WORKSHOP DE BRIEFING */
+.workshop-layout{display:grid;grid-template-columns:1fr 420px;height:calc(100vh - 60px);gap:0;}
+.workshop-left{overflow-y:auto;padding:24px;background:var(--bg);}
+.workshop-right{background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;}
+.wk-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:4px;}
+.wk-sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.formato-sec{margin-bottom:24px;}
+.formato-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.formato-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.fi-est{background:rgba(52,211,153,0.12);}
+.fi-nar{background:rgba(79,142,247,0.12);}
+.fi-apr{background:rgba(252,96,88,0.12);}
+.formato-nome{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);}
+.formato-desc{font-size:12px;color:var(--muted);margin-top:1px;}
+.estrut-tabs{display:flex;gap:4px;margin-bottom:12px;}
+.etab{font-size:11px;font-weight:600;padding:4px 12px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;}
+.etab.active{background:var(--navy);border-color:var(--blue-light);color:var(--white);}
+.var-cards{display:flex;flex-direction:column;gap:8px;}
+.var-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;transition:border-color 0.2s;}
+.var-card:hover{border-color:rgba(79,142,247,0.3);}
+.var-card.selected{border-color:var(--coral);}
+.var-card-hdr{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg3);cursor:pointer;}
+.var-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:rgba(79,142,247,0.15);color:var(--blue-light);}
+.var-hip{font-size:11px;color:var(--muted);margin-left:auto;}
+.var-card-body{padding:12px 14px;display:none;}
+.var-card.open .var-card-body{display:block;}
+.var-cena{margin-bottom:8px;padding:8px 10px;background:var(--bg3);border-radius:8px;}
+.var-cena-ttl{font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.var-cena-fields{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.vcf-label{font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted2);margin-bottom:3px;}
+.vcf-val{font-size:11px;color:var(--text);line-height:1.5;}
+.vcf-val.ta{color:var(--blue-light);font-weight:600;font-size:10px;}
+.vcf-val.monica{color:#D4AAFF;font-style:italic;font-size:11px;}
+/* CHAT */
+.chat-hdr{padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.chat-hdr-title{font-size:13px;font-weight:700;color:var(--white);}
+.chat-hdr-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
+.chat-msg{display:flex;gap:8px;align-items:flex-start;}
+.chat-msg.user{flex-direction:row-reverse;}
+.chat-bubble{font-size:12px;line-height:1.6;padding:9px 12px;border-radius:12px;max-width:280px;}
+.chat-msg.ai .chat-bubble{background:var(--bg3);color:var(--text);border-radius:4px 12px 12px 12px;}
+.chat-msg.user .chat-bubble{background:var(--coral);color:var(--white);border-radius:12px 4px 12px 12px;}
+.chat-avatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:2px;}
+.chat-avatar.ai{background:var(--navy);color:var(--blue-light);}
+.chat-avatar.user{background:var(--coral);color:var(--white);}
+.chat-input-area{padding:12px 16px;border-top:1px solid var(--border);flex-shrink:0;}
+.chat-input-row{display:flex;gap:8px;}
+.chat-finput{flex:1;font-family:'Space Grotesk',sans-serif;font-size:13px;padding:8px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg3);color:var(--text);outline:none;resize:none;}
+.chat-finput:focus{border-color:var(--blue);}
+.chat-send{width:36px;height:36px;border-radius:var(--radius-sm);background:var(--coral);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;}
+.chat-send:hover{background:#e54e46;}
+.chat-send svg{width:16px;height:16px;}
+.chat-footer{margin-top:10px;}
+.btn-aprovar{width:100%;padding:11px;border-radius:99px;background:var(--green);color:var(--navy);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:7px;}
+.btn-aprovar:hover{opacity:0.9;transform:translateY(-1px);}
+.wk-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;height:300px;gap:16px;}
+.wk-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--coral);border-radius:50%;animation:spin 0.8s linear infinite;}
+.wk-loading-text{font-size:13px;color:var(--muted);}
+.wk-loading-steps{font-size:11px;color:var(--muted2);text-align:center;line-height:1.8;}
 </style>
 </head>
 <body>
@@ -372,6 +433,95 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.85);backdrop
       </div>
     </main>
   </div>
+
+<!-- TELA 4 — WORKSHOP DE BRIEFING -->
+<div class="screen" id="screen-workshop">
+  <div class="workshop-layout">
+    <!-- ESQUERDA: Scripts gerados -->
+    <div class="workshop-left">
+      <button class="back" onclick="goScreen('novo')" style="margin-bottom:16px">← Voltar</button>
+      <div class="wk-title" id="wk-emp-nome">Novo Campeche SPOT II</div>
+      <div class="wk-sub">Revise os scripts gerados. Use o chat ao lado para solicitar ajustes antes de aprovar.</div>
+
+      <!-- Loading state -->
+      <div class="wk-loading" id="wk-loading">
+        <div class="wk-spinner"></div>
+        <div class="wk-loading-text">Gerando scripts completos...</div>
+        <div class="wk-loading-steps" id="wk-loading-steps"></div>
+      </div>
+
+      <!-- Scripts gerados -->
+      <div id="wk-scripts" style="display:none">
+        <!-- Estático -->
+        <div class="formato-sec">
+          <div class="formato-hdr">
+            <div class="formato-icon fi-est">🖼</div>
+            <div><div class="formato-nome">Estático</div><div class="formato-desc">Feed 4:5 (1080×1350px) · Reels 9:16 (1080×1920px)</div></div>
+          </div>
+          <div class="estrut-tabs" id="et-est">
+            <button class="etab active" onclick="setEstrutura('est',1,this)">Estrutura 1</button>
+            <button class="etab" onclick="setEstrutura('est',2,this)">Estrutura 2</button>
+            <button class="etab" onclick="setEstrutura('est',3,this)">Estrutura 3</button>
+          </div>
+          <div class="var-cards" id="vc-est"></div>
+        </div>
+
+        <!-- Narrado -->
+        <div class="formato-sec">
+          <div class="formato-hdr">
+            <div class="formato-icon fi-nar">🎙</div>
+            <div><div class="formato-nome">Vídeo narrado</div><div class="formato-desc">Narração em off · B-roll VEO 3 / Kling</div></div>
+          </div>
+          <div class="estrut-tabs" id="et-nar">
+            <button class="etab active" onclick="setEstrutura('nar',1,this)">Estrutura 1</button>
+            <button class="etab" onclick="setEstrutura('nar',2,this)">Estrutura 2</button>
+            <button class="etab" onclick="setEstrutura('nar',3,this)">Estrutura 3</button>
+          </div>
+          <div class="var-cards" id="vc-nar"></div>
+        </div>
+
+        <!-- Apresentadora -->
+        <div class="formato-sec">
+          <div class="formato-hdr">
+            <div class="formato-icon fi-apr">🎬</div>
+            <div><div class="formato-nome">Com apresentadora</div><div class="formato-desc">Monica · HeyGen · B-roll intercalado</div></div>
+          </div>
+          <div class="estrut-tabs" id="et-apr">
+            <button class="etab active" onclick="setEstrutura('apr',1,this)">Estrutura 1</button>
+            <button class="etab" onclick="setEstrutura('apr',2,this)">Estrutura 2</button>
+            <button class="etab" onclick="setEstrutura('apr',3,this)">Estrutura 3</button>
+          </div>
+          <div class="var-cards" id="vc-apr"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIREITA: Chat de ajustes -->
+    <div class="workshop-right">
+      <div class="chat-hdr">
+        <div class="chat-hdr-title">✦ Ajuste com IA</div>
+        <div class="chat-hdr-sub">Peça alterações nos scripts antes de aprovar</div>
+      </div>
+      <div class="chat-msgs" id="chat-msgs">
+        <div class="chat-msg ai">
+          <div class="chat-avatar ai">✦</div>
+          <div class="chat-bubble">Scripts gerados! Revise as estruturas e variações ao lado. Me peça qualquer ajuste — posso mudar o tom, trocar o gancho, ajustar os dados financeiros ou reorganizar as cenas.</div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <div class="chat-input-row">
+          <textarea class="chat-finput" id="chat-input" placeholder="Ex: Deixa o tom mais direto na V1..." rows="2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();enviarChat();}"></textarea>
+          <button class="chat-send" onclick="enviarChat()">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="chat-footer">
+          <button class="btn-aprovar" onclick="aprovarEIrParaMaquina()">✓ Aprovar e ir para a máquina</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 </div>
 
@@ -696,15 +846,258 @@ function renderC(c,i) {
 }
 
 // ── Novo empreendimento ───────────────────────────────────────────────────
-function gerarForm(){const nome=document.getElementById('f-nome').value,roi=document.getElementById('f-roi').value;if(!nome||!roi){alert('Preencha nome e ROI.');return;}briefing={nome,city:document.getElementById('f-cidade').value,roi:roi+'%',rend:document.getElementById('f-rend').value,ticket:document.getElementById('f-ticket').value,cotas:document.getElementById('f-cotas').value};showResult(briefing,document.getElementById('f-pontos').value);}
+function gerarForm(){const nome=document.getElementById('f-nome').value,roi=document.getElementById('f-roi').value;if(!nome||!roi){alert('Preencha nome e ROI.');return;}briefing={nome,city:document.getElementById('f-cidade').value,roi:roi+'%',rend:document.getElementById('f-rend').value,ticket:document.getElementById('f-ticket').value,cotas:document.getElementById('f-cotas').value};abrirWorkshop(briefing);}
 function gerarURL(){const u=document.getElementById('f-url').value;if(!u)return;showResult({nome:'Via URL',city:u,roi:'—',rend:'—',ticket:'—',cotas:'—'},'URL: '+u);}
 function handleFile(inp){if(inp.files[0])showResult({nome:inp.files[0].name.replace(/\.[^.]+$/,''),city:'Do arquivo',roi:'—',rend:'—',ticket:'—',cotas:'—'},'Arquivo: '+inp.files[0].name);}
 function showResult(b,pontos){briefing=b;document.getElementById('r-metrics').innerHTML=`<div class="r-metric"><div class="r-metric-val">${b.roi}</div><div class="r-metric-lbl">ROI a.a.</div></div><div class="r-metric"><div class="r-metric-val">${b.rend}</div><div class="r-metric-lbl">Rendimento/mês</div></div><div class="r-metric"><div class="r-metric-val">${b.ticket}</div><div class="r-metric-lbl">Ticket mínimo</div></div>`;document.getElementById('r-tags').innerHTML=['Estrutura 1','Estrutura 2','Estrutura 3','Feed 4:5','Reels 9:16'].map(t=>`<span class="r-tag">${t}</span>`).join('');const flags=[{l:'Gancho CDB',a:parseFloat(b.roi)>12},{l:'Rooftop',a:pontos?.toLowerCase().includes('rooftop')},{l:'Escassez',a:parseInt(b.cotas)<50}];document.getElementById('r-flags').innerHTML=flags.map(f=>`<span class="r-flag ${f.a?'on':''}">${f.a?'✓':'○'} ${f.l}</span>`).join('');document.getElementById('r-card').classList.add('show');}
-function usarBriefing(){document.getElementById('sb-nome').textContent=briefing.nome;document.getElementById('sb-city').textContent=briefing.city;goScreen('maquina');document.getElementById('tab-maq').classList.add('active');document.getElementById('tab-emp').classList.remove('active');}
+function usarBriefing(){abrirWorkshop(briefing);}
 
 // ── Export / variação ─────────────────────────────────────────────────────
 function exportar(){const cenas=document.querySelectorAll('.cena');if(!cenas.length){alert('Gere um script primeiro!');return;}let txt=`MÁQUINA DE CRIATIVOS SEAZONE\nEmpreendimento: ${briefing.nome}\nTipo: ${tipo} | Estrutura: ${document.getElementById('sel-est').value}\nFormato: ${document.getElementById('sel-fmt').value}\n\n`;cenas.forEach((c,i)=>{const v=c.querySelectorAll('.cf-val');txt+=`CENA ${i+1}: ${c.querySelector('.cena-ttl').textContent}\nVisual: ${v[0]?.textContent}\nTexto animado: ${v[1]?.textContent}\nNarração/Monica: ${v[2]?.textContent}\n\n`;});txt+='*Projeção estimada. Não constitui garantia de rentabilidade.';const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));a.download=`script_E${document.getElementById('sel-est').value}_V${varN}.txt`;a.click();}
 function novaVar(){const tabs=document.querySelectorAll('.vtab');const next=(varN%5)+1;tabs.forEach(t=>t.classList.remove('active'));tabs[next-1].classList.add('active');varN=next;if(document.getElementById('st-result').classList.contains('show'))gerar();}
+
+// ── Workshop de Briefing ───────────────────────────────────────────────────
+let wkScripts = { est:{}, nar:{}, apr:{} };
+let wkBriefingCtx = '';
+let wkEstrutura = { est:1, nar:1, apr:1 };
+let chatHistory = [];
+
+async function abrirWorkshop(b) {
+  goScreen('workshop');
+  document.getElementById('wk-emp-nome').textContent = b.nome;
+  document.getElementById('wk-loading').style.display = 'flex';
+  document.getElementById('wk-scripts').style.display = 'none';
+  chatHistory = [];
+  document.getElementById('chat-msgs').innerHTML = `<div class="chat-msg ai"><div class="chat-avatar ai">✦</div><div class="chat-bubble">Gerando os scripts para ${b.nome}... aguarde um momento.</div></div>`;
+
+  wkBriefingCtx = `
+Empreendimento: ${b.nome}
+Cidade: ${b.city}
+ROI: ${b.roi} a.a.
+Rendimento mensal: ${b.rend}
+Ticket mínimo: ${b.ticket}
+Cotas disponíveis: ${b.cotas}
+
+CONTEXTO SEAZONE (CLAUDE.md):
+- ICP: investidores 36-50 anos, empresários, renda >R$21k/mês, motivação = renda passiva
+- Tom: autoridade de especialista, dados e fatos, linguagem de posse ("nosso projeto")
+- NUNCA: "garantido", "pé na areia", distância exata da praia, "vista para o mar nas unidades"
+- SEMPRE: "projeção estimada" em dados financeiros
+- Concorrentes médios: R$ 584.166 (ticket), CDI líquido referência: ~9,8% a.a.
+`;
+
+  const loadSteps = document.getElementById('wk-loading-steps');
+  const stepTexts = [
+    'Lendo contexto Seazone...',
+    'Gerando scripts estáticos (3 estruturas × 5 variações)...',
+    'Gerando scripts narrados...',
+    'Gerando scripts com apresentadora...',
+    'Finalizando...'
+  ];
+  let si = 0;
+  const stepIv = setInterval(() => {
+    if(si < stepTexts.length) { loadSteps.textContent = stepTexts[si]; si++; }
+  }, 2200);
+
+  try {
+    const prompt = `${wkBriefingCtx}
+
+Gere scripts completos de criativos para esse empreendimento imobiliário seguindo EXATAMENTE essa estrutura.
+
+Para cada FORMATO (estatico, narrado, apresentadora):
+- 3 ESTRUTURAS diferentes (ordem das cenas varia)
+- 5 VARIAÇÕES por estrutura (cada variação testa uma hipótese A/B diferente)
+
+HIPÓTESES A/B das variações:
+V1: RE mensal em destaque
+V2: RE anual em destaque
+V3: ROI comparativo com Selic
+V4: Gancho CDB (comparativo com CDI líquido)
+V5: Gatilho de escassez (cotas limitadas)
+
+ESTRUTURAS (ordem das cenas):
+E1: Localização → Fachada → ROI+RE → Rooftop → CTA
+E2: Localização → ROI+RE (Monica) → Fachada → CTA
+E3: Fachada → ROI+RE (Monica) → Localização → CTA
+
+Para cada variação, gere:
+- titulo: string curta
+- hipotese: nome da hipótese
+- cenas: array com 4-5 cenas, cada cena com: titulo, tipo (tag), visual, texto_animado, narracao_ou_monica
+
+Responda APENAS em JSON válido com essa estrutura:
+{
+  "estatico": {
+    "e1": [{"titulo":"","hipotese":"","cenas":[{"titulo":"","tipo":"","visual":"","texto_animado":"","instrucao":""}]}],
+    "e2": [...],
+    "e3": [...]
+  },
+  "narrado": {
+    "e1": [...], "e2": [...], "e3": [...]
+  },
+  "apresentadora": {
+    "e1": [...], "e2": [...], "e3": [...]
+  }
+}`;
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:8000, messages:[{role:'user',content:prompt}] })
+    });
+    const data = await res.json();
+    clearInterval(stepIv);
+
+    const text = data.content?.[0]?.text || '';
+    const jm = text.match(/\{[\s\S]*\}/);
+    if(jm) {
+      wkScripts = JSON.parse(jm[0]);
+      renderWorkshop();
+    } else {
+      throw new Error('Resposta inválida da IA');
+    }
+  } catch(err) {
+    clearInterval(stepIv);
+    loadSteps.textContent = 'Erro: ' + err.message;
+  }
+}
+
+function renderWorkshop() {
+  document.getElementById('wk-loading').style.display = 'none';
+  document.getElementById('wk-scripts').style.display = 'block';
+  renderVarCards('est', wkEstrutura.est);
+  renderVarCards('nar', wkEstrutura.nar);
+  renderVarCards('apr', wkEstrutura.apr);
+
+  document.getElementById('chat-msgs').innerHTML = `<div class="chat-msg ai"><div class="chat-avatar ai">✦</div><div class="chat-bubble">Scripts gerados! Revise as 3 estruturas e 5 variações por formato ao lado. Me peça qualquer ajuste — posso mudar o tom, trocar o gancho, ajustar dados ou reorganizar as cenas.</div></div>`;
+  chatHistory = [];
+}
+
+function renderVarCards(fmt, est) {
+  const key = 'e' + est;
+  const data = wkScripts[fmt === 'est' ? 'estatico' : fmt === 'nar' ? 'narrado' : 'apresentadora'];
+  const vars = data?.[key] || [];
+  const container = document.getElementById('vc-' + fmt);
+  if(!container) return;
+
+  container.innerHTML = vars.map((v, vi) => {
+    const cenasHtml = (v.cenas || []).map(c => `
+      <div class="var-cena">
+        <div class="var-cena-ttl">${c.titulo || ''} <span style="background:var(--coral);color:#fff;font-size:9px;padding:1px 6px;border-radius:99px;font-weight:700">${c.tipo||''}</span></div>
+        <div class="var-cena-fields">
+          <div><div class="vcf-label">Visual</div><div class="vcf-val">${c.visual||''}</div></div>
+          <div><div class="vcf-label">Texto animado</div><div class="vcf-val ta">${c.texto_animado||''}</div></div>
+          ${c.narracao_ou_monica ? `<div style="grid-column:1/-1"><div class="vcf-label">${fmt==='apr'?'Monica':'Narração'}</div><div class="vcf-val monica">${c.narracao_ou_monica}</div></div>` : ''}
+          ${c.instrucao ? `<div style="grid-column:1/-1"><div class="vcf-label">Instrução</div><div class="vcf-val" style="color:var(--muted)">${c.instrucao}</div></div>` : ''}
+        </div>
+      </div>`).join('');
+
+    return `<div class="var-card" id="vc-${fmt}-${vi}">
+      <div class="var-card-hdr" onclick="toggleVarCard('${fmt}',${vi})">
+        <span class="var-badge">V${vi+1}</span>
+        <span style="font-size:12px;font-weight:600;color:var(--text)">${v.titulo||'Variação '+(vi+1)}</span>
+        <span class="var-hip">${v.hipotese||''}</span>
+        <span style="color:var(--muted);font-size:14px;margin-left:8px">›</span>
+      </div>
+      <div class="var-card-body">${cenasHtml}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleVarCard(fmt, vi) {
+  const card = document.getElementById('vc-' + fmt + '-' + vi);
+  card?.classList.toggle('open');
+}
+
+function setEstrutura(fmt, est, btn) {
+  wkEstrutura[fmt] = est;
+  const tabContainer = document.getElementById('et-' + fmt);
+  tabContainer?.querySelectorAll('.etab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderVarCards(fmt, est);
+}
+
+// ── Chat de ajustes ────────────────────────────────────────────────────────
+async function enviarChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if(!msg) return;
+  input.value = '';
+
+  adicionarMensagem('user', msg);
+  chatHistory.push({ role:'user', content:msg });
+
+  const typing = adicionarMensagem('ai', '⏳ Ajustando scripts...');
+
+  try {
+    const systemPrompt = `Você é o assistente da Máquina de Criativos Seazone. 
+Contexto do empreendimento: ${wkBriefingCtx}
+Scripts atuais: ${JSON.stringify(wkScripts).slice(0,3000)}...
+
+O usuário quer fazer ajustes nos scripts. Quando pedir alterações específicas, aplique e retorne o JSON completo atualizado dos scripts no mesmo formato. Quando for uma pergunta ou comentário, responda normalmente em texto.
+Se retornar JSON, envolva em <scripts_json>...</scripts_json>.`;
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:8000,
+        system: systemPrompt,
+        messages: chatHistory
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '';
+
+    // Remove typing indicator
+    typing.remove();
+
+    // Check if has updated scripts
+    const scriptsMatch = text.match(/<scripts_json>([\s\S]*?)<\/scripts_json>/);
+    if(scriptsMatch) {
+      try {
+        const newScripts = JSON.parse(scriptsMatch[1].trim());
+        wkScripts = newScripts;
+        renderVarCards('est', wkEstrutura.est);
+        renderVarCards('nar', wkEstrutura.nar);
+        renderVarCards('apr', wkEstrutura.apr);
+        const respText = text.replace(/<scripts_json>[\s\S]*?<\/scripts_json>/, '').trim();
+        adicionarMensagem('ai', respText || '✓ Scripts atualizados! Revise as alterações ao lado.');
+      } catch(e) {
+        adicionarMensagem('ai', text.replace(/<scripts_json>[\s\S]*?<\/scripts_json>/, '').trim() || 'Scripts ajustados!');
+      }
+    } else {
+      adicionarMensagem('ai', text);
+    }
+
+    chatHistory.push({ role:'assistant', content: text });
+  } catch(err) {
+    typing.remove();
+    adicionarMensagem('ai', 'Erro: ' + err.message);
+  }
+}
+
+function adicionarMensagem(tipo, texto) {
+  const msgs = document.getElementById('chat-msgs');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + tipo;
+  div.innerHTML = `<div class="chat-avatar ${tipo}">${tipo==='ai'?'✦':'J'}</div><div class="chat-bubble">${texto}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function aprovarEIrParaMaquina() {
+  const b = briefing;
+  document.getElementById('sb-nome').textContent = b.nome;
+  document.getElementById('sb-city').textContent = b.city;
+  goScreen('maquina');
+  document.getElementById('tab-maq').classList.add('active');
+  document.getElementById('tab-emp').classList.remove('active');
+  adicionarMensagem('ai', '✓ Briefing aprovado! Os scripts estão prontos para uso na máquina.');
+}
+
 </script>
 </body>
 </html>
