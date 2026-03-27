@@ -1179,20 +1179,7 @@ async function rodarAgentPromptVisual() {
         model: 'claude-sonnet-4-20250514',
         max_tokens: 2000,
         messages: [{
-          role: 'user',
-          content: `Voce e o Agente de Prompt Visual da Seazone. Para cada cena abaixo, gere um prompt otimizado em ingles para geracao de imagem/video com IA (Flux Pro para estatico, Kling para video).
-
-CONTEXTO: ${wkBriefingCtx.slice(0,300)}
-${promptEnriquecido ? 'ELEMENTOS VISUAIS DO EMPREENDIMENTO: ' + promptEnriquecido : ''}
-
-CENAS:
-${amostra.map((c,i) => `${i}. [${c.fmtNome}/${c.est}] Visual: ${c.visual} | Tipo: ${c.tipo}`).join('
-')}
-
-Responda em JSON: {"prompts": ["prompt em ingles para cena 0", "prompt para cena 1", ...]}`
-        }]
-      })
-    });
+          rolecontent: 'Voce e o Agente de Prompt Visual da Seazone. Gere prompts em ingles para fal.ai para cada cena: ' + amostra.map(function(c,i){ return i+'. '+c.visual; }).join(' | ')
     const data = await res.json();
     const text = data.content?.[0]?.text || '';
     const jm = text.match(/\{[\s\S]*\}/);
